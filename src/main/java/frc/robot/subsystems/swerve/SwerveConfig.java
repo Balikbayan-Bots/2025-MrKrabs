@@ -105,8 +105,8 @@ public class SwerveConfig {
     // WILL NOT WORK IF ZERO
     private static final double kCoupleRatio = 2.8333333333333335;
 
-    private static final double kDriveGearRatio = 7.0714285714; // 99D/14D
-    private static final double kSteerGearRatio = 11.314285714285715;
+    private static final double kDriveGearRatio = (45D/15D) * (18D/28D) * (44D/12D);
+    private static final double kSteerGearRatio = (72D/14D) * (24D/8D);
     private static final Distance kWheelRadius = Inches.of(2);
 
     private static final boolean kInvertLeftSide = false;
