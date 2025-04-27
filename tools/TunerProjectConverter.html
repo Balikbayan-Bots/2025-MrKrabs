@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/pico.blue.min.css">
+    <script src="js/handlebars.js"></script>
+    <title>Phoenix Tuner X Swerve Project Converter</title>
+</head>
+
+<body>
+    <main class="container">
+        <h2>Tuner Swerve Project Converter</h2>
+        <p>Converts <i>tuner-swerve-project.json</i> into valid java files matching template.</p>
+
+        <input type="file" id="fileInput" accept=".json" style="display: none;">
+        <button id="uploadBtn" class="secondary" type="button">Upload Project File</button>
+
+        <br>
+        <a id="downloadConfig" class="contrast button" disabled>Download <i>SwerveConfig.java</i></a>
+        <br>
+        <a id="downloadConstants" class="contrast button" disabled>Download <i>SwerveConstants.java</i></a>
+    </main>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        document.getElementById('uploadBtn').addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileUpload);
+
+        Handlebars.registerHelper('half', (number)=>{
+            return number / 2;
+        })
+
+        async function loadTemplate(url) {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.text();
+        }
+
+        async function handleFileUpload({ target: { files } }) {
+            const file = files[0];
+            if (!file) return;
+            try {
+                const data = JSON.parse(await file.text());
+                const { configJson, constantsJson } = await convertProject(data);
+                prepareDownload('downloadConfig', 'SwerveConfig.java', configJson);
+                prepareDownload('downloadConstants', 'SwerveConstants.java', constantsJson);
+            } catch (e) {
+                alert(e);
+            }
+        }
+
+        async function convertProject(data) {
+            const constantsTemplate = await loadTemplate('/templates/SwerveConstants.hbs');
+            const configTemplate = await loadTemplate('/templates/SwerveConfig.hbs');
+            return {
+                constantsJson: Handlebars.compile(constantsTemplate)(data),
+                configJson: Handlebars.compile(configTemplate)(data)
+            };
+        }
+
+        function prepareDownload(id, name, content) {
+            const link = document.getElementById(id);
+            link.href = URL.createObjectURL(new Blob([content], { type: 'text/plain' }));
+            link.download = name;
+            link.removeAttribute('disabled');
+        }
+    </script>
+</body>
+
+</html>
