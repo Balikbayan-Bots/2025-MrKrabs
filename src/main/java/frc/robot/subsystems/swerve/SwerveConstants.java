@@ -19,10 +19,10 @@ public class SwerveConstants {
     public static final Double MAX_TELEOP_SPEED = 1.0 * SPEED_AT_12V.in(MetersPerSecond);
     public static final Double MAX_TELEOP_ROT = 1.0 * RotationsPerSecond.of(1.5).in(RadiansPerSecond);
 
-    public static final Module FRONT_LEFT_MODULE = new Module(Rotations.of(-0.33935546875));
-    public static final Module FRONT_RIGHT_MODULE = new Module(Rotations.of(0.33984375));
-    public static final Module BACK_LEFT_MODULE = new Module(Rotations.of(-0.448974609375));
-    public static final Module BACK_RIGHT_MODULE = new Module(Rotations.of(-0.217529296875));
+    public static final Module FRONT_LEFT_MODULE = new Module(Rotations.of(-0.379638671875));
+    public static final Module FRONT_RIGHT_MODULE = new Module(Rotations.of(-0.027099609375));
+    public static final Module BACK_LEFT_MODULE = new Module(Rotations.of(-0.118896484375));
+    public static final Module BACK_RIGHT_MODULE = new Module(Rotations.of(0.21630859375));
 
     public static final Current SLIP_CURRENT = Amps.of(80.0);
     public static final Current STATOR_CURRENT = Amps.of(60.0);

@@ -15,14 +15,21 @@ public class Megatag {
 
     // Using Megatag 1
     public static void updateOdometry(LimelightConfig limelight) {
-        LimelightHelpers.PoseEstimate limelightPoseEstimate = LimelightHelpers
-                .getBotPoseEstimate_wpiBlue(limelight.name());
+        boolean usingMT2 = false;
+        LimelightHelpers.PoseEstimate limelightPoseEstimate;
+        if(usingMT2) {
+            LimelightHelpers.SetRobotOrientation(limelight.name(), swerve.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
+            limelightPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelight.name());
+        } else {
+            limelightPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelight.name());
+        }
 
-        if (limelightPoseEstimate == null ||
-                !(limelightPoseEstimate.tagCount == 1 && limelightPoseEstimate.rawFiducials.length == 1))
+        if(usingMT2 && (!(Math.abs(swerve.getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) > 720) || limelightPoseEstimate.tagCount != 0)) {return;}
+
+        if (limelightPoseEstimate == null || !(limelightPoseEstimate.tagCount == 1 && limelightPoseEstimate.rawFiducials.length == 1))
             return;
 
-        if (limelightPoseEstimate.rawFiducials[0].ambiguity > limelight.ambiguity() ||
+        if (limelightPoseEstimate.rawFiducials[0].ambiguity > limelight.ambiguity() || 
                 limelightPoseEstimate.rawFiducials[0].distToCamera > limelight.distToCamera())
             return;
 
