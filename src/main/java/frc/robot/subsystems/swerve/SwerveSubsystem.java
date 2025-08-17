@@ -175,7 +175,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        configureAutoBuilder();
+        // configureAutoBuilder();
     }
 
     /**

@@ -27,7 +27,7 @@ public class RobotContainer {
     swerve = SwerveSubsystem.getInstance();
 
     // Initialize Choosers
-    autoChooser = AutoBuilder.buildAutoChooser("test");
+    autoChooser = AutoBuilder.buildAutoChooser();
 
     configureBindings();
     configureDashboard();

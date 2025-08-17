@@ -77,11 +77,11 @@ public class SwerveConfig {
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
     // This may need to be tuned to your individual robot
     // If the constants were made from a custom drive ratio, calculate couple ratio manually.
-    // WILL NOT WORK IF ZERO
+    // TODO: WILL NOT WORK IF ZERO
     private static final double kCoupleRatio = 2.8333333333333335;
 
-    private static final double kDriveGearRatio = (45D/15D) * (18D/28D) * (44D/12D);
-    private static final double kSteerGearRatio = (72D/14D) * (24D/8D);
+    private static final double kDriveGearRatio = 7.07142857143;
+    private static final double kSteerGearRatio = 15.4285714286;
     private static final Distance kWheelRadius = Inches.of(2);
 
     private static final boolean kInvertLeftSide = false;
@@ -133,8 +133,8 @@ public class SwerveConfig {
     private static final boolean kFrontLeftSteerMotorInverted = true;
     private static final boolean kFrontLeftEncoderInverted = false;
 
-    private static final Distance kFrontLeftXPos = Inches.of(10.75);
-    private static final Distance kFrontLeftYPos = Inches.of(10.75);
+    private static final Distance kFrontLeftXPos = Inches.of(10.5);
+    private static final Distance kFrontLeftYPos = Inches.of(10.5);
 
     // Front Right
     private static final int kFrontRightDriveMotorId = 17;
@@ -144,8 +144,8 @@ public class SwerveConfig {
     private static final boolean kFrontRightSteerMotorInverted = true;
     private static final boolean kFrontRightEncoderInverted = false;
 
-    private static final Distance kFrontRightXPos = Inches.of(10.75);
-    private static final Distance kFrontRightYPos = Inches.of(-10.75);
+    private static final Distance kFrontRightXPos = Inches.of(10.5);
+    private static final Distance kFrontRightYPos = Inches.of(-10.5);
 
     // Back Left
     private static final int kBackLeftDriveMotorId = 13;
@@ -155,8 +155,8 @@ public class SwerveConfig {
     private static final boolean kBackLeftSteerMotorInverted = true;
     private static final boolean kBackLeftEncoderInverted = false;
 
-    private static final Distance kBackLeftXPos = Inches.of(-10.75);
-    private static final Distance kBackLeftYPos = Inches.of(10.75);
+    private static final Distance kBackLeftXPos = Inches.of(-10.5);
+    private static final Distance kBackLeftYPos = Inches.of(10.5);
 
     // Back Right
     private static final int kBackRightDriveMotorId = 15;
@@ -166,8 +166,8 @@ public class SwerveConfig {
     private static final boolean kBackRightSteerMotorInverted = true;
     private static final boolean kBackRightEncoderInverted = false;
 
-    private static final Distance kBackRightXPos = Inches.of(-10.75);
-    private static final Distance kBackRightYPos = Inches.of(-10.75);
+    private static final Distance kBackRightXPos = Inches.of(-10.5);
+    private static final Distance kBackRightYPos = Inches.of(-10.5);
 
 
     public static final SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration> FrontLeft =
