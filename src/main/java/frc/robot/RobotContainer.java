@@ -7,41 +7,47 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.controls.Bindings;
 import frc.robot.controls.OperatorInterface;
+import frc.robot.subsystems.body.ArmSubsystem;
+import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class RobotContainer {
-  // Declare Controls
-  public final OperatorInterface oi;
+    // Declare Controls
+    public final OperatorInterface oi;
 
-  // Declare Subsystems
-  public final SwerveSubsystem swerve;
+    // Declare Subsystems
+    public final SwerveSubsystem swerve;
+    public final ArmSubsystem arm;
+    public final ElevatorSubsystem elevator;
+    // Declare Choosers
+    private final SendableChooser<Command> autoChooser;
 
-  // Declare Choosers
-  private final SendableChooser<Command> autoChooser;
+    public RobotContainer() {
+        // Initialize Controls
+        oi = OperatorInterface.getInstance();
 
-  public RobotContainer() {
-    // Initialize Controls
-    oi = OperatorInterface.getInstance();
+        // Initialize Subsystems
+        swerve = SwerveSubsystem.getInstance();
+        arm = ArmSubsystem.getInstance();
+        elevator = ElevatorSubsystem.getInstance();
+        // Initialize Choosers
+        autoChooser = AutoBuilder.buildAutoChooser();
 
-    // Initialize Subsystems
-    swerve = SwerveSubsystem.getInstance();
+        configureBindings();
+        configureDashboard();
+    }
 
-    // Initialize Choosers
-    autoChooser = AutoBuilder.buildAutoChooser();
+    private void configureBindings() {
+        Bindings.configureSwerveBinds();
+    }
 
-    configureBindings();
-    configureDashboard();
-  }
+    private void configureDashboard() {
+        SmartDashboard.putData(autoChooser);
+        SmartDashboard.putData(arm);
+        SmartDashboard.putData(elevator);
+    }
 
-  private void configureBindings() {
-    Bindings.configureSwerveBinds();
-  }
-
-  private void configureDashboard() {
-    SmartDashboard.putData(autoChooser);
-  }
-
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-  }
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
 }
