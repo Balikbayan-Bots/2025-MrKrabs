@@ -8,9 +8,9 @@ public class BodyConstants {
     public static final int ARM_MOTOR_ID = -1;
     public static final int ARM_MAGNET_ID = -1;
 
-    public static double armGearRatio = -1D;
+    public static double armGearRatio = 32D/1D;
 
-    public static double elevGearRatio = -1D;
+    public static double elevGearRatio = 5D/1D;
 
     public static final Limits kArmLimits = new Limits(90.0, 45.0, 60D / 360D, 0);
 
