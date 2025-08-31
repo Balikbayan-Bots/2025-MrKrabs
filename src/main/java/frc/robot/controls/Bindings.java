@@ -23,8 +23,8 @@ public class Bindings {
         Controls.Swerve.reorient
                 .onTrue(SwerveCommands.reorient());
             
-        Controls.Swerve.test
-            .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85, Rotation2d.fromDegrees(142.286))));
+        // Controls.Swerve.test
+        //     .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85, Rotation2d.fromDegrees(142.286))));
 
         Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
         swerve.registerTelemetry(logger::telemeterize);
