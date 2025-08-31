@@ -4,4 +4,8 @@ public enum ClawState{
     INTAKE,
     OUTAKE,
     HOLDING_ALGAE;
+
+
+
+
 }

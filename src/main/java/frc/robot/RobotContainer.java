@@ -9,6 +9,7 @@ import frc.robot.controls.Bindings;
 import frc.robot.controls.OperatorInterface;
 import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.ElevatorSubsystem;
+import frc.robot.subsystems.manipulators.ClawSubsystem;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class RobotContainer {
@@ -17,6 +18,7 @@ public class RobotContainer {
 
     // Declare Subsystems
     public final SwerveSubsystem swerve;
+    public final ClawSubsystem claw;
     public final ArmSubsystem arm;
     public final ElevatorSubsystem elevator;
     // Declare Choosers
@@ -30,6 +32,7 @@ public class RobotContainer {
         swerve = SwerveSubsystem.getInstance();
         arm = ArmSubsystem.getInstance();
         elevator = ElevatorSubsystem.getInstance();
+        claw = ClawSubsystem.getInstance();
         // Initialize Choosers
         autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -45,6 +48,7 @@ public class RobotContainer {
         SmartDashboard.putData(autoChooser);
         SmartDashboard.putData(arm);
         SmartDashboard.putData(elevator);
+        SmartDashboard.putData(claw);
     }
 
     public Command getAutonomousCommand() {

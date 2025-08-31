@@ -1,23 +1,23 @@
 package frc.robot.subsystems.manipulators;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.*;
 
-import java.lang.ref.Reference;
 
+
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.body.ElevatorSubsystem;
+
 
 public class ClawSubsystem extends SubsystemBase{
-    public static ElevatorSubsystem m_instance;
+    public static ClawSubsystem m_instance;
 
-    public static ElevatorSubsystem getInstance() {
+    public static ClawSubsystem getInstance() {
         if (m_instance == null) {
-            m_instance = new ElevatorSubsystem();
+            m_instance = new ClawSubsystem();
         }
         return m_instance;
     }
@@ -51,9 +51,22 @@ public class ClawSubsystem extends SubsystemBase{
         public void setSpeed(double speed){
             referenceSpeed = speed;
     }
+
+
     public boolean getBeamBreak(){
         return beamBreak.get();
     }
+
+
+    public double getSpeed(){
+        return referenceSpeed;
+    }
+
+    public ClawState getState(){
+        return state;
+    }
+
+
     @Override
     public void periodic(){
         if(state == ClawState.HOLDING_ALGAE){
@@ -66,6 +79,20 @@ public class ClawSubsystem extends SubsystemBase{
     public void setState(ClawState state){
         this.state = state;
     }
+
+    public String getStateName(){
+        return getState().name();
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder){
+        builder.setSmartDashboardType("Claw");
+        builder.addBooleanProperty("Beam", this::getBeamBreak, null);
+        builder.addDoubleProperty("Claw Speed", this::getSpeed, null);
+        builder.addStringProperty("State", this::getStateName, null);
+    }
+
+
 
 
 

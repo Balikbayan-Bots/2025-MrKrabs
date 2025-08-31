@@ -8,7 +8,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import static frc.robot.subsystems.body.BodyConstants.*;
-import edu.wpi.first.wpilibj.DigitalInput;
+
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -91,10 +92,31 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_leftElevator.setPosition(0);
       }
 
+    public double getencoderangel(){
+        return (m_leftElevator.getPosition().getValueAsDouble()/elevGearRatio);
+    }
+    
+    public double getReferenceTravel(){
+        return referenceTravel;
+    }
+
+    public double getOffset(){
+        return getReferenceTravel() - getencoderangel();
+    }
+
     @Override
     public void periodic(){
         updateReferenceTravel(currentSetPoint.getElevTravel());
         m_leftElevator.setControl(motionMagic.withPosition(referenceTravel*elevGearRatio).withSlot(0).withFeedForward(0)); 
     }
-    
+
+
+
+       @Override
+    public void initSendable(SendableBuilder builder){
+        builder.setSmartDashboardType("Elevator");
+        builder.addDoubleProperty("Elevator position", this::getencoderangel, null);
+        builder.addDoubleProperty("Commanded Elevator position", this::getReferenceTravel, null);
+        builder.addDoubleProperty("Elevator offset", this::getOffset, null);
+    }
 }
