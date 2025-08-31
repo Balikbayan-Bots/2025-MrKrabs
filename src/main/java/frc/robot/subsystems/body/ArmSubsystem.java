@@ -3,6 +3,8 @@ package frc.robot.subsystems.body;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
@@ -22,11 +24,22 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private TalonFX m_armMotor;
+    private BodySetpoints currentSetPoint = BodySetpoints.STOW_INTAKE;
+    private double referenceTravel = 0; 
+    private MotionMagicVoltage motionMagic;
 
     public ArmSubsystem(){
         m_armMotor = new TalonFX(ARM_MOTOR_ID);
         configureArm(m_armMotor.getConfigurator());
         reZero();
+        motionMagic = new MotionMagicVoltage(0).withSlot(0);
+    }
+
+
+
+    public void setSetpoint(BodySetpoints setPoint){
+        currentSetPoint = setPoint;
+        updateReferenceTravel(currentSetPoint.getArmDegrees());
     }
 
     private void configureArm(TalonFXConfigurator motorConfig) {
@@ -63,6 +76,22 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void reZero(){
         m_armMotor.setPosition(0);
+    }
+
+     public void updateReferenceTravel(double travelDistance){
+        referenceTravel = travelDistance;
+    }
+    @Override
+    public void periodic(){
+        updateReferenceTravel(currentSetPoint.getElevTravel());
+        m_armMotor.setControl(motionMagic.withPosition(referenceTravel*armGearRatio).withSlot(0).withFeedForward(calculateFeedForward())); 
+    }
+    private double calculateFeedForward(){
+        return Math.sin(Math.toRadians(getencoderangel()-0))*-1;
+    }
+
+    private double getencoderangel(){
+        return (m_armMotor.getPosition().getValueAsDouble()/armGearRatio)*360;
     }
 }
 
