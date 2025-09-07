@@ -1,6 +1,6 @@
 package frc.robot.subsystems.body;
 
-public enum BodySetpoints {
+public enum BodySetpoint {
     CORAL_LEVEL1(0.0, 0.0),
     CORAL_LEVEL2(0.0,0.0),
     CORAL_LEVEL3(0.0, 0.0),
@@ -22,7 +22,7 @@ public enum BodySetpoints {
     }
 
 
-    private BodySetpoints(double elevTravel, double armDegrees){
+    private BodySetpoint(double elevTravel, double armDegrees){
         this.elevTravel = elevTravel;
 
 

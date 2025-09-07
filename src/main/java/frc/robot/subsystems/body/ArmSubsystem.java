@@ -25,7 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private TalonFX m_armMotor;
-    private BodySetpoints currentSetPoint = BodySetpoints.STOW_INTAKE;
+    private BodySetpoint currentSetPoint = BodySetpoint.STOW_INTAKE;
     private double referenceAngle = 0; 
     private MotionMagicVoltage motionMagic;
 
@@ -53,7 +53,7 @@ public class ArmSubsystem extends SubsystemBase {
 
 
 
-    public void setSetpoint(BodySetpoints setPoint){
+    public void setSetpoint(BodySetpoint setPoint){
         currentSetPoint = setPoint;
         updateReferenceAngle(currentSetPoint.getArmDegrees());
     }
