@@ -45,8 +45,8 @@ public class ClawSubsystem extends SubsystemBase{
         current.SupplyCurrentLimitEnable = true;
 
         var voltage = newConfig.Voltage;
-        voltage.PeakForwardVoltage = 12; // Down
-        voltage.PeakReverseVoltage = -12; // Up
+        voltage.PeakForwardVoltage = CLAW_MAX_VOLTAGE_FORWARD; // Down
+        voltage.PeakReverseVoltage = CLAW_MAX_VOLTAGE_REVERSE; // Up
     }
         public void setSpeed(double speed){
             referenceSpeed = speed;

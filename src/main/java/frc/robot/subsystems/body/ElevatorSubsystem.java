@@ -56,25 +56,26 @@ public class ElevatorSubsystem extends SubsystemBase {
     current.SupplyCurrentLimitEnable = true;
 
     var voltage = newConfig.Voltage;
-    voltage.PeakForwardVoltage = 12; // Down
-    voltage.PeakReverseVoltage = -12; // Up
+    voltage.PeakForwardVoltage = ELEV_MAX_VOLTAGE_FWD; // Down
+    voltage.PeakReverseVoltage = ELEV_MAX_VOLATGE_REVERSE; // Up
 
     Slot0Configs slot0 = newConfig.Slot0;
     slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
-    slot0.kP = 0.0;
-    slot0.kI = 0.0;
-    slot0.kD = 0.0;
-    slot0.kS = 0.0;
-    slot0.kG = 0.0;
-    slot0.kV = 0.0;
+    slot0.kP = ELEV_SLOT_ZERO[0];
+    slot0.kI = ELEV_SLOT_ZERO[1];
+    slot0.kD = ELEV_SLOT_ZERO[2];
+    slot0.kS = ELEV_SLOT_ZERO[3];
+    slot0.kG = ELEV_SLOT_ZERO[4];
+    slot0.kV = ELEV_SLOT_ZERO[5];
+    slot0.kA = ELEV_SLOT_ZERO[6];
 
     // Configuring MotionMagic
     var motionMagic = newConfig.MotionMagic;
     var output = newConfig.MotorOutput;
     output.NeutralMode = NeutralModeValue.Brake;
-    motionMagic.MotionMagicAcceleration = 80.0;
-    motionMagic.MotionMagicCruiseVelocity = 25.0;
-    motionMagic.MotionMagicJerk = 1600.0;
+    motionMagic.MotionMagicAcceleration = ELEV_MOTION_MAGIC_CONFIGS[0];
+    motionMagic.MotionMagicCruiseVelocity = ELEV_MOTION_MAGIC_CONFIGS[1];
+    motionMagic.MotionMagicJerk = ELEV_MOTION_MAGIC_CONFIGS[2];
     motor.getConfigurator().apply(newConfig);
     }
 
@@ -93,7 +94,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       }
 
     public double getencoderangel(){
-        return (m_leftElevator.getPosition().getValueAsDouble()/elevGearRatio);
+        return (m_leftElevator.getPosition().getValueAsDouble()/ELEV_GEAR_RATIO);
     }
     
     public double getReferenceTravel(){
@@ -107,7 +108,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         updateReferenceTravel(currentSetPoint.getElevTravel());
-        m_leftElevator.setControl(motionMagic.withPosition(referenceTravel*elevGearRatio).withSlot(0).withFeedForward(0)); 
+        m_leftElevator.setControl(motionMagic.withPosition(referenceTravel*ELEV_GEAR_RATIO).withSlot(0).withFeedForward(0)); 
     }
 
 
