@@ -1,5 +1,6 @@
 package frc.robot.subsystems.manipulators;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -30,7 +31,22 @@ public class ClawSubsystem extends SubsystemBase{
     public ClawSubsystem(){
         claw_motorFx = new TalonFX(CLAW_MOTOR_ID);
         beamBreak = new DigitalInput(BEAM_BREAK_ID);
-         configureclaw(claw_motorFx);
+        configureclaw(claw_motorFx);
+        BaseStatusSignal.setUpdateFrequencyForAll(
+            200, 
+            claw_motorFx.getPosition(),
+            claw_motorFx.getVelocity()
+        );
+        BaseStatusSignal.setUpdateFrequencyForAll(
+            50, 
+            claw_motorFx.getSupplyVoltage(),
+            claw_motorFx.getFault_Hardware(),
+            claw_motorFx.getMotorVoltage(),
+            claw_motorFx.getSupplyCurrent(),
+            claw_motorFx.getStatorCurrent(),
+            claw_motorFx.getFault_DeviceTemp()
+        );
+        claw_motorFx.optimizeBusUtilization();
     }
      private void configureclaw(TalonFX motor) {
         TalonFXConfiguration newConfig = new TalonFXConfiguration();

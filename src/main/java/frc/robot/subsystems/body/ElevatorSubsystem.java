@@ -1,5 +1,6 @@
 package frc.robot.subsystems.body;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -37,7 +38,28 @@ public class ElevatorSubsystem extends SubsystemBase {
         configureElev(m_rightElevator, m_leftElevator);
         reZero();
         motionMagic = new MotionMagicVoltage(0).withSlot(0);
-        
+        BaseStatusSignal.setUpdateFrequencyForAll(
+            200, 
+            m_leftElevator.getPosition(),
+            m_rightElevator.getPosition()
+        );
+        BaseStatusSignal.setUpdateFrequencyForAll(
+            50, 
+            m_leftElevator.getSupplyVoltage(),
+            m_leftElevator.getFault_Hardware(),
+            m_leftElevator.getMotorVoltage(),
+            m_leftElevator.getSupplyCurrent(),
+            m_leftElevator.getStatorCurrent(),
+            m_leftElevator.getFault_DeviceTemp(),
+            m_rightElevator.getSupplyVoltage(),
+            m_rightElevator.getFault_Hardware(),
+            m_rightElevator.getMotorVoltage(),
+            m_rightElevator.getSupplyCurrent(),
+            m_rightElevator.getStatorCurrent(),
+            m_rightElevator.getFault_DeviceTemp()
+        );
+        m_rightElevator.optimizeBusUtilization();
+        m_leftElevator.optimizeBusUtilization();
     }
 
     private void configureElev(TalonFX motor, TalonFX leaderMotor) {

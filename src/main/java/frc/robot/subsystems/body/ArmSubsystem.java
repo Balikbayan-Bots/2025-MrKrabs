@@ -1,5 +1,6 @@
 package frc.robot.subsystems.body;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
@@ -33,6 +34,21 @@ public class ArmSubsystem extends SubsystemBase {
         configureArm(m_armMotor.getConfigurator());
         reZero();
         motionMagic = new MotionMagicVoltage(0).withSlot(0);
+        BaseStatusSignal.setUpdateFrequencyForAll(
+            200, 
+            m_armMotor.getPosition()
+        );
+        BaseStatusSignal.setUpdateFrequencyForAll(
+            50, 
+            m_armMotor.getSupplyVoltage(),
+            m_armMotor.getFault_Hardware(),
+            m_armMotor.getMotorVoltage(),
+            m_armMotor.getSupplyCurrent(),
+            m_armMotor.getStatorCurrent(),
+            m_armMotor.getFault_DeviceTemp()
+        );
+
+        m_armMotor.optimizeBusUtilization();
     }
 
 
