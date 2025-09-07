@@ -2,6 +2,7 @@ package frc.robot.controls;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import frc.robot.commands.ManipulatorCommands;
 import frc.robot.commands.SwerveCommands;
 import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
@@ -26,5 +27,9 @@ public class Bindings {
 
         Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
         swerve.registerTelemetry(logger::telemeterize);
+    }
+
+    public static void configureClawBinds() {
+        Controls.Manipulators.intake.whileTrue(ManipulatorCommands.beamIntake()).onFalse(ManipulatorCommands.stopIntake());
     }
 }
