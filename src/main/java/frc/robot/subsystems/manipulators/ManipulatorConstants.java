@@ -10,8 +10,8 @@ public class ManipulatorConstants {
     public static final int INTAKE_SPIN_MOTOR_1 = 41; 
     public static final int INTAKE_SPIN_MOTOR_2 = 42; 
     public static final int BEAM_BREAK_ID = -1;
-    public static final int CLAW_MAX_VOLTAGE_FORWARD = 12;
-    public static final int CLAW_MAX_VOLTAGE_REVERSE = -12;
+    public static final int CLAW_MAX_VOLTAGE_FORWARD = 10;
+    public static final int CLAW_MAX_VOLTAGE_REVERSE = -10;
     public static BodyConstants.Limits kclawLimits = new Limits(85.0, 65.0, 0, 0);
     public static BodyConstants.Limits kFunnelLimits = new Limits(60.0, 45.0, 0, 0);
 }
