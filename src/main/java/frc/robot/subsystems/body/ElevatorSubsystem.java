@@ -140,8 +140,8 @@ public class ElevatorSubsystem extends SubsystemBase {
        @Override
     public void initSendable(SendableBuilder builder){
         builder.setSmartDashboardType("Elevator");
-        builder.addDoubleProperty("Elevator position", this::getRotations, null);
-        builder.addDoubleProperty("Commanded Elevator position", this::getReferenceInches, null);
-        builder.addDoubleProperty("Elevator offset", this::getError, null);
+        builder.addDoubleProperty("Rotations", this::getRotations, null);
+        builder.addDoubleProperty("Refrence", this::getReferenceInches, null);
+        builder.addDoubleProperty("Error", this::getError, null);
     }
 }
