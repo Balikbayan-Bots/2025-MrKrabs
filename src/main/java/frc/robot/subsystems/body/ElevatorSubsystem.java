@@ -24,48 +24,50 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
         return m_instance;
     }
-    private BodySetpoints currentSetPoint = BodySetpoints.STOW_INTAKE;
-    private double referenceTravel = 0; 
-    private TalonFX m_leftElevator;
-    private TalonFX m_rightElevator;
+    private BodySetpoint activeSetpoint = BodySetpoint.STOW_INTAKE;
+    private double referenceInches = 0; 
+    private TalonFX leftMotor;
+    private TalonFX rightMotor;
     private MotionMagicVoltage motionMagic;
 
 
     public ElevatorSubsystem() {
-        m_leftElevator = new TalonFX(ELEV_MOTOR_LEFT);
-        m_rightElevator = new TalonFX(ELEV_MOTOR_LEFT);
-        configureElev(m_leftElevator, null);
-        configureElev(m_rightElevator, m_leftElevator);
+        leftMotor = new TalonFX(ELEV_MOTOR_LEFT);
+        rightMotor = new TalonFX(ELEV_MOTOR_LEFT);
+        configureElev(leftMotor, null);
+        configureElev(rightMotor, leftMotor);
         reZero();
         motionMagic = new MotionMagicVoltage(0).withSlot(0);
         BaseStatusSignal.setUpdateFrequencyForAll(
             200, 
-            m_leftElevator.getPosition(),
-            m_rightElevator.getPosition()
+            leftMotor.getPosition(),
+            rightMotor.getPosition()
         );
         BaseStatusSignal.setUpdateFrequencyForAll(
             50, 
-            m_leftElevator.getSupplyVoltage(),
-            m_leftElevator.getFault_Hardware(),
-            m_leftElevator.getMotorVoltage(),
-            m_leftElevator.getSupplyCurrent(),
-            m_leftElevator.getStatorCurrent(),
-            m_leftElevator.getFault_DeviceTemp(),
-            m_rightElevator.getSupplyVoltage(),
-            m_rightElevator.getFault_Hardware(),
-            m_rightElevator.getMotorVoltage(),
-            m_rightElevator.getSupplyCurrent(),
-            m_rightElevator.getStatorCurrent(),
-            m_rightElevator.getFault_DeviceTemp()
+            leftMotor.getSupplyVoltage(),
+            leftMotor.getFault_Hardware(),
+            leftMotor.getMotorVoltage(),
+            leftMotor.getSupplyCurrent(),
+            leftMotor.getStatorCurrent(),
+            leftMotor.getFault_DeviceTemp(),
+            rightMotor.getSupplyVoltage(),
+            rightMotor.getFault_Hardware(),
+            rightMotor.getMotorVoltage(),
+            rightMotor.getSupplyCurrent(),
+            rightMotor.getStatorCurrent(),
+            rightMotor.getFault_DeviceTemp()
         );
-        m_rightElevator.optimizeBusUtilization();
-        m_leftElevator.optimizeBusUtilization();
+
+        leftMotor.optimizeBusUtilization();
+        rightMotor.optimizeBusUtilization();
+
     }
 
     private void configureElev(TalonFX motor, TalonFX leaderMotor) {
         TalonFXConfiguration newConfig = new TalonFXConfiguration();
         if (leaderMotor != null) {
-            motor.setControl(new Follower(leaderMotor.getDeviceID(), false));
+            motor.setControl(new Follower(leaderMotor.getDeviceID(), true));
         }
           var limits = newConfig.SoftwareLimitSwitch;
     limits.ForwardSoftLimitEnable = true;
@@ -101,36 +103,36 @@ public class ElevatorSubsystem extends SubsystemBase {
     motor.getConfigurator().apply(newConfig);
     }
 
-    public void setSetpoint(BodySetpoints setPoint){
-        currentSetPoint = setPoint;
-        updateReferenceTravel(currentSetPoint.getElevTravel());
+    public void updateSetpoint(BodySetpoint setPoint){
+        activeSetpoint = setPoint;
+        updateReference(activeSetpoint.getElevTravel());
     }
 
-    public void updateReferenceTravel(double travelDistance){
-        m_rightElevator.setControl(new Follower(m_leftElevator.getDeviceID(), false));
-        referenceTravel = travelDistance;
+    public void updateReference(double inches){
+        rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));
+        referenceInches = inches;
     }
 
     public void reZero() {
-        m_leftElevator.setPosition(0);
+        leftMotor.setPosition(0);
       }
 
-    public double getencoderangel(){
-        return (m_leftElevator.getPosition().getValueAsDouble()/ELEV_GEAR_RATIO);
+    public double getRotations(){
+        return (leftMotor.getPosition().getValueAsDouble()/ELEV_GEAR_RATIO);
     }
     
-    public double getReferenceTravel(){
-        return referenceTravel;
+    public double getReferenceInches(){
+        return referenceInches;
     }
 
-    public double getOffset(){
-        return getReferenceTravel() - getencoderangel();
+    public double getError(){
+        return getReferenceInches() - getRotations();
     }
 
     @Override
     public void periodic(){
-        updateReferenceTravel(currentSetPoint.getElevTravel());
-        m_leftElevator.setControl(motionMagic.withPosition(referenceTravel*ELEV_GEAR_RATIO).withSlot(0).withFeedForward(0)); 
+        updateReference(activeSetpoint.getElevTravel());
+        leftMotor.setControl(motionMagic.withPosition(referenceInches*ELEV_GEAR_RATIO).withSlot(0).withFeedForward(0)); 
     }
 
 
@@ -138,8 +140,8 @@ public class ElevatorSubsystem extends SubsystemBase {
        @Override
     public void initSendable(SendableBuilder builder){
         builder.setSmartDashboardType("Elevator");
-        builder.addDoubleProperty("Elevator position", this::getencoderangel, null);
-        builder.addDoubleProperty("Commanded Elevator position", this::getReferenceTravel, null);
-        builder.addDoubleProperty("Elevator offset", this::getOffset, null);
+        builder.addDoubleProperty("Rotations", this::getRotations, null);
+        builder.addDoubleProperty("Refrence", this::getReferenceInches, null);
+        builder.addDoubleProperty("Error", this::getError, null);
     }
 }
