@@ -96,16 +96,12 @@ public class ClawSubsystem extends SubsystemBase{
         this.state = state;
     }
 
-    public String getStateName(){
-        return getState().name();
-    }
 
     @Override
     public void initSendable(SendableBuilder builder){
         builder.setSmartDashboardType("Claw");
         builder.addBooleanProperty("Beam", this::getBeamBreak, null);
         builder.addDoubleProperty("Claw Speed", this::getSpeed, null);
-        builder.addStringProperty("State", this::getStateName, null);
     }
 
 
