@@ -8,6 +8,9 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Rotations;
 import static frc.robot.subsystems.body.BodyConstants.*;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -129,10 +132,17 @@ public class ElevatorSubsystem extends SubsystemBase {
         return getReferenceInches() - getRotations();
     }
 
+    public double getInches(){
+        return (ELEV_SPROCKET_DIAMETER * Math.PI) * getRotations();
+    }
+
+    public double inchesToMotorRotations(double inches){
+        return (inches / ELEV_SPROCKET_DIAMETER) * ELEV_GEAR_RATIO;
+    }
     @Override
     public void periodic(){
         updateReference(activeSetpoint.getElevTravel());
-        leftMotor.setControl(motionMagic.withPosition(referenceInches*ELEV_GEAR_RATIO).withSlot(0).withFeedForward(0)); 
+        leftMotor.setControl(motionMagic.withPosition(inchesToMotorRotations(referenceInches)).withSlot(0).withFeedForward(0)); 
     }
 
 
@@ -143,5 +153,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         builder.addDoubleProperty("Rotations", this::getRotations, null);
         builder.addDoubleProperty("Refrence", this::getReferenceInches, null);
         builder.addDoubleProperty("Error", this::getError, null);
+        builder.addDoubleProperty("Inches", this::getInches, null);
     }
 }

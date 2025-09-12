@@ -8,7 +8,7 @@ public class BodyConstants {
     public static final int ARM_MOTOR_ID = 30;
     public static final int ARM_MAGNET_ID = -1;
 
-    
+    public static final double ELEV_SPROCKET_DIAMETER = 1.273;
 
     public static final double ARM_GEAR_RATIO = 32D/1D;
 
