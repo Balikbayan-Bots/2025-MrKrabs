@@ -31,7 +31,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     private ArmSubsystem(){
         motor = new TalonFX(ARM_MOTOR_ID);
-        configureMotor    motor.getConfigurator());
+        configureMotor(motor.getConfigurator());
         reZero();
         motionMagic = new MotionMagicVoltage(0).withSlot(0);
         BaseStatusSignal.setUpdateFrequencyForAll(
@@ -95,19 +95,19 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
      public void updateReference(double degrees){
-        refrenceDegrees = travelDistance;
+        refrenceDegrees = degrees;
     }
     @Override
     public void periodic(){
         updateReference(activeSetpoint.getArmDegrees());
-        motor.setControl(motionMagic.withPosition(\*ARM_GEAR_RATIO).withSlot(0).withFeedForward(calculateFeedForward())); 
+        motor.setControl(motionMagic.withPosition(refrenceDegrees * ARM_GEAR_RATIO).withSlot(0).withFeedForward(calculateFeedForward())); 
     }
     private double calculateFeedForward(){
-        return Math.sin(Math.toRadians(getDegrees()-0))*-1;
+        return Math.sin(Math.toRadians(getDegrees()-0)) * (-1);
     }
 
     private double getDegrees(){
-        return  motor.getPosition().getValueAsDouble()/ARM_GEAR_RATIO)*360;
+        return (motor.getPosition().getValueAsDouble()/ARM_GEAR_RATIO)*360;
     }
 
     public double getReferenceDegrees(){
@@ -121,7 +121,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void initSendable(SendableBuilder builder){
         builder.setSmartDashboardType("Arm");
         builder.addDoubleProperty("Degrees", this::getDegrees, null);
-        builder.addDoubleProperty("Reference", this::getReference, null);
+        builder.addDoubleProperty("Reference", this::getReferenceDegrees, null);
         builder.addDoubleProperty("Error", this::getError, null);
         builder.addDoubleProperty("Feed Forward", this::calculateFeedForward, null);
     }
