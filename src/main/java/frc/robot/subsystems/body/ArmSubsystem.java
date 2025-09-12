@@ -24,41 +24,40 @@ public class ArmSubsystem extends SubsystemBase {
         return m_instance;
     }
 
-    private TalonFX m_armMotor;
-    private BodySetpoint currentSetPoint = BodySetpoint.STOW_INTAKE;
-    private double referenceAngle = 0; 
+    private TalonFX motor;
+    private BodySetpoint activeSetpoint = BodySetpoint.STOW_INTAKE;
+    private double refrenceDegrees = 0; 
     private MotionMagicVoltage motionMagic;
 
-    public ArmSubsystem(){
-        m_armMotor = new TalonFX(ARM_MOTOR_ID);
-        configureArm(m_armMotor.getConfigurator());
+    private ArmSubsystem(){
+        motor = new TalonFX(ARM_MOTOR_ID);
+        configureMotor    motor.getConfigurator());
         reZero();
         motionMagic = new MotionMagicVoltage(0).withSlot(0);
         BaseStatusSignal.setUpdateFrequencyForAll(
             200, 
-            m_armMotor.getPosition()
+            motor.getPosition()
         );
         BaseStatusSignal.setUpdateFrequencyForAll(
             50, 
-            m_armMotor.getSupplyVoltage(),
-            m_armMotor.getFault_Hardware(),
-            m_armMotor.getMotorVoltage(),
-            m_armMotor.getSupplyCurrent(),
-            m_armMotor.getStatorCurrent(),
-            m_armMotor.getFault_DeviceTemp()
+            motor.getSupplyVoltage(),
+            motor.getFault_Hardware(),
+            motor.getMotorVoltage(),
+            motor.getSupplyCurrent(),
+            motor.getStatorCurrent(),
+            motor.getFault_DeviceTemp()
         );
 
-        m_armMotor.optimizeBusUtilization();
+        motor.optimizeBusUtilization();
     }
 
 
 
-    public void setSetpoint(BodySetpoint setPoint){
-        currentSetPoint = setPoint;
-        updateReferenceAngle(currentSetPoint.getArmDegrees());
+    public void updateSetpoint(BodySetpoint setPoint){
+        activeSetpoint = setPoint;
     }
 
-    private void configureArm(TalonFXConfigurator motorConfig) {
+    private void configureMotor(TalonFXConfigurator motorConfig) {
         TalonFXConfiguration newConfig = new TalonFXConfiguration();
 
         var current = newConfig.CurrentLimits;
@@ -92,39 +91,39 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void reZero(){
-        m_armMotor.setPosition(0);
+        motor.setPosition(0);
     }
 
-     public void updateReferenceAngle(double travelDistance){
-        referenceAngle = travelDistance;
+     public void updateReference(double degrees){
+        refrenceDegrees = travelDistance;
     }
     @Override
     public void periodic(){
-        updateReferenceAngle(currentSetPoint.getArmDegrees());
-        m_armMotor.setControl(motionMagic.withPosition(referenceAngle*ARM_GEAR_RATIO).withSlot(0).withFeedForward(calculateFeedForward())); 
+        updateReference(activeSetpoint.getArmDegrees());
+        motor.setControl(motionMagic.withPosition(\*ARM_GEAR_RATIO).withSlot(0).withFeedForward(calculateFeedForward())); 
     }
     private double calculateFeedForward(){
-        return Math.sin(Math.toRadians(getencoderangel()-0))*-1;
+        return Math.sin(Math.toRadians(getDegrees()-0))*-1;
     }
 
-    private double getencoderangel(){
-        return (m_armMotor.getPosition().getValueAsDouble()/ARM_GEAR_RATIO)*360;
+    private double getDegrees(){
+        return  motor.getPosition().getValueAsDouble()/ARM_GEAR_RATIO)*360;
     }
 
-    public double getReferenceAngle(){
-        return referenceAngle;
+    public double getReferenceDegrees(){
+        return refrenceDegrees;
     }
-    public double getOffsetAngle(){
-        return getReferenceAngle() - getencoderangel();
+    public double getError(){
+        return getReferenceDegrees() - getDegrees();
     }
 
      @Override
     public void initSendable(SendableBuilder builder){
         builder.setSmartDashboardType("Arm");
-        builder.addDoubleProperty("Arm position", this::getencoderangel, null);
-        builder.addDoubleProperty("Commanded Arm position", this::getReferenceAngle, null);
-        builder.addDoubleProperty("Arm offset", this::getOffsetAngle, null);
-        builder.addDoubleProperty("Arm Feed Forward", this::calculateFeedForward, null);
+        builder.addDoubleProperty("Degrees", this::getDegrees, null);
+        builder.addDoubleProperty("Reference", this::getReference, null);
+        builder.addDoubleProperty("Error", this::getError, null);
+        builder.addDoubleProperty("Feed Forward", this::calculateFeedForward, null);
     }
 
 
