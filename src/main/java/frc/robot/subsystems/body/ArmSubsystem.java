@@ -26,7 +26,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     private TalonFX motor;
     private BodySetpoint activeSetpoint = BodySetpoint.STOW_INTAKE;
-    private double \ = 0; 
+    private double refrenceDegrees = 0; 
     private MotionMagicVoltage motionMagic;
 
     private ArmSubsystem(){
@@ -111,7 +111,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getReferenceDegrees(){
-        return \;
+        return refrenceDegrees;
     }
     public double getError(){
         return getReferenceDegrees() - getDegrees();
