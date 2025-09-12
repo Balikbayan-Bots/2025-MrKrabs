@@ -8,9 +8,11 @@ public class BodyConstants {
     public static final int ARM_MOTOR_ID = 30;
     public static final int ARM_MAGNET_ID = -1;
 
+    
+
     public static final double ARM_GEAR_RATIO = 32D/1D;
 
-    public static final double ELEV_GEAR_RATIO = 6.25D/1D;
+    public static final double ELEV_GEAR_RATIO = 5D/1D;
 
     public static final double ARM_MAX_VOLTAGE_FWD = 10;
     public static final double ARM_MAX_VOLTAGE_REVERSE = -10;
