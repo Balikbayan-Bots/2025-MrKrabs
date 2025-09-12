@@ -4,13 +4,10 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import static frc.robot.subsystems.manipulators.ManipulatorConstants.*;
-
-
-
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.*;
 
 
 public class ClawSubsystem extends SubsystemBase{
@@ -51,8 +48,9 @@ public class ClawSubsystem extends SubsystemBase{
      private void configureclaw(TalonFX motor) {
         TalonFXConfiguration newConfig = new TalonFXConfiguration();
         var limits = newConfig.SoftwareLimitSwitch;
-        limits.ForwardSoftLimitEnable = true;
-        limits.ForwardSoftLimitThreshold = kclawLimits.forwardLimit();
+        limits.ForwardSoftLimitEnable = false;
+        limits.ReverseSoftLimitEnable = false;
+
 
         var current = newConfig.CurrentLimits;
         current.StatorCurrentLimit = kclawLimits.statorLimit();
@@ -70,7 +68,7 @@ public class ClawSubsystem extends SubsystemBase{
 
 
     public boolean getBeamBreak(){
-        return beamBreak.get();
+        return !beamBreak.get();
     }
 
 
