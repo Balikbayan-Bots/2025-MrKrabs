@@ -8,20 +8,20 @@ public class BodyConstants {
     public static final int ARM_MOTOR_ID = 30;
     public static final int ARM_MAGNET_ID = -1;
 
-    public static final double ELEV_SPROCKET_DIAMETER = 1.273;
+    public static final double ELEV_SPROCKET_CIRCUMFERENCE = 1.273 * Math.PI;
 
     public static final double ARM_GEAR_RATIO = 32D/1D;
 
-    public static final double ELEV_GEAR_RATIO = 5D/1D;
+    public static final double ELEV_GEAR_RATIO = 6.25D/1D;
 
     public static final double ARM_MAX_VOLTAGE_FWD = 10;
     public static final double ARM_MAX_VOLTAGE_REVERSE = -10;
 
-    public static final double ELEV_MAX_VOLTAGE_FWD = 10;
-    public static final double ELEV_MAX_VOLATGE_REVERSE = -10;
+    public static final double ELEV_MAX_VOLTAGE_FWD = 8;
+    public static final double ELEV_MAX_VOLATGE_REVERSE = -2;
 
     public static final double[] ELEV_SLOT_ZERO = {
-        1.0, //kP
+        0.1, //kP
         0.0, //kI
         0.0, //kD
         0.0, //kS
@@ -29,6 +29,8 @@ public class BodyConstants {
         0.1, //kV
         0.0 //kA
     };
+
+    public static final double ELEV_FEED_FWD = 0.4;
 
     public static final double[] ARM_SLOT_ZERO = {
         1.0, //kP
@@ -52,9 +54,9 @@ public class BodyConstants {
         1600.0 //Jerk
     };
 
-    public static final Limits kArmLimits = new Limits(90.0, 45.0, 0.0, 0);
+    public static final Limits kArmLimits = new Limits(90.0, 45.0, 0.0,0.0);
 
-    public static final Limits kElevLimits = new Limits(70.0, 45.0,0.0, 0.0);
+    public static final Limits kElevLimits = new Limits(70.0, 45.0,ElevatorSubsystem.inchesToMotorRotations(26.5), -0.05);
 
     public record Limits(double statorLimit, double supplyLimit, double forwardLimit, double reverseLimit) { };
 
