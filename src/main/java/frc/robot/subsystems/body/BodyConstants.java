@@ -14,8 +14,8 @@ public class BodyConstants {
 
     public static final double ELEV_GEAR_RATIO = 6.25D/1D;
 
-    public static final double ARM_MAX_VOLTAGE_FWD = 10;
-    public static final double ARM_MAX_VOLTAGE_REVERSE = -10;
+    public static final double ARM_MAX_VOLTAGE_FWD = 5;
+    public static final double ARM_MAX_VOLTAGE_REVERSE = -5;
 
     public static final double ELEV_MAX_VOLTAGE_FWD = 8;
     public static final double ELEV_MAX_VOLATGE_REVERSE = -2;
@@ -30,10 +30,10 @@ public class BodyConstants {
         0.0 //kA
     };
 
-    public static final double ELEV_FEED_FWD = 0.4;
+    public static final double ELEV_FEED_FWD = 0.5;
 
     public static final double[] ARM_SLOT_ZERO = {
-        1.0, //kP
+        0.1, //kP
         0.0, //kI
         0.0, //kD
         0.0, //kS
