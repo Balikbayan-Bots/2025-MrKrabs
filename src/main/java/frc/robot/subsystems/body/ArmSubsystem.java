@@ -11,7 +11,6 @@ import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import static frc.robot.subsystems.body.BodyConstants.*;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -60,6 +59,10 @@ public class ArmSubsystem extends SubsystemBase {
     private void configureMotor(TalonFXConfigurator motorConfig) {
         TalonFXConfiguration newConfig = new TalonFXConfiguration();
 
+        var limits = newConfig.SoftwareLimitSwitch;
+        limits.ForwardSoftLimitEnable = false; //TODO: PUT ACTUAL LIMITS
+        limits.ReverseSoftLimitEnable = false;
+
         var current = newConfig.CurrentLimits;
         current.StatorCurrentLimit = kArmLimits.statorLimit();
         current.StatorCurrentLimitEnable = true;
@@ -100,10 +103,10 @@ public class ArmSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         updateReference(activeSetpoint.getArmDegrees());
-        motor.setControl(motionMagic.withPosition(refrenceDegrees * ARM_GEAR_RATIO).withSlot(0).withFeedForward(calculateFeedForward())); 
+        motor.setControl(motionMagic.withPosition((refrenceDegrees / 360) * ARM_GEAR_RATIO).withSlot(0).withFeedForward(calculateFeedForward())); 
     }
     private double calculateFeedForward(){
-        return Math.sin(Math.toRadians(getDegrees()-0)) * (-1);
+        return Math.sin(Math.toRadians(getDegrees()-0)) * (-ELEV_FEED_FWD);
     }
 
     private double getDegrees(){
