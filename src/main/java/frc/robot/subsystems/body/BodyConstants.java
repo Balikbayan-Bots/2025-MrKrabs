@@ -54,7 +54,7 @@ public class BodyConstants {
         1600.0 //Jerk
     };
 
-    public static final Limits kArmLimits = new Limits(90.0, 45.0, 0.0,0.0);
+    public static final Limits kArmLimits = new Limits(90.0, 45.0, ArmSubsystem.degreesToMotorRotations(180),ArmSubsystem.degreesToMotorRotations(-45));
 
     public static final Limits kElevLimits = new Limits(70.0, 45.0,ElevatorSubsystem.inchesToMotorRotations(27), -0.05);
 
