@@ -13,11 +13,12 @@ import static frc.robot.subsystems.body.BodyConstants.*;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.subsystems.body.BodyConstants.*;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-    public static ElevatorSubsystem m_instance;
+    private static ElevatorSubsystem m_instance;
 
     public static ElevatorSubsystem getInstance() {
         if (m_instance == null) {
@@ -34,7 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public ElevatorSubsystem() {
         leftMotor = new TalonFX(ELEV_MOTOR_LEFT);
-        rightMotor = new TalonFX(ELEV_MOTOR_LEFT);
+        rightMotor = new TalonFX(ELEV_MOTOR_RIGHT);
         configureElev(leftMotor, null);
         configureElev(rightMotor, leftMotor);
         reZero();
@@ -110,7 +111,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void updateReference(double inches){
-        rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));
         referenceInches = inches;
     }
 
@@ -119,7 +119,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       }
 
     public double getRotations(){
-        return (leftMotor.getPosition().getValueAsDouble()/ELEV_GEAR_RATIO);
+        return (leftMotor.getPosition().getValueAsDouble());
     }
     
     public double getReferenceInches(){
@@ -127,21 +127,28 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getError(){
-        return getReferenceInches() - getRotations();
+        return getReferenceInches() - getInches();
     }
 
     public double getInches(){
-        return (ELEV_SPROCKET_DIAMETER * Math.PI) * getRotations();
+        return motorRotationsToInches(getRotations());
     }
 
-    public double inchesToMotorRotations(double inches){
-        return (inches / ELEV_SPROCKET_DIAMETER) * ELEV_GEAR_RATIO;
+    public static double inchesToMotorRotations(double inches){
+        return (inches / ELEV_SPROCKET_CIRCUMFERENCE) * ELEV_GEAR_RATIO;
+    }
+
+    public static double motorRotationsToInches(double rotations){
+        return (rotations / ELEV_GEAR_RATIO) * ELEV_SPROCKET_CIRCUMFERENCE;
     }
     @Override
     public void periodic(){
+        rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));
         updateReference(activeSetpoint.getElevTravel());
-        leftMotor.setControl(motionMagic.withPosition(inchesToMotorRotations(referenceInches)).withSlot(0).withFeedForward(0)); 
+        leftMotor.setControl(motionMagic.withPosition(inchesToMotorRotations(referenceInches)).withSlot(0).withFeedForward(ELEV_FEED_FWD)); 
+        // leftMotor.setControl(new CoastOut());
     }
+
 
 
 

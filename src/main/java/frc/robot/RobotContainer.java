@@ -43,6 +43,7 @@ public class RobotContainer {
     private void configureBindings() {
         Bindings.configureSwerveBinds();
         Bindings.configureClawBinds();
+        Bindings.configureBodyBinds();
     }
 
     private void configureDashboard() {
