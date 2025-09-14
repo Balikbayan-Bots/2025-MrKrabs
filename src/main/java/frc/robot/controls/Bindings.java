@@ -31,7 +31,7 @@ public class Bindings {
 
     public static void configureClawBinds() {
         Controls.Manipulators.intake.whileTrue(ManipulatorCommands.beamIntake()).onFalse(ManipulatorCommands.stopIntake());
-    }
+    }   Controls.Manipulators.outake.whileTrue(ManipulatorCommands.runOutake()).onFalse(ManipulatorCommands.stopIntake());
 
     public static void configureBodyBinds() {
         Controls.Setpoint.stow.onTrue(BodyCommands.positionStow());

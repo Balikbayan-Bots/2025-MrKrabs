@@ -11,24 +11,34 @@ public class ManipulatorCommands {
 
     private static ClawSubsystem claw = ClawSubsystem.getInstance();
 
-     private static Command runClaw(double speed) {
-        return new RunCommand(() -> {
-            claw.setSpeed(speed);
+     private static Command setClawState(ClawState state) {
+        return new InstantCommand(() -> {
+            claw.setState(state);
         }, claw);
     }
 
     public static Command stopIntake() {
-        return new InstantCommand(() -> {
-            claw.setSpeed(0);
-        }, claw);
+       return setClawState(ClawState.IDLE)
+    }
+
+    public static Command holdAlgae() {
+        return setClawState(ClawState.HOLDING_ALGAE)
+    }
+
+    public static Command runIntake() {
+        return setClawState(ClawState.INTAKE)
+    }
+
+    public static Command runOutake() {
+        return setClawState(ClawState.OUTAKE)
     }
 
     public static Command beamIntake() {
         return new SequentialCommandGroup(
-                new InstantCommand(() -> {
-                    claw.setState(ClawState.INTAKE);
-                }),
+                runIntake(),
                 runClaw(-0.5).until(() -> claw.getBeamBreak()),
                 stopIntake());
     }
+
 }
+
