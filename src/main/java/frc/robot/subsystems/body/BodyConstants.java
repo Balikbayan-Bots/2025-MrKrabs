@@ -45,15 +45,15 @@ public class BodyConstants {
     public static final double ARM_FEED_FWD = 0.75;
 
     public static final double[] ELEV_MOTION_MAGIC_CONFIGS = {
-        80.0, //Acceleration
-        25.0, //Cruise Velocity
+        90.0, //Acceleration
+        20.0, //Cruise Velocity
         1600.0 //Jerk
     };
 
     public static final double[] ARM_MOTION_MAGIC_CONFIGS = {
-        36.0, //Acceleration
-        14.0, //Cruise Velocity
-        1600.0 //Jerk
+        40.0, //Acceleration
+        20.0, //Cruise Velocity
+        1800.0 //Jerk
     };
 
     public static final Limits kArmLimits = new Limits(90.0, 45.0, ArmSubsystem.degreesToMotorRotations(180),ArmSubsystem.degreesToMotorRotations(-45));
