@@ -19,31 +19,30 @@ public class ClawSubsystem extends SubsystemBase{
         }
         return m_instance;
     }
-    private double referenceSpeed = 0;
     private ClawState state; 
 
-    private TalonFX claw_motorFx;
+    private TalonFX motor;
     private DigitalInput beamBreak;
 
-    public ClawSubsystem(){
-        claw_motorFx = new TalonFX(CLAW_MOTOR_ID);
+    private ClawSubsystem(){
+        motor = new TalonFX(CLAW_MOTOR_ID);
         beamBreak = new DigitalInput(BEAM_BREAK_ID);
-        configureclaw(claw_motorFx);
+        configureclaw(motor);
         BaseStatusSignal.setUpdateFrequencyForAll(
             200, 
-            claw_motorFx.getPosition(),
-            claw_motorFx.getVelocity()
+            motor.getPosition(),
+            motor.getVelocity()
         );
         BaseStatusSignal.setUpdateFrequencyForAll(
             50, 
-            claw_motorFx.getSupplyVoltage(),
-            claw_motorFx.getFault_Hardware(),
-            claw_motorFx.getMotorVoltage(),
-            claw_motorFx.getSupplyCurrent(),
-            claw_motorFx.getStatorCurrent(),
-            claw_motorFx.getFault_DeviceTemp()
+            motor.getSupplyVoltage(),
+            motor.getFault_Hardware(),
+            motor.getMotorVoltage(),
+            motor.getSupplyCurrent(),
+            motor.getStatorCurrent(),
+            motor.getFault_DeviceTemp()
         );
-        claw_motorFx.optimizeBusUtilization();
+        motor.optimizeBusUtilization();
     }
      private void configureclaw(TalonFX motor) {
         TalonFXConfiguration newConfig = new TalonFXConfiguration();
@@ -62,9 +61,7 @@ public class ClawSubsystem extends SubsystemBase{
         voltage.PeakForwardVoltage = CLAW_MAX_VOLTAGE_FORWARD; // Down
         voltage.PeakReverseVoltage = CLAW_MAX_VOLTAGE_REVERSE; // Up
     }
-        public void setSpeed(double speed){
-            referenceSpeed = speed;
-    }
+
 
 
     public boolean getBeamBreak(){
@@ -73,7 +70,7 @@ public class ClawSubsystem extends SubsystemBase{
 
 
     public double getSpeed(){
-        return referenceSpeed;
+        return state.getSpeed();
     }
 
     public ClawState getState(){
@@ -83,11 +80,9 @@ public class ClawSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        if(state == ClawState.HOLDING_ALGAE){
-            claw_motorFx.set(algae_speed);
-            return;
-        } 
-        claw_motorFx.set(referenceSpeed); 
+        
+        motor.set(state.getSpeed()); 
+        
         
     }
     public void setState(ClawState state){
