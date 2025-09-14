@@ -42,6 +42,8 @@ public class BodyConstants {
         0.0 //kA
     };
 
+    public static final double ARM_FEED_FWD = 0.75;
+
     public static final double[] ELEV_MOTION_MAGIC_CONFIGS = {
         80.0, //Acceleration
         25.0, //Cruise Velocity
