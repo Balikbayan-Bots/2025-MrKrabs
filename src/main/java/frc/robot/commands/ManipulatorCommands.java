@@ -29,7 +29,7 @@ public class ManipulatorCommands {
         return setClawState(ClawState.INTAKE)
     }
 
-    public static Command runoutake() {
+    public static Command runOutake() {
         return setClawState(ClawState.OUTAKE)
     }
 
