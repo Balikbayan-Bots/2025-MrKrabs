@@ -84,6 +84,7 @@ public class Controls {
 
         public static final Trigger intake = coDriver.leftBumper();
         public static final Trigger score = driver.rightTrigger();
+        public static final Trigger outake = coDriver.rightBumper();
     }
 
 }
