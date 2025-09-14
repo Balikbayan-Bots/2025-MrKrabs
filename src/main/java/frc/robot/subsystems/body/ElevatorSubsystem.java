@@ -3,7 +3,6 @@ package frc.robot.subsystems.body;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -145,7 +144,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));
         updateReference(activeSetpoint.getElevTravel());
         leftMotor.setControl(motionMagic.withPosition(inchesToMotorRotations(referenceInches)).withSlot(0).withFeedForward(ELEV_FEED_FWD)); 
+        // leftMotor.setControl(new CoastOut());
     }
+
 
 
 

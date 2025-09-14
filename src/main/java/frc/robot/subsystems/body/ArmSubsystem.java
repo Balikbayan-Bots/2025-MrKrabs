@@ -104,15 +104,23 @@ public class ArmSubsystem extends SubsystemBase {
     public void periodic(){
         updateReference(activeSetpoint.getArmDegrees());
         motor.setControl(motionMagic.withPosition((refrenceDegrees / 360) * ARM_GEAR_RATIO).withSlot(0).withFeedForward(calculateFeedForward())); 
+        // motor.setControl(new CoastOut());
     }
     private double calculateFeedForward(){
-        return Math.sin(Math.toRadians(getDegrees()-0)) * (-ELEV_FEED_FWD);
+        return Math.sin(Math.toRadians(getDegrees()-0)) * (ARM_FEED_FWD);
     }
 
     private double getDegrees(){
-        return (motor.getPosition().getValueAsDouble()/ARM_GEAR_RATIO)*360;
+        return motorRotationsToDegrees(motor.getPosition().getValueAsDouble());
     }
 
+    public static double motorRotationsToDegrees(double rotations){
+        return (rotations/ARM_GEAR_RATIO)*360;
+    }
+
+    public static double degreesToMotorRotations(double degrees){
+        return (degrees*ARM_GEAR_RATIO)/360;
+    }
     public double getReferenceDegrees(){
         return refrenceDegrees;
     }
