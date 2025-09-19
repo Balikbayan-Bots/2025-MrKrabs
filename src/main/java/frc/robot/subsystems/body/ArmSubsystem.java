@@ -14,7 +14,110 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
-  private static ArmSubsystem m_instance;
+    private static ArmSubsystem m_instance;
+
+    public static ArmSubsystem getInstance() {
+        if (m_instance == null) {
+            m_instance = new ArmSubsystem();
+        }
+        return m_instance;
+    }
+
+    private TalonFX motor;
+    private BodySetpoint activeSetpoint = BodySetpoint.STOW_INTAKE;
+    private double refrenceDegrees = 0; 
+    private MotionMagicVoltage motionMagic;
+
+    private ArmSubsystem(){
+        motor = new TalonFX(ARM_MOTOR_ID);
+        configureMotor(motor.getConfigurator());
+        reZero();
+        motionMagic = new MotionMagicVoltage(0).withSlot(0);
+        BaseStatusSignal.setUpdateFrequencyForAll(
+            200, 
+            motor.getPosition()
+        );
+        BaseStatusSignal.setUpdateFrequencyForAll(
+            50, 
+            motor.getSupplyVoltage(),
+            motor.getFault_Hardware(),
+            motor.getMotorVoltage(),
+            motor.getSupplyCurrent(),
+            motor.getStatorCurrent(),
+            motor.getFault_DeviceTemp()
+        );
+
+        motor.optimizeBusUtilization();
+    }
+
+
+
+    public void updateSetpoint(BodySetpoint setPoint){
+        activeSetpoint = setPoint;
+    }
+
+    private void configureMotor(TalonFXConfigurator motorConfig) {
+        TalonFXConfiguration newConfig = new TalonFXConfiguration();
+
+        var limits = newConfig.SoftwareLimitSwitch;
+        limits.ForwardSoftLimitEnable = false; //TODO: PUT ACTUAL LIMITS
+        limits.ReverseSoftLimitEnable = false;
+
+        var current = newConfig.CurrentLimits;
+        current.StatorCurrentLimit = kArmLimits.statorLimit();
+        current.StatorCurrentLimitEnable = true;
+        current.SupplyCurrentLimit = kArmLimits.supplyLimit();
+        current.SupplyCurrentLimitEnable = true;
+
+        var voltage = newConfig.Voltage;
+        voltage.PeakForwardVoltage = ARM_MAX_VOLTAGE_FWD; // out
+        voltage.PeakReverseVoltage = ARM_MAX_VOLTAGE_REVERSE; // in
+
+        Slot0Configs slot0 = newConfig.Slot0;
+        slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
+        slot0.kP = ARM_SLOT_ZERO[0];
+        slot0.kI = ARM_SLOT_ZERO[1];
+        slot0.kD = ARM_SLOT_ZERO[2];
+        slot0.kS = ARM_SLOT_ZERO[3];
+        slot0.kG = ARM_SLOT_ZERO[4];
+        slot0.kV = ARM_SLOT_ZERO[5];
+        slot0.kA = ARM_SLOT_ZERO[6];
+
+        // Configuring MotionMagic
+        var motionMagic = newConfig.MotionMagic;
+        var output = newConfig.MotorOutput;
+        output.NeutralMode = NeutralModeValue.Brake;
+        motionMagic.MotionMagicAcceleration = ARM_MOTION_MAGIC_CONFIGS[0];
+        motionMagic.MotionMagicCruiseVelocity = ARM_MOTION_MAGIC_CONFIGS[1];
+        motionMagic.MotionMagicJerk = ARM_MOTION_MAGIC_CONFIGS[2];
+        motorConfig.apply(newConfig);
+    }
+
+    public void reZero(){
+        motor.setPosition(0);
+    }
+
+     public void updateReference(double degrees){
+        refrenceDegrees = degrees;
+    }
+
+    public boolean isAtSetpoint() {
+        return Math.abs(getError()) < 0.75;
+    }
+
+    @Override
+    public void periodic(){
+        updateReference(activeSetpoint.getArmDegrees());
+        motor.setControl(motionMagic.withPosition((refrenceDegrees / 360) * ARM_GEAR_RATIO).withSlot(0).withFeedForward(calculateFeedForward())); 
+        // motor.setControl(new CoastOut());
+    }
+    private double calculateFeedForward(){
+        return Math.sin(Math.toRadians(getDegrees()-0)) * (ARM_FEED_FWD);
+    }
+
+    private double getDegrees(){
+        return motorRotationsToDegrees(motor.getPosition().getValueAsDouble());
+    }
 
   public static ArmSubsystem getInstance() {
     if (m_instance == null) {

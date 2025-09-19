@@ -133,6 +133,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   public static double motorRotationsToInches(double rotations) {
     return (rotations / ELEV_GEAR_RATIO) * ELEV_SPROCKET_CIRCUMFERENCE;
   }
+  
+  public boolean isAtSetpoint() {
+    return Math.abs(getError()) < 0.1;
+  }
 
   @Override
   public void periodic() {
