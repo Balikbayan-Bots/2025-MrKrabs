@@ -8,39 +8,37 @@ import frc.robot.subsystems.manipulators.ClawSubsystem;
 
 public class ManipulatorCommands {
 
-    private static ClawSubsystem claw = ClawSubsystem.getInstance();
+  private static ClawSubsystem claw = ClawSubsystem.getInstance();
 
-     private static Command setClawState(ClawState state) {
-        return new InstantCommand(() -> {
-            claw.setState(state);
-        }, claw);
-    }
+  private static Command setClawState(ClawState state) {
+    return new InstantCommand(
+        () -> {
+          claw.setState(state);
+        },
+        claw);
+  }
 
-    public static Command stopIntake() {
-       return setClawState(ClawState.IDLE);
-    }
+  public static Command stopIntake() {
+    return setClawState(ClawState.IDLE);
+  }
 
-    public static Command holdAlgae() {
-        return setClawState(ClawState.HOLDING_ALGAE);
-    }
+  public static Command holdAlgae() {
+    return setClawState(ClawState.HOLDING_ALGAE);
+  }
 
-    public static Command runIntake() {
-        return setClawState(ClawState.INTAKE);
-    }
+  public static Command runIntake() {
+    return setClawState(ClawState.INTAKE);
+  }
 
-    public static Command runOutake() {
-        return setClawState(ClawState.OUTAKE);
-    }
+  public static Command runOutake() {
+    return setClawState(ClawState.OUTAKE);
+  }
 
-    public static Command beamIntake() {
-        return new SequentialCommandGroup(
-                runIntake().until(() -> claw.getBeamBreak()),
-                stopIntake());
-    }
+  public static Command beamIntake() {
+    return new SequentialCommandGroup(runIntake().until(() -> claw.getBeamBreak()), stopIntake());
+  }
 
-    public static Command score(){
-        return setClawState(ClawState.SCORE);
-    }
-
+  public static Command score() {
+    return setClawState(ClawState.SCORE);
+  }
 }
-

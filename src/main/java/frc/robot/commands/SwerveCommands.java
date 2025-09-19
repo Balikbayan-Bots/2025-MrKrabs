@@ -4,10 +4,9 @@ import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_ROT;
 import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,41 +14,39 @@ import frc.robot.controls.Controls;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class SwerveCommands {
-    private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
-    private SwerveCommands() {
-      throw new IllegalStateException("Utility class");
-    }
+  private SwerveCommands() {
+    throw new IllegalStateException("Utility class");
+  }
 
-    public static Command manualDrive(double deadband) {
-        SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-                .withDeadband(MAX_TELEOP_SPEED * deadband)
-                .withRotationalDeadband(MAX_TELEOP_ROT * deadband)
-                .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  public static Command manualDrive(double deadband) {
+    SwerveRequest.FieldCentric drive =
+        new SwerveRequest.FieldCentric()
+            .withDeadband(MAX_TELEOP_SPEED * deadband)
+            .withRotationalDeadband(MAX_TELEOP_ROT * deadband)
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-        return swerve.applyRequest(() -> drive
+    return swerve.applyRequest(
+        () ->
+            drive
                 .withVelocityX(Controls.Swerve.translateX.get())
                 .withVelocityY(Controls.Swerve.translateY.get())
                 .withRotationalRate(Controls.Swerve.rotate.get()));
-    }
+  }
 
-    public static Command driveToPose(Pose2d targetPosition) {
-        PathConstraints constraints = new PathConstraints(
-                1.0, 4.0,
-                Units.degreesToRadians(540), Units.degreesToRadians(720));
-                
-        return driveToPose(targetPosition, constraints);
-    }
+  public static Command driveToPose(Pose2d targetPosition) {
+    PathConstraints constraints =
+        new PathConstraints(1.0, 4.0, Units.degreesToRadians(540), Units.degreesToRadians(720));
 
-    public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
-        return AutoBuilder.pathfindToPose(
-                targetPosition,
-                constraints,
-                0.0
-        );
-    }
+    return driveToPose(targetPosition, constraints);
+  }
 
-    public static Command reorient() {
-        return swerve.runOnce(() -> swerve.seedFieldCentric());
-    }
+  public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
+    return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
+  }
+
+  public static Command reorient() {
+    return swerve.runOnce(() -> swerve.seedFieldCentric());
+  }
 }

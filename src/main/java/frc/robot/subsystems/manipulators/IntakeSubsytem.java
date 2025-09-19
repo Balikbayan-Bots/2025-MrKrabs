@@ -1,5 +1,3 @@
 package frc.robot.subsystems.manipulators;
 
-public class IntakeSubsytem {
-    
-}
+public class IntakeSubsytem {}

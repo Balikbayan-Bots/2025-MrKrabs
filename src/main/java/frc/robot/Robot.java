@@ -13,7 +13,7 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     robotContainer = new RobotContainer();
-  
+
     Megatag.addLimelight(LimelightConfigs.ReefLimelight);
     Megatag.addLimelight(LimelightConfigs.HPLimelight);
   }
