@@ -29,7 +29,7 @@ public class BodyCommands {
   }
 
   public static Command positionLevelOne() {
-    return new ParallelCommandGroup(
+    return new SequentialCommandGroup(
         elevSetpointRun(BodySetpoint.CORAL_LEVEL1).until(elev::isAtSetpoint),
         armSetpointRun(BodySetpoint.CORAL_LEVEL1).until(arm::isAtSetpoint));
   }
