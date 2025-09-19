@@ -1,6 +1,7 @@
 package frc.robot.controls;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -13,50 +14,48 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.subsystems.swerve.Telemetry;
 
 public class Bindings {
-    private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
-    private Bindings() {
-        throw new IllegalStateException("Utility class");
-    }
+  private Bindings() {
+    throw new IllegalStateException("Utility class");
+  }
 
-    public static void configureSwerveBinds() {
-        swerve.setDefaultCommand(
-                SwerveCommands.manualDrive(0.1));
+  public static void configureSwerveBinds() {
+    swerve.setDefaultCommand(SwerveCommands.manualDrive(0.1));
 
-        Controls.Swerve.reorient
-                .onTrue(SwerveCommands.reorient());
-            
-        // Controls.Swerve.test
-        //     .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85, Rotation2d.fromDegrees(142.286))));
+    Controls.Swerve.reorient.onTrue(SwerveCommands.reorient());
 
-        Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
-        swerve.registerTelemetry(logger::telemeterize);
-    }
+    // Controls.Swerve.test
+    //     .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85,
+    // Rotation2d.fromDegrees(142.286))));
 
-    public static void configureClawBinds() {
-        Controls.Manipulators.intake.whileTrue(ManipulatorCommands.beamIntake()).onFalse(ManipulatorCommands.stopIntake());
-        Controls.Manipulators.outake.whileTrue(ManipulatorCommands.runOutake()).onFalse(ManipulatorCommands.stopIntake());
-        Controls.Manipulators.score.onTrue(score()).onFalse(ManipulatorCommands.stopIntake());
-    }
+    Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
+    swerve.registerTelemetry(logger::telemeterize);
+  }
 
-    public static void configureBodyBinds() {
-        Controls.Setpoint.stow.onTrue(BodyCommands.positionStow());
-        Controls.Setpoint.lvlOne.onTrue(BodyCommands.positionLevelOne());
-        Controls.Setpoint.lvlTwo.onTrue(BodyCommands.positionLevelTwo());
-        Controls.Setpoint.lvlThree.onTrue(BodyCommands.positionLevelThree());
-        Controls.Setpoint.lvlFour.onTrue(BodyCommands.positionLevelFour());
- 
- 
- 
-    }
+  public static void configureClawBinds() {
+    Controls.Manipulators.intake
+        .whileTrue(ManipulatorCommands.beamIntake())
+        .onFalse(ManipulatorCommands.stopIntake());
+    Controls.Manipulators.outake
+        .whileTrue(ManipulatorCommands.runOutake())
+        .onFalse(ManipulatorCommands.stopIntake());
+    Controls.Manipulators.score.onTrue(score()).onFalse(ManipulatorCommands.stopIntake());
+  }
 
-    public static Command score() {
-        return new SequentialCommandGroup(BodyCommands.armSetpointRun(BodySetpoint.SCORE),
+  public static void configureBodyBinds() {
+    Controls.Setpoint.stow.onTrue(BodyCommands.positionStow());
+    Controls.Setpoint.lvlOne.onTrue(BodyCommands.positionLevelOne());
+    Controls.Setpoint.lvlTwo.onTrue(BodyCommands.positionLevelTwo());
+    Controls.Setpoint.lvlThree.onTrue(BodyCommands.positionLevelThree());
+    Controls.Setpoint.lvlFour.onTrue(BodyCommands.positionLevelFour());
+  }
+
+  public static Command score() {
+    return new SequentialCommandGroup(
+        BodyCommands.armSetpointRun(BodySetpoint.SCORE),
         ManipulatorCommands.score(),
         new WaitCommand(0.5),
-        BodyCommands.positionStow()); 
-    }
-
+        BodyCommands.positionStow());
+  }
 }
-
-
