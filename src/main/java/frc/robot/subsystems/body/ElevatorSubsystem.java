@@ -9,11 +9,18 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
-import static frc.robot.subsystems.body.BodyConstants.*;
-
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.subsystems.body.BodyConstants.*;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_FEED_FWD;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_GEAR_RATIO;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_MAX_VOLATGE_REVERSE;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_MAX_VOLTAGE_FWD;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_MOTION_MAGIC_CONFIGS;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_MOTOR_LEFT;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_MOTOR_RIGHT;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_SLOT_ZERO;
+import static frc.robot.subsystems.body.BodyConstants.ELEV_SPROCKET_CIRCUMFERENCE;
+import static frc.robot.subsystems.body.BodyConstants.kElevLimits;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -141,6 +148,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     public static double motorRotationsToInches(double rotations){
         return (rotations / ELEV_GEAR_RATIO) * ELEV_SPROCKET_CIRCUMFERENCE;
     }
+
+    public boolean isAtSetpoint() {
+        return Math.abs(getError()) < 0.1;
+    }
+
     @Override
     public void periodic(){
         rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));

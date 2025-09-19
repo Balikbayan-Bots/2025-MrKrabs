@@ -4,7 +4,6 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -12,7 +11,14 @@ import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.subsystems.body.BodyConstants.*;
+import static frc.robot.subsystems.body.BodyConstants.ARM_FEED_FWD;
+import static frc.robot.subsystems.body.BodyConstants.ARM_GEAR_RATIO;
+import static frc.robot.subsystems.body.BodyConstants.ARM_MAX_VOLTAGE_FWD;
+import static frc.robot.subsystems.body.BodyConstants.ARM_MAX_VOLTAGE_REVERSE;
+import static frc.robot.subsystems.body.BodyConstants.ARM_MOTION_MAGIC_CONFIGS;
+import static frc.robot.subsystems.body.BodyConstants.ARM_MOTOR_ID;
+import static frc.robot.subsystems.body.BodyConstants.ARM_SLOT_ZERO;
+import static frc.robot.subsystems.body.BodyConstants.kArmLimits;
 
 public class ArmSubsystem extends SubsystemBase {
     private static ArmSubsystem m_instance;
@@ -101,6 +107,11 @@ public class ArmSubsystem extends SubsystemBase {
      public void updateReference(double degrees){
         refrenceDegrees = degrees;
     }
+
+    public boolean isAtSetpoint() {
+        return Math.abs(getError()) < 0.75;
+    }
+
     @Override
     public void periodic(){
         updateReference(activeSetpoint.getArmDegrees());
