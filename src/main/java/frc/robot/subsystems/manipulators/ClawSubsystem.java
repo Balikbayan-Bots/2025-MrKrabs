@@ -7,7 +7,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.subsystems.manipulators.ManipulatorConstants.*;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.BEAM_BREAK_ID;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.CLAW_MAX_VOLTAGE_FORWARD;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.CLAW_MAX_VOLTAGE_REVERSE;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.CLAW_MOTOR_ID;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.kclawLimits;
 
 
 public class ClawSubsystem extends SubsystemBase{
@@ -27,6 +31,7 @@ public class ClawSubsystem extends SubsystemBase{
     private ClawSubsystem(){
         motor = new TalonFX(CLAW_MOTOR_ID);
         beamBreak = new DigitalInput(BEAM_BREAK_ID);
+        state = ClawState.IDLE;
         configureclaw(motor);
         BaseStatusSignal.setUpdateFrequencyForAll(
             200, 
