@@ -9,7 +9,8 @@ public enum BodySetpoint {
     ALGAE_LEVEL3(19.0,90.0),
     STOW_INTAKE(14.0,0.0),
     HIGH_NET(26.0,70.0),
-    PROCESSOR(0.0,0.0);
+    PROCESSOR(0.0,0.0),
+    SCORE(0.0, 90.0);
 
     private final double elevTravel;
     private final double armDegrees;
