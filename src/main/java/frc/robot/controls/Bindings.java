@@ -26,7 +26,7 @@ public class Bindings {
     Controls.Swerve.reorient.onTrue(SwerveCommands.reorient());
 
     // Controls.Swerve.test
-    //     .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85,
+    // .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85,
     // Rotation2d.fromDegrees(142.286))));
 
     Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
@@ -51,6 +51,12 @@ public class Bindings {
     Controls.Setpoint.lvlFour.onTrue(BodyCommands.positionLevelFour());
   }
 
+  public static void configureIntakeBinds() {
+    Controls.Manipulators.intakeLevelOne.onTrue(intakeLevelOne());
+
+    Controls.Manipulators.groundIntake.whileTrue(groundIntake());
+  }
+
   public static Command score() {
     return new SequentialCommandGroup(
         BodyCommands.armSetpointRun(BodySetpoint.SCORE),
@@ -58,4 +64,13 @@ public class Bindings {
         new WaitCommand(0.5),
         BodyCommands.positionStow());
   }
+
+  public static Command intakeLevelOne() {
+    return ManipulatorCommands.intakeLevelOne();
+  }
+
+  public static Command groundIntake() {
+    return ManipulatorCommands.groundIntake();
+  }
+
 }

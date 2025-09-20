@@ -10,6 +10,7 @@ import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.ClawSubsystem;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
+import frc.robot.subsystems.manipulators.IntakeSubsytem;
 
 public class RobotContainer {
   // Declare Controls
@@ -20,6 +21,7 @@ public class RobotContainer {
   public final ClawSubsystem claw;
   public final ArmSubsystem arm;
   public final ElevatorSubsystem elevator;
+  public final IntakeSubsytem intake;
   // Declare Choosers
   private final SendableChooser<Command> autoChooser;
 
@@ -32,6 +34,7 @@ public class RobotContainer {
     arm = ArmSubsystem.getInstance();
     elevator = ElevatorSubsystem.getInstance();
     claw = ClawSubsystem.getInstance();
+    intake = IntakeSubsytem.getInstance();
     // Initialize Choosers
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -50,6 +53,7 @@ public class RobotContainer {
     SmartDashboard.putData(arm);
     SmartDashboard.putData(elevator);
     SmartDashboard.putData(claw);
+    SmartDashboard.putData(intake);
   }
 
   public Command getAutonomousCommand() {

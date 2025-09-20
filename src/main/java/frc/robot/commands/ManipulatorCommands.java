@@ -2,13 +2,20 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.manipulators.ClawState;
 import frc.robot.subsystems.manipulators.ClawSubsystem;
+import frc.robot.subsystems.manipulators.IntakeSetpoint;
+import frc.robot.subsystems.manipulators.IntakeState;
+import frc.robot.subsystems.manipulators.IntakeState.*;
+import frc.robot.subsystems.manipulators.IntakeSubsytem;
 
 public class ManipulatorCommands {
 
   private static ClawSubsystem claw = ClawSubsystem.getInstance();
+  private static IntakeSubsytem intake = IntakeSubsytem.getInstance();
 
   private static Command setClawState(ClawState state) {
     return new InstantCommand(
@@ -16,6 +23,22 @@ public class ManipulatorCommands {
           claw.setState(state);
         },
         claw);
+  }
+
+  private static Command setIntakeState(IntakeState state) {
+    return new InstantCommand(
+        () -> {
+          intake.setState(state);
+        },
+        intake);
+  }
+
+  public static Command intakeSetpointRun(IntakeSetpoint setpoint) {
+    return new InstantCommand(
+        () -> {
+          intake.updateSetpoint(setpoint);
+        },
+        intake);
   }
 
   public static Command stopIntake() {
@@ -40,5 +63,16 @@ public class ManipulatorCommands {
 
   public static Command score() {
     return setClawState(ClawState.SCORE);
+  }
+
+  public static Command intakeLevelOne() {
+
+    return intakeSetpointRun(IntakeSetpoint.LVL_ONE);
+
+  }
+
+  public static Command groundIntake() {
+    return new ParallelCommandGroup(
+        intakeSetpointRun(IntakeSetpoint.DEPLOYED), setIntakeState(IntakeState.INTAKE));
   }
 }

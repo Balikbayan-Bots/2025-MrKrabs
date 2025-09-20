@@ -58,7 +58,7 @@ public class Controls {
       throw new IllegalStateException("Utility class");
     }
 
-    public static final Trigger lvlOne = coDriver.x();
+    public static final Trigger lvlOne = coDriver.povUp();
 
     public static final Trigger lvlTwo = coDriver.a();
 
@@ -85,5 +85,9 @@ public class Controls {
     public static final Trigger intake = coDriver.leftBumper();
     public static final Trigger score = driver.rightTrigger();
     public static final Trigger outake = coDriver.rightBumper();
+
+    public static final Trigger intakeLevelOne = coDriver.x();
+    public static final Trigger groundIntake = driver.leftBumper();
+
   }
 }
