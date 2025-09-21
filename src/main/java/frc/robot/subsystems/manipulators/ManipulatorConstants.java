@@ -31,11 +31,11 @@ public class ManipulatorConstants {
       0.0, // kD
       0.0, // kS
       0.0, // kG
-      0.0, // kV
+      0.01, // kV
       0.0 // kA
   };
 
-  public static final double INTAKE_FEED_FWD = 0.1;
+  public static final double INTAKE_FEED_FWD = 0.001;
 
   public static final double[] INTAKE_MOTION_MAGIC_CONFIGS = {
     40.0, // Acceleration

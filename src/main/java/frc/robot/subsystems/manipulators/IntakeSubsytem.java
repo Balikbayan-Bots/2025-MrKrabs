@@ -4,7 +4,6 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -37,7 +36,7 @@ public class IntakeSubsytem extends SubsystemBase {
     private TalonFX centerMotor;
     private TalonFX rollersMotor;
 
-    private IntakeState state;
+    private IntakeState state = IntakeState.START;
 
     private double refrenceDegrees = 0;
 
@@ -115,17 +114,19 @@ public class IntakeSubsytem extends SubsystemBase {
     
     public void periodic() {
         updateReference(activeSetpoint.getDegrees());
-         deployMotor.setControl(new CoastOut()
+         deployMotor.setControl(
             
-         //motionMagic
-        //     .withPosition(degreesToMotorRotations(refrenceDegrees))
-        //     .withSlot(0)
-        //     .withFeedForward(calculateFeedForward())
+         motionMagic
+        .withPosition(degreesToMotorRotations(refrenceDegrees))
+        .withSlot(0)
+        .withFeedForward(calculateFeedForward())
         );        
+        rollersMotor.set(state.getRollerMotorSpeed());
+        centerMotor.set(state.getCenterMotorSpeed());
     }
 
     private double calculateFeedForward() {
-        return Math.sin(Math.toRadians(getDegrees() + 17)) * -(INTAKE_FEED_FWD);
+        return Math.sin(Math.toRadians(getDegrees() + 18)) * -(INTAKE_FEED_FWD);
     }
 
     private double getDegrees() {

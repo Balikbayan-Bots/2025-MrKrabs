@@ -30,8 +30,11 @@ public class BodyCommands {
 
   public static Command positionHandoff() {
     return new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.HANDOFF).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.HANDOFF).until(arm::isAtSetpoint));
+        elevSetpointRun(BodySetpoint.HANDOFF),
+        armSetpointRun(BodySetpoint.HANDOFF)
+        // elevSetpointRun(BodySetpoint.HANDOFF).until(() -> elev.isAtSetpoint()), //TODO: isAtSetpoint doesnt work
+        // armSetpointRun(BodySetpoint.HANDOFF).until(() -> arm.isAtSetpoint())
+        );
   }
 
   public static Command positionLevelTwo() {
@@ -48,8 +51,11 @@ public class BodyCommands {
 
   public static Command positionLevelFour() {
     return new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(arm::isAtSetpoint));
+        elevSetpointRun(BodySetpoint.CORAL_LEVEL4),
+        armSetpointRun(BodySetpoint.CORAL_LEVEL4)
+        // elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> elev.isAtSetpoint()),
+        // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
+        );
   }
 
   public static Command positionStow() {

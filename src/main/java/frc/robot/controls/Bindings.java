@@ -34,12 +34,15 @@ public class Bindings {
 
   public static void configureClawBinds() {
     Controls.Manipulators.intake
-        .whileTrue(ManipulatorCommands.beamIntake())
-        .onFalse(ManipulatorCommands.stopIntake());
+        .whileTrue(ManipulatorCommands.beamIntake());
+        // .onFalse(ManipulatorCommands.stopIntake());
     // Controls.Manipulators.outake
     //     .whileTrue(ManipulatorCommands.runOutake())
     //     .onFalse(ManipulatorCommands.stopIntake());
-    Controls.Manipulators.score.onTrue(score()).onFalse(ManipulatorCommands.stopIntake());
+
+
+    
+    // Controls.Manipulators.score.onTrue(score()).onFalse(ManipulatorCommands.stopIntake());
   }
 
   public static void configureBodyBinds() {
@@ -52,8 +55,8 @@ public class Bindings {
 
   public static void configureIntakeBinds() {
     Controls.Manipulators.intakeLevelOne.onTrue(intakeLevelOne());
-
-    Controls.Manipulators.groundIntake.whileTrue(groundIntake());
+    Controls.Manipulators.groundIntake.whileTrue(groundIntake()).onFalse(ManipulatorCommands.intakeLevelHandoff());
+    Controls.Manipulators.handOverIntake.whileTrue(ManipulatorCommands.handover());
   }
 
   public static Command score() {
@@ -66,7 +69,7 @@ public class Bindings {
 
   public static Command intakeLevelOne() {
     return ManipulatorCommands.intakeLevelOne();
-  }
+  } 
 
   public static Command groundIntake() {
     return ManipulatorCommands.groundIntake();
