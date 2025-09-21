@@ -1,7 +1,6 @@
 package frc.robot.controls;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -37,15 +36,15 @@ public class Bindings {
     Controls.Manipulators.intake
         .whileTrue(ManipulatorCommands.beamIntake())
         .onFalse(ManipulatorCommands.stopIntake());
-    Controls.Manipulators.outake
-        .whileTrue(ManipulatorCommands.runOutake())
-        .onFalse(ManipulatorCommands.stopIntake());
+    // Controls.Manipulators.outake
+    //     .whileTrue(ManipulatorCommands.runOutake())
+    //     .onFalse(ManipulatorCommands.stopIntake());
     Controls.Manipulators.score.onTrue(score()).onFalse(ManipulatorCommands.stopIntake());
   }
 
   public static void configureBodyBinds() {
     Controls.Setpoint.stow.onTrue(BodyCommands.positionStow());
-    Controls.Setpoint.lvlOne.onTrue(BodyCommands.positionLevelOne());
+    Controls.Setpoint.lvlOne.onTrue(ManipulatorCommands.intakeLevelOne());
     Controls.Setpoint.lvlTwo.onTrue(BodyCommands.positionLevelTwo());
     Controls.Setpoint.lvlThree.onTrue(BodyCommands.positionLevelThree());
     Controls.Setpoint.lvlFour.onTrue(BodyCommands.positionLevelFour());

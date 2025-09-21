@@ -65,14 +65,33 @@ public class ManipulatorCommands {
     return setClawState(ClawState.SCORE);
   }
 
-  public static Command intakeLevelOne() {
+    public static Command intakeLevelOne() {
 
     return intakeSetpointRun(IntakeSetpoint.LVL_ONE);
 
   }
 
+    public static Command intakeLevelHandoff() {
+
+    return intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF);
+
+  }
+
+
   public static Command groundIntake() {
     return new ParallelCommandGroup(
-        intakeSetpointRun(IntakeSetpoint.DEPLOYED), setIntakeState(IntakeState.INTAKE));
+        intakeSetpointRun(IntakeSetpoint.DEPLOYED), 
+        setIntakeState(IntakeState.INTAKE)
+        );
   }
+
+  public static Command handoff() {
+    return new ParallelCommandGroup(
+    setIntakeState(IntakeState.HANDOFF), 
+    BodyCommands.positionHandoff()
+    
+    );
+  }
+
+
 }

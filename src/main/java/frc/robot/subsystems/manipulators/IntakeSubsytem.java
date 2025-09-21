@@ -1,8 +1,5 @@
 package frc.robot.subsystems.manipulators;
 
-import static frc.robot.subsystems.manipulators.ManipulatorConstants.*;
-import static frc.robot.subsystems.manipulators.IntakeSetpoint.*;
-
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -15,7 +12,16 @@ import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.body.BodySetpoint;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CENTER_MOTOR_ID;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_DEPLOY_MOTOR_ID;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_FEED_FWD;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_GEAR_RATIO;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_MAX_VOLTAGE_FWD;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_MAX_VOLTAGE_REVERSE;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_MOTION_MAGIC_CONFIGS;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_ROLLERS_MOTOR_ID;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_SLOT_ZERO;
+import static frc.robot.subsystems.manipulators.ManipulatorConstants.kIntakeLimits;
 
 public class IntakeSubsytem extends SubsystemBase {
     public static IntakeSubsytem m_instance;
@@ -37,7 +43,7 @@ public class IntakeSubsytem extends SubsystemBase {
 
     private MotionMagicVoltage motionMagic;
 
-    private IntakeSetpoint activeSetpoint = IntakeSetpoint.STOWED;
+    private IntakeSetpoint activeSetpoint = IntakeSetpoint.STOWED_HANDOFF;
 
     private IntakeSubsytem() {
 
@@ -102,12 +108,24 @@ public class IntakeSubsytem extends SubsystemBase {
         deployMotor.setPosition(0);
     }
 
+    public void updateReference(double degrees){
+        refrenceDegrees = degrees;
+        
+    }
+    
     public void periodic() {
-      //  deployMotor.setControl(new CoastOut());
+        updateReference(activeSetpoint.getDegrees());
+         deployMotor.setControl(new CoastOut()
+            
+         //motionMagic
+        //     .withPosition(degreesToMotorRotations(refrenceDegrees))
+        //     .withSlot(0)
+        //     .withFeedForward(calculateFeedForward())
+        );        
     }
 
     private double calculateFeedForward() {
-        return Math.sin(Math.toRadians(getDegrees() + 17)) * (INTAKE_FEED_FWD);
+        return Math.sin(Math.toRadians(getDegrees() + 17)) * -(INTAKE_FEED_FWD);
     }
 
     private double getDegrees() {
@@ -139,6 +157,7 @@ public class IntakeSubsytem extends SubsystemBase {
         super.initSendable(builder);
         builder.setSmartDashboardType("Intake");
         builder.addDoubleProperty("Intake Degrees", this::getDegrees, null);
+        builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     }
 
 }

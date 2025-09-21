@@ -28,10 +28,10 @@ public class BodyCommands {
         elev);
   }
 
-  public static Command positionLevelOne() {
+  public static Command positionHandoff() {
     return new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL1).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL1).until(arm::isAtSetpoint));
+        elevSetpointRun(BodySetpoint.HANDOFF).until(elev::isAtSetpoint),
+        armSetpointRun(BodySetpoint.HANDOFF).until(arm::isAtSetpoint));
   }
 
   public static Command positionLevelTwo() {

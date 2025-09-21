@@ -2,7 +2,7 @@ package frc.robot.subsystems.manipulators;
 
 public enum IntakeSetpoint {
     
-    STOWED(0.0),
+    STOWED_HANDOFF(0.0),
     DEPLOYED(-133.0),
     LVL_ONE(-35.0);
     

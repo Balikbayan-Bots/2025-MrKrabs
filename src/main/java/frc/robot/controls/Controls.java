@@ -1,11 +1,11 @@
 package frc.robot.controls;
 
-import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_ROT;
-import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import java.util.function.Supplier;
+import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_ROT;
+import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
 
 public class Controls {
   private static OperatorInterface oi = OperatorInterface.getInstance();
@@ -82,12 +82,13 @@ public class Controls {
       throw new IllegalStateException("Utility class");
     }
 
-    public static final Trigger intake = coDriver.leftBumper();
+    public static final Trigger intake = coDriver.rightBumper();
     public static final Trigger score = driver.rightTrigger();
-    public static final Trigger outake = coDriver.rightBumper();
+    public static final Trigger handOverIntake = coDriver.leftBumper();
 
     public static final Trigger intakeLevelOne = coDriver.x();
     public static final Trigger groundIntake = driver.leftBumper();
 
   }
+
 }

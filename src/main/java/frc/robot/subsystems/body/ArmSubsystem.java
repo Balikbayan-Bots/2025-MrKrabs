@@ -107,10 +107,9 @@ public class ArmSubsystem extends SubsystemBase {
     updateReference(activeSetpoint.getArmDegrees());
     motor.setControl(
         motionMagic
-            .withPosition((refrenceDegrees / 360) * ARM_GEAR_RATIO)
+            .withPosition(degreesToMotorRotations(refrenceDegrees))
             .withSlot(0)
             .withFeedForward(calculateFeedForward()));
-    // motor.setControl(new CoastOut());
   }
 
   private double calculateFeedForward() {
