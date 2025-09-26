@@ -1,6 +1,7 @@
 package frc.robot.controls;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -33,15 +34,12 @@ public class Bindings {
   }
 
   public static void configureClawBinds() {
-    Controls.Manipulators.intake
-        .whileTrue(ManipulatorCommands.beamIntake());
-        // .onFalse(ManipulatorCommands.stopIntake());
+    Controls.Manipulators.intake.whileTrue(ManipulatorCommands.beamIntake());
+    // .onFalse(ManipulatorCommands.stopIntake());
     // Controls.Manipulators.outake
     //     .whileTrue(ManipulatorCommands.runOutake())
     //     .onFalse(ManipulatorCommands.stopIntake());
 
-
-    
     // Controls.Manipulators.score.onTrue(score()).onFalse(ManipulatorCommands.stopIntake());
   }
 
@@ -55,7 +53,9 @@ public class Bindings {
 
   public static void configureIntakeBinds() {
     Controls.Manipulators.intakeLevelOne.onTrue(intakeLevelOne());
-    Controls.Manipulators.groundIntake.whileTrue(groundIntake()).onFalse(ManipulatorCommands.intakeLevelHandoff());
+    Controls.Manipulators.groundIntake
+        .whileTrue(groundIntake())
+        .onFalse(ManipulatorCommands.intakeLevelHandoff());
     Controls.Manipulators.handOverIntake.whileTrue(ManipulatorCommands.handover());
   }
 
@@ -69,10 +69,9 @@ public class Bindings {
 
   public static Command intakeLevelOne() {
     return ManipulatorCommands.intakeLevelOne();
-  } 
+  }
 
   public static Command groundIntake() {
     return ManipulatorCommands.groundIntake();
   }
-
 }

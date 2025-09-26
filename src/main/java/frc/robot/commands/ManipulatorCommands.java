@@ -18,16 +18,13 @@ public class ManipulatorCommands {
   private static IntakeSubsytem intake = IntakeSubsytem.getInstance();
 
   private static Command setClawState(ClawState state) {
-    return new 
-    ParallelCommandGroup(
-    new InstantCommand(
-        () -> {
-          claw.setState(state);
-        },
-        claw),
-
-        new PrintCommand("YOU SET THE STATE TO" + state)
-        );
+    return new ParallelCommandGroup(
+        new InstantCommand(
+            () -> {
+              claw.setState(state);
+            },
+            claw),
+        new PrintCommand("YOU SET THE STATE TO" + state));
   }
 
   private static Command setIntakeState(IntakeState state) {
@@ -70,43 +67,30 @@ public class ManipulatorCommands {
     return setClawState(ClawState.SCORE);
   }
 
-    public static Command intakeLevelOne() {
+  public static Command intakeLevelOne() {
 
     return intakeSetpointRun(IntakeSetpoint.LVL_ONE);
-
   }
 
-    public static Command intakeLevelHandoff() {
-    return new SequentialCommandGroup(intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF), setIntakeState(IntakeState.HOLD));
+  public static Command intakeLevelHandoff() {
+    return new SequentialCommandGroup(
+        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF), setIntakeState(IntakeState.HOLD));
   }
-
 
   public static Command groundIntake() {
     return new SequentialCommandGroup(
-        intakeSetpointRun(IntakeSetpoint.DEPLOYED), 
-        setIntakeState(IntakeState.INTAKE)
-        );
+        intakeSetpointRun(IntakeSetpoint.DEPLOYED), setIntakeState(IntakeState.INTAKE));
   }
 
   public static Command handoff() {
     return new ParallelCommandGroup(
-    setIntakeState(IntakeState.HANDOFF), 
-    BodyCommands.positionHandoff()
-    
-    );
+        setIntakeState(IntakeState.HANDOFF), BodyCommands.positionHandoff());
   }
 
   public static Command handover() {
     return new SequentialCommandGroup(
-    BodyCommands.positionHandoff(), 
-    new WaitCommand(0.2), // TODO: BANDIAD FIX FOR ISATSETPOINT
-    new ParallelCommandGroup(
-        setIntakeState(IntakeState.HANDOFF),
-        beamIntake()
-    )
-    );
+        BodyCommands.positionHandoff(),
+        new WaitCommand(0.2), // TODO: BANDIAD FIX FOR ISATSETPOINT
+        new ParallelCommandGroup(setIntakeState(IntakeState.HANDOFF), beamIntake()));
   }
-
-
-  
 }

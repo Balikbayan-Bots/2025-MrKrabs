@@ -16,23 +16,24 @@ public class ManipulatorConstants {
   public static final int CLAW_MAX_VOLTAGE_REVERSE = -10;
   public static BodyConstants.Limits kclawLimits = new Limits(85.0, 65.0, 0, 0);
 
-  public static final Limits kIntakeLimits = new Limits(
-      70.0,
-      35.0,
-      ArmSubsystem.degreesToMotorRotations(0),
-      ArmSubsystem.degreesToMotorRotations(-133));
+  public static final Limits kIntakeLimits =
+      new Limits(
+          70.0,
+          35.0,
+          ArmSubsystem.degreesToMotorRotations(0),
+          ArmSubsystem.degreesToMotorRotations(-133));
 
   public static final double INTAKE_MAX_VOLTAGE_FWD = 8;
   public static final double INTAKE_MAX_VOLTAGE_REVERSE = -8;
 
   public static final double[] INTAKE_SLOT_ZERO = {
-      0.0, // kP
-      0.0, // kI
-      0.0, // kD
-      0.0, // kS
-      0.0, // kG
-      0.01, // kV
-      0.0 // kA
+    0.0, // kP
+    0.0, // kI
+    0.0, // kD
+    0.0, // kS
+    0.0, // kG
+    0.01, // kV
+    0.0 // kA
   };
 
   public static final double INTAKE_FEED_FWD = 0.001;
@@ -42,6 +43,4 @@ public class ManipulatorConstants {
     20.0, // Cruise Velocity
     1800.0 // Jerk
   };
-
-
 }
