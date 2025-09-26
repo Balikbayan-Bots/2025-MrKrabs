@@ -136,8 +136,12 @@ public class ArmSubsystem extends SubsystemBase {
     return getReferenceDegrees() - getDegrees();
   }
 
+  public boolean isAtSetpoint(double toleranceDegrees) {
+    return Math.abs(getError()) < toleranceDegrees; //used to be 1.0
+  }
+
   public boolean isAtSetpoint() {
-    return Math.abs(getError()) < 1.0;
+    return isAtSetpoint(1.0);
   }
 
   @Override

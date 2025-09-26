@@ -39,22 +39,24 @@ public class BodyCommands {
 
   public static Command positionLevelTwo() {
     return new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL2).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL2).until(arm::isAtSetpoint));
+        elevSetpointRun(BodySetpoint.CORAL_LEVEL2).until(() -> elev.isAtSetpoint(0.5)),
+        armSetpointRun(BodySetpoint.CORAL_LEVEL2).until(() -> arm.isAtSetpoint(0.5))
+        );
   }
 
   public static Command positionLevelThree() {
     return new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL3).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL3).until(arm::isAtSetpoint));
+        elevSetpointRun(BodySetpoint.CORAL_LEVEL3).until(() -> elev.isAtSetpoint(0.5)),
+        armSetpointRun(BodySetpoint.CORAL_LEVEL3).until(() -> arm.isAtSetpoint(0.5))
+        );
   }
 
   public static Command positionLevelFour() {
     return new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL4),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL4)
-        // elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> elev.isAtSetpoint()),
-        // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
+        // elevSetpointRun(BodySetpoint.CORAL_LEVEL4),
+        // armSetpointRun(BodySetpoint.CORAL_LEVEL4)
+        elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> elev.isAtSetpoint(0.5)),
+        armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint(0.5))
         );
   }
 
