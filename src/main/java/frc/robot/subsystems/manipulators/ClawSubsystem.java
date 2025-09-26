@@ -22,7 +22,6 @@ public class ClawSubsystem extends SubsystemBase {
     }
     return m_instance;
   }
-
   private ClawState state = ClawState.IDLE;
 
 
