@@ -5,7 +5,7 @@ public enum IntakeState {
     START(0,0),
     INTAKE(0.4, 0.5),
     HOLD(0.1, 0.15),
-    HANDOFF(0.0, -0.5),
+    HANDOFF(0.0, -0.7),
     SHOOT(0.0, -0.8);
 
     public final double centerMotorSpeed;

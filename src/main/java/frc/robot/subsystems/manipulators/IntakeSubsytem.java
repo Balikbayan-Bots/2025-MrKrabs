@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CENTER_MOTOR_ID;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_DEPLOY_MOTOR_ID;
@@ -51,6 +52,9 @@ public class IntakeSubsytem extends SubsystemBase {
         rollersMotor = new TalonFX(INTAKE_ROLLERS_MOTOR_ID);
 
         reZero();
+        
+        setDefaultCommand(
+            new RunCommand(()-> setState(IntakeState.START), this));
 
         motionMagic = new MotionMagicVoltage(0).withSlot(0);
         BaseStatusSignal.setUpdateFrequencyForAll(200, deployMotor.getPosition());

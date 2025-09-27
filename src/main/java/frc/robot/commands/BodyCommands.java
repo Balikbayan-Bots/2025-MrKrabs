@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
@@ -30,8 +31,11 @@ public class BodyCommands {
 
   public static Command positionHandoff() {
     return new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.HANDOFF).withTimeout(10.0),
-        armSetpointRun(BodySetpoint.HANDOFF).withTimeout(2.0)
+        elevSetpointRun(BodySetpoint.HANDOFF),
+        armSetpointRun(BodySetpoint.HANDOFF),
+      
+        new WaitUntilCommand(
+           ()-> arm.isAtSetpoint() && elev.isAtSetpoint()).withTimeout(4.0)
        // elevSetpointRun(BodySetpoint.HANDOFF).until(() -> elev.isAtSetpoint()), //TODO: isAtSetpoint doesnt work
         //armSetpointRun(BodySetpoint.HANDOFF).until(() -> arm.isAtSetpoint())
         );

@@ -56,7 +56,7 @@ public class Bindings {
   public static void configureIntakeBinds() {
     Controls.Manipulators.intakeLevelOne.onTrue(intakeLevelOne());
     Controls.Manipulators.groundIntake.whileTrue(groundIntake()).onFalse(ManipulatorCommands.intakeLevelHandoff());
-    Controls.Manipulators.handOverIntake.whileTrue(ManipulatorCommands.handover());
+    Controls.Manipulators.handOverIntake.onTrue(ManipulatorCommands.handover());
   }
 
   public static Command score() {

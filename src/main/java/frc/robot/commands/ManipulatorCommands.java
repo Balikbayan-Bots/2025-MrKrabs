@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.ClawState;
@@ -36,7 +36,7 @@ public class ManipulatorCommands {
   }
 
   private static Command setIntakeState(IntakeState state) {
-    return new RunCommand(
+    return new InstantCommand(
         () -> {
           intake.setState(state);
         },
@@ -60,7 +60,7 @@ public class ManipulatorCommands {
   }
 
   public static Command runIntake() {
-    return setClawState(ClawState.INTAKE);
+    return new RunCommand(()-> claw.setState(ClawState.INTAKE),claw);
   }
 
   public static Command runOutake() {
@@ -68,7 +68,9 @@ public class ManipulatorCommands {
   }
 
   public static Command beamIntake() {
-    return new SequentialCommandGroup(runIntake().until(()-> claw.getBeamBreak()).andThen(stopIntake()));
+        return new RunCommand(
+          ()-> claw.setState(ClawState.INTAKE), claw)
+          .until(()-> claw.getBeamBreak());
   }
 
   public static Command score() {
@@ -88,8 +90,8 @@ public class ManipulatorCommands {
 
   public static Command groundIntake() {
     return new SequentialCommandGroup(
-        intakeSetpointRun(IntakeSetpoint.DEPLOYED), 
-        setIntakeState(IntakeState.INTAKE)
+        intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25), 
+        new RunCommand(()-> intake.setState(IntakeState.INTAKE), intake)
         );
   }
 
@@ -106,14 +108,17 @@ public class ManipulatorCommands {
    
         
     BodyCommands.positionHandoff(), 
-    new WaitUntilCommand(()-> arm.isAtSetpoint() && elevator.isAtSetpoint()),
+
     //new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
+    
     new ParallelDeadlineGroup(
-        runIntake().until(()->claw.getBeamBreak()), 
+        beamIntake(),
         setIntakeState(IntakeState.HANDOFF)
-        ),
-        
-    setIntakeState(IntakeState.HOLD)
+    ),
+    
+
+    stopIntake(),
+    setIntakeState(IntakeState.START)
     );  
   }
 
