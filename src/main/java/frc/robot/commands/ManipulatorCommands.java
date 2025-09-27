@@ -1,11 +1,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.subsystems.body.ArmSubsystem;
+import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.ClawState;
 import frc.robot.subsystems.manipulators.ClawSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSetpoint;
@@ -16,11 +19,13 @@ public class ManipulatorCommands {
 
   private static ClawSubsystem claw = ClawSubsystem.getInstance();
   private static IntakeSubsytem intake = IntakeSubsytem.getInstance();
+  private static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
+  private static ArmSubsystem arm = ArmSubsystem.getInstance();
 
   private static Command setClawState(ClawState state) {
     return new 
     ParallelCommandGroup(
-    new InstantCommand(
+    new RunCommand(
         () -> {
           claw.setState(state);
         },
@@ -31,7 +36,7 @@ public class ManipulatorCommands {
   }
 
   private static Command setIntakeState(IntakeState state) {
-    return new InstantCommand(
+    return new RunCommand(
         () -> {
           intake.setState(state);
         },
@@ -39,7 +44,7 @@ public class ManipulatorCommands {
   }
 
   public static Command intakeSetpointRun(IntakeSetpoint setpoint) {
-    return new InstantCommand(
+    return new RunCommand(
         () -> {
           intake.updateSetpoint(setpoint);
         },
@@ -63,7 +68,7 @@ public class ManipulatorCommands {
   }
 
   public static Command beamIntake() {
-    return new SequentialCommandGroup(runIntake(), stopIntake().unless(() -> !claw.getBeamBreak()));
+    return new SequentialCommandGroup(runIntake().until(()-> claw.getBeamBreak()).andThen(stopIntake()));
   }
 
   public static Command score() {
@@ -98,13 +103,18 @@ public class ManipulatorCommands {
 
   public static Command handover() {
     return new SequentialCommandGroup(
+   
+        
     BodyCommands.positionHandoff(), 
-    new WaitCommand(0.2), // TODO: BANDIAD FIX FOR ISATSETPOINT
-    new ParallelCommandGroup(
-        setIntakeState(IntakeState.HANDOFF),
-        beamIntake()
-    )
-    );
+    new WaitUntilCommand(()-> arm.isAtSetpoint() && elevator.isAtSetpoint()),
+    //new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
+    new ParallelDeadlineGroup(
+        runIntake().until(()->claw.getBeamBreak()), 
+        setIntakeState(IntakeState.HANDOFF)
+        ),
+        
+    setIntakeState(IntakeState.HOLD)
+    );  
   }
 
 

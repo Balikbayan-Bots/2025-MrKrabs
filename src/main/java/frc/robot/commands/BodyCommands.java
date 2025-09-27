@@ -30,10 +30,10 @@ public class BodyCommands {
 
   public static Command positionHandoff() {
     return new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.HANDOFF),
-        armSetpointRun(BodySetpoint.HANDOFF)
-        // elevSetpointRun(BodySetpoint.HANDOFF).until(() -> elev.isAtSetpoint()), //TODO: isAtSetpoint doesnt work
-        // armSetpointRun(BodySetpoint.HANDOFF).until(() -> arm.isAtSetpoint())
+        elevSetpointRun(BodySetpoint.HANDOFF).withTimeout(10.0),
+        armSetpointRun(BodySetpoint.HANDOFF).withTimeout(2.0)
+       // elevSetpointRun(BodySetpoint.HANDOFF).until(() -> elev.isAtSetpoint()), //TODO: isAtSetpoint doesnt work
+        //armSetpointRun(BodySetpoint.HANDOFF).until(() -> arm.isAtSetpoint())
         );
   }
 
