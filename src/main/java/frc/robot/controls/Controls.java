@@ -1,11 +1,11 @@
 package frc.robot.controls;
 
-import java.util.function.Supplier;
+import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_ROT;
+import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_ROT;
-import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
+import java.util.function.Supplier;
 
 public class Controls {
   private static OperatorInterface oi = OperatorInterface.getInstance();
@@ -58,7 +58,7 @@ public class Controls {
       throw new IllegalStateException("Utility class");
     }
 
-    public static final Trigger lvlOne = coDriver.povUp();
+    // public static final Trigger lvlOne = coDriver.povUp();
 
     public static final Trigger lvlTwo = coDriver.a();
 
@@ -66,7 +66,10 @@ public class Controls {
 
     public static final Trigger lvlFour = coDriver.y();
 
-    public static final Trigger stow = coDriver.povDown();
+    // set to upper stow for scoring L4-L2 and Algae
+    public static final Trigger stowUp = coDriver.povUp();
+    // set to lower stow for scoring L1 with Intake
+    public static final Trigger stowLow = coDriver.povDown();
   }
 
   public class Climb {
@@ -84,11 +87,10 @@ public class Controls {
 
     public static final Trigger intake = coDriver.rightBumper();
     public static final Trigger score = driver.rightTrigger();
+    public static final Trigger scoreLevelOne = driver.rightBumper();
     public static final Trigger handOverIntake = coDriver.leftBumper();
 
     public static final Trigger intakeLevelOne = coDriver.x();
     public static final Trigger groundIntake = driver.leftBumper();
-
   }
-
 }

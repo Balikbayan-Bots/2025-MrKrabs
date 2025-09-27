@@ -14,14 +14,14 @@ public class BodyConstants {
 
   public static final double ELEV_GEAR_RATIO = 6.25D / 1D;
 
-  public static final double ARM_MAX_VOLTAGE_FWD = 12;
-  public static final double ARM_MAX_VOLTAGE_REVERSE = -12;
+  public static final double ARM_MAX_VOLTAGE_FWD = 14;
+  public static final double ARM_MAX_VOLTAGE_REVERSE = -14;
 
   public static final double ELEV_MAX_VOLTAGE_FWD = 12;
   public static final double ELEV_MAX_VOLATGE_REVERSE = -4;
 
   public static final double[] ELEV_SLOT_ZERO = {
-    1.0, // kP
+    2.0, // kP
     0.0, // kI
     0.0, // kD
     0.0, // kS
@@ -33,7 +33,7 @@ public class BodyConstants {
   public static final double ELEV_FEED_FWD = 0.5;
 
   public static final double[] ARM_SLOT_ZERO = {
-    1.2, // kP
+    1.75, // kP
     0.0, // kI
     0.0, // kD
     0.0, // kS
@@ -42,7 +42,7 @@ public class BodyConstants {
     0.0 // kA
   };
 
-  public static final double ARM_FEED_FWD = 0.75;
+  public static final double ARM_FEED_FWD = 1.0;
 
   public static final double[] ELEV_MOTION_MAGIC_CONFIGS = {
     90.0, // Acceleration

@@ -1,17 +1,17 @@
 package frc.robot.subsystems.manipulators;
 
-import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
-
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.BEAM_BREAK_ID;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.CLAW_MAX_VOLTAGE_FORWARD;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.CLAW_MAX_VOLTAGE_REVERSE;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.CLAW_MOTOR_ID;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.kclawLimits;
+
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClawSubsystem extends SubsystemBase {
   public static ClawSubsystem m_instance;
@@ -22,8 +22,8 @@ public class ClawSubsystem extends SubsystemBase {
     }
     return m_instance;
   }
-  private ClawState state = ClawState.IDLE;
 
+  private ClawState state = ClawState.IDLE;
 
   private TalonFX motor;
   private DigitalInput beamBreak;

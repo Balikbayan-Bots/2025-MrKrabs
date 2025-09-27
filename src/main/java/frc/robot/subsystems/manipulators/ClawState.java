@@ -5,7 +5,7 @@ public enum ClawState {
   OUTAKE(0.6), // Example speed
   HOLDING_ALGAE(0.5),
   IDLE(0.0),
-  SCORE(-0.45);
+  SCORE(0.45);
 
   public final double speed;
 

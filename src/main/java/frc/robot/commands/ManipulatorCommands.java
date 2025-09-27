@@ -7,7 +7,9 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.body.ArmSubsystem;
+import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.ClawState;
 import frc.robot.subsystems.manipulators.ClawSubsystem;
@@ -23,16 +25,13 @@ public class ManipulatorCommands {
   private static ArmSubsystem arm = ArmSubsystem.getInstance();
 
   private static Command setClawState(ClawState state) {
-    return new 
-    ParallelCommandGroup(
-    new RunCommand(
-        () -> {
-          claw.setState(state);
-        },
-        claw),
-
-        new PrintCommand("YOU SET THE STATE TO" + state)
-        );
+    return new ParallelCommandGroup(
+        new RunCommand(
+            () -> {
+              claw.setState(state);
+            },
+            claw),
+        new PrintCommand("YOU SET THE STATE TO" + state));
   }
 
   private static Command setIntakeState(IntakeState state) {
@@ -60,7 +59,7 @@ public class ManipulatorCommands {
   }
 
   public static Command runIntake() {
-    return new RunCommand(()-> claw.setState(ClawState.INTAKE),claw);
+    return new RunCommand(() -> claw.setState(ClawState.INTAKE), claw);
   }
 
   public static Command runOutake() {
@@ -68,60 +67,61 @@ public class ManipulatorCommands {
   }
 
   public static Command beamIntake() {
-        return new RunCommand(
-          ()-> claw.setState(ClawState.INTAKE), claw)
-          .until(()-> claw.getBeamBreak());
+    return new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
+        .until(() -> claw.getBeamBreak());
   }
 
   public static Command score() {
-    return setClawState(ClawState.SCORE);
+    return new SequentialCommandGroup(
+        BodyCommands.armSetpointRun(BodySetpoint.SCORE),
+        new WaitCommand(1.0),
+        new RunCommand(() -> claw.setState(ClawState.SCORE), claw).withTimeout(0.5),
+        new ParallelCommandGroup(
+            new RunCommand(() -> claw.setState(ClawState.IDLE), claw).withTimeout(0.5),
+            BodyCommands.armSetpointRun(BodySetpoint.SAFE_STOW).until(arm::isAtSetpoint),
+            BodyCommands.elevSetpointRun(BodySetpoint.SAFE_STOW).until(elevator::isAtSetpoint)),
+        new ParallelCommandGroup(
+            BodyCommands.armSetpointRun(BodySetpoint.STOW_POS).until(arm::isAtSetpoint),
+            BodyCommands.elevSetpointRun(BodySetpoint.STOW_POS).until(elevator::isAtSetpoint)));
   }
 
-    public static Command intakeLevelOne() {
+  public static Command scoreLevelOne() {
+    return new SequentialCommandGroup(
+        new RunCommand(() -> intake.setState(IntakeState.SHOOT)).withTimeout(0.5),
+        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).until(intake::isAtSetpoint),
+        setIntakeState(IntakeState.START));
+  }
+
+  public static Command intakeLevelOne() {
 
     return intakeSetpointRun(IntakeSetpoint.LVL_ONE);
-
   }
 
-    public static Command intakeLevelHandoff() {
-    return new SequentialCommandGroup(intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF), setIntakeState(IntakeState.HOLD));
+  public static Command intakeLevelHandoff() {
+    return new SequentialCommandGroup(
+        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).until(intake::isAtSetpoint),
+        setIntakeState(IntakeState.HOLD));
   }
-
 
   public static Command groundIntake() {
     return new SequentialCommandGroup(
-        intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25), 
-        new RunCommand(()-> intake.setState(IntakeState.INTAKE), intake)
-        );
+        intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25),
+        new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake));
   }
 
   public static Command handoff() {
     return new ParallelCommandGroup(
-    setIntakeState(IntakeState.HANDOFF), 
-    BodyCommands.positionHandoff()
-    
-    );
+        setIntakeState(IntakeState.HANDOFF), BodyCommands.positionHandoff());
   }
 
   public static Command handover() {
     return new SequentialCommandGroup(
-   
-        
-    BodyCommands.positionHandoff(), 
+        BodyCommands.positionHandoff(),
 
-    //new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
-    
-    new ParallelDeadlineGroup(
-        beamIntake(),
-        setIntakeState(IntakeState.HANDOFF)
-    ),
-    
+        // new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
 
-    stopIntake(),
-    setIntakeState(IntakeState.START)
-    );  
+        new ParallelDeadlineGroup(beamIntake(), setIntakeState(IntakeState.HANDOFF)),
+        stopIntake(),
+        setIntakeState(IntakeState.START));
   }
-
-
-  
 }
