@@ -14,7 +14,8 @@ public enum BodySetpoint {
   HIGH_NET(26.0, 70.0),
   PROCESSOR(0.0, 0.0),
   SCORE(0.0, 80.0),
-  HANDOFF(18, 180);
+  HANDOFF(18, 180),
+  SCORE_LEVEL2(0.0, 65.0);
 
   private final double elevTravel;
   private final double armDegrees;

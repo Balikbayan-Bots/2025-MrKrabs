@@ -3,9 +3,9 @@ package frc.robot.subsystems.manipulators;
 public enum IntakeState {
   START(0, 0),
   INTAKE(0.4, 0.7),
-  HOLD(0.0, 0.1),
+  HOLD(0.01, 0.0),
   HANDOFF(0.0, -0.7),
-  SHOOT(0.0, -0.9);
+  SHOOT(0.0, -0.25);
 
   public final double centerMotorSpeed;
   public final double rollerMotorSpeed;

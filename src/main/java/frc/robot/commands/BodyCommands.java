@@ -34,8 +34,9 @@ public class BodyCommands {
   public static Command positionHandoff() {
     return new SequentialCommandGroup(
         elevSetpointRun(BodySetpoint.HANDOFF),
+        new WaitUntilCommand(() -> elev.isAtSetpoint()),
         armSetpointRun(BodySetpoint.HANDOFF),
-        new WaitUntilCommand(() -> arm.isAtSetpoint() && elev.isAtSetpoint()).withTimeout(4.0)
+        new WaitUntilCommand(() -> arm.isAtSetpoint())
         // elevSetpointRun(BodySetpoint.HANDOFF).until(() -> elev.isAtSetpoint()), //TODO:
         // isAtSetpoint doesnt work
         // armSetpointRun(BodySetpoint.HANDOFF).until(() -> arm.isAtSetpoint())

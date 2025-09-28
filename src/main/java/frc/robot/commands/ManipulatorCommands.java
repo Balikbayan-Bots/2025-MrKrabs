@@ -1,11 +1,14 @@
 package frc.robot.commands;
 
+import java.util.Map;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.body.ArmSubsystem;
@@ -25,13 +28,11 @@ public class ManipulatorCommands {
   private static ArmSubsystem arm = ArmSubsystem.getInstance();
 
   private static Command setClawState(ClawState state) {
-    return new ParallelCommandGroup(
-        new RunCommand(
+        return new RunCommand(
             () -> {
               claw.setState(state);
             },
-            claw),
-        new PrintCommand("YOU SET THE STATE TO" + state));
+            claw);
   }
 
   private static Command setIntakeState(IntakeState state) {
@@ -73,14 +74,20 @@ public class ManipulatorCommands {
 
   public static Command score() {
     return new SequentialCommandGroup(
-        BodyCommands.armSetpointRun(BodySetpoint.SCORE),
-        new WaitCommand(1.0),
-        new RunCommand(() -> claw.setState(ClawState.SCORE), claw).withTimeout(0.5),
+        new SelectCommand<>(
+            Map.of(
+            BodySetpoint.CORAL_LEVEL2, BodyCommands.armSetpointRun(BodySetpoint.SCORE_LEVEL2),
+            BodySetpoint.CORAL_LEVEL3, BodyCommands.armSetpointRun(BodySetpoint.SCORE),
+            BodySetpoint.CORAL_LEVEL4, BodyCommands.armSetpointRun(BodySetpoint.SCORE)
+            ),
+            () -> arm.getCurrentSetpoint()),
+        new WaitCommand(0.1),
         new ParallelCommandGroup(
-            new RunCommand(() -> claw.setState(ClawState.IDLE), claw).withTimeout(0.5),
+            setClawState(ClawState.SCORE).withTimeout(0.001),
             BodyCommands.armSetpointRun(BodySetpoint.SAFE_STOW).until(arm::isAtSetpoint),
             BodyCommands.elevSetpointRun(BodySetpoint.SAFE_STOW).until(elevator::isAtSetpoint)),
         new ParallelCommandGroup(
+            stopIntake().withTimeout(0.001),
             BodyCommands.armSetpointRun(BodySetpoint.STOW_POS).until(arm::isAtSetpoint),
             BodyCommands.elevSetpointRun(BodySetpoint.STOW_POS).until(elevator::isAtSetpoint)));
   }

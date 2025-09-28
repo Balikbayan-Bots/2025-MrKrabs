@@ -140,6 +140,10 @@ public class ArmSubsystem extends SubsystemBase {
     return Math.abs(getError()) < 1.0;
   }
 
+  public BodySetpoint getCurrentSetpoint() {
+    return activeSetpoint;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("Arm");
