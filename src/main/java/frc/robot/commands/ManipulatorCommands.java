@@ -121,7 +121,7 @@ public class ManipulatorCommands {
         // new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
 
         new ParallelDeadlineGroup(beamIntake(), setIntakeState(IntakeState.HANDOFF)),
-        stopIntake(),
+        stopIntake().withTimeout(0.5),
         setIntakeState(IntakeState.START));
   }
 }
