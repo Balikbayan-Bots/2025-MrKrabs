@@ -84,12 +84,16 @@ public class ManipulatorCommands {
         new WaitCommand(0.1),
         new ParallelCommandGroup(
             setClawState(ClawState.SCORE).withTimeout(0.001),
-            BodyCommands.armSetpointRun(BodySetpoint.SAFE_STOW).until(arm::isAtSetpoint),
-            BodyCommands.elevSetpointRun(BodySetpoint.SAFE_STOW).until(elevator::isAtSetpoint)),
+            new SequentialCommandGroup(
+            BodyCommands.elevSetpointRun(BodySetpoint.SAFE_STOW).until(elevator::isAtSetpoint),
+            BodyCommands.armSetpointRun(BodySetpoint.SAFE_STOW).until(arm::isAtSetpoint)
+            )
+        ),
         new ParallelCommandGroup(
             stopIntake().withTimeout(0.001),
             BodyCommands.armSetpointRun(BodySetpoint.STOW_POS).until(arm::isAtSetpoint),
-            BodyCommands.elevSetpointRun(BodySetpoint.STOW_POS).until(elevator::isAtSetpoint)));
+            BodyCommands.elevSetpointRun(BodySetpoint.STOW_POS).until(elevator::isAtSetpoint)
+        ));
   }
 
   public static Command scoreLevelOne() {
