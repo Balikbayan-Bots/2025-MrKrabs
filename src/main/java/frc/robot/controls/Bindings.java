@@ -27,10 +27,13 @@ public class Bindings {
 
     Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
     swerve.registerTelemetry(logger::telemeterize);
+    //Controls.Swerve.rightPeg.onTrue((SwerveCommands.rightPegLineup()));
   }
 
   public static void configureClawBinds() {
     Controls.Manipulators.intake.whileTrue(ManipulatorCommands.beamIntake());
+    Controls.Manipulators.intakeAlgae.onTrue(ManipulatorCommands.beamAlgaeIntake());
+    Controls.Manipulators.scoreAlgae.onTrue(ManipulatorCommands.algaeScore());
     // .onFalse(ManipulatorCommands.stopIntake());
     // Controls.Manipulators.outake
     //     .whileTrue(ManipulatorCommands.runOutake())
@@ -47,6 +50,8 @@ public class Bindings {
     Controls.Setpoint.lvlTwo.onTrue(BodyCommands.positionLevelTwo());
     Controls.Setpoint.lvlThree.onTrue(BodyCommands.positionLevelThree());
     Controls.Setpoint.lvlFour.onTrue(BodyCommands.positionLevelFour());
+    Controls.Setpoint.algaeHigh.onTrue(BodyCommands.positionHighAlgae());
+    Controls.Setpoint.netPos.onTrue(BodyCommands.positionNet());
   }
 
   public static void configureIntakeBinds() {
@@ -54,8 +59,8 @@ public class Bindings {
     Controls.Manipulators.groundIntake
         .whileTrue(groundIntake())
         .onFalse(ManipulatorCommands.intakeLevelHandoff());
-    Controls.Manipulators.handOverIntake.onTrue(ManipulatorCommands.handover());
-    Controls.Manipulators.scoreLevelOne.onTrue(ManipulatorCommands.scoreLevelOne());
+     Controls.Manipulators.handOverIntake.onTrue(ManipulatorCommands.handover());
+     Controls.Manipulators.scoreLevelOne.onTrue(ManipulatorCommands.scoreLevelOne());
   }
 
 // public static Command score() {

@@ -41,6 +41,7 @@ public class Controls {
 
     /*** Driver 'Start' */
     public static final Trigger reorient = driver.start();
+    //public static final Trigger rightPeg = driver.b();
   }
 
   public final class Debug {
@@ -70,6 +71,8 @@ public class Controls {
     public static final Trigger stowUp = coDriver.povUp();
     // set to lower stow for scoring L1 with Intake
     public static final Trigger stowLow = coDriver.povDown();
+    public static final Trigger algaeHigh= coDriver.povRight();
+    public static final Trigger netPos= coDriver.povLeft();
   }
 
   public class Climb {
@@ -89,8 +92,11 @@ public class Controls {
     public static final Trigger score = driver.rightTrigger();
     public static final Trigger scoreLevelOne = driver.rightBumper();
     public static final Trigger handOverIntake = coDriver.leftBumper();
+    public static final Trigger scoreAlgae = driver.y();
 
     public static final Trigger intakeLevelOne = coDriver.x();
     public static final Trigger groundIntake = driver.leftBumper();
+    public static final Trigger intakeAlgae = driver.leftTrigger();
+  
   }
 }

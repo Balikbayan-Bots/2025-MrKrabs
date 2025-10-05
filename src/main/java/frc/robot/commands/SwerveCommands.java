@@ -16,6 +16,8 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 public class SwerveCommands {
   private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
+
+
   private SwerveCommands() {
     throw new IllegalStateException("Utility class");
   }
@@ -49,4 +51,6 @@ public class SwerveCommands {
   public static Command reorient() {
     return swerve.runOnce(() -> swerve.seedFieldCentric());
   }
+
+
 }

@@ -33,9 +33,9 @@ public class BodyConstants {
   public static final double ELEV_FEED_FWD = 0.5;
 
   public static final double[] ARM_SLOT_ZERO = {
-    1.75, // kP
+    1.95, // kP
     0.0, // kI
-    0.0, // kD
+    0.01, // kD
     0.0, // kS
     0.0, // kG
     0.1, // kV

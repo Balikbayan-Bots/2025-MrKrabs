@@ -71,6 +71,20 @@ public class ManipulatorCommands {
     return new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
         .until(() -> claw.getBeamBreak());
   }
+  public static Command beamAlgaeIntake() {
+    return new SequentialCommandGroup(
+      new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
+        .until(() -> claw.getBeamBreak()),
+        setClawState(ClawState.HOLDING_ALGAE)
+        );
+  }
+  public static Command algaeScore(){
+    return  new SequentialCommandGroup(
+      setClawState(ClawState.ALGAE_SCORE).withTimeout(1.0),
+      setClawState(ClawState.IDLE)
+      );
+  }
+  
 
   public static Command score() {
     return new SequentialCommandGroup(
@@ -89,11 +103,14 @@ public class ManipulatorCommands {
             BodyCommands.armSetpointRun(BodySetpoint.SAFE_STOW).until(arm::isAtSetpoint)
             )
         ),
-        new ParallelCommandGroup(
+        
+            BodyCommands.elevSetpointRun(BodySetpoint.STOW_POS).withTimeout(1.0),
             stopIntake().withTimeout(0.001),
             BodyCommands.armSetpointRun(BodySetpoint.STOW_POS).until(arm::isAtSetpoint),
-            BodyCommands.elevSetpointRun(BodySetpoint.STOW_POS).until(elevator::isAtSetpoint)
-        ));
+        
+        new WaitCommand(2.0)  , 
+        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(1.0)
+        );
   }
 
   public static Command scoreLevelOne() {
@@ -117,7 +134,11 @@ public class ManipulatorCommands {
   public static Command groundIntake() {
     return new SequentialCommandGroup(
         intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25),
-        new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake));
+        new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake).until(()->intake.hasCoral()),
+        new WaitCommand(.25),
+        intakeLevelHandoff()
+        ); 
+
   }
 
   public static Command handoff() {
@@ -131,7 +152,7 @@ public class ManipulatorCommands {
 
         // new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
 
-        new ParallelDeadlineGroup(beamIntake(), setIntakeState(IntakeState.HANDOFF)),
+        new ParallelDeadlineGroup(beamIntake(), setIntakeState(IntakeState.HANDOFF)).withTimeout(5),
         stopIntake().withTimeout(0.5),
         setIntakeState(IntakeState.START));
   }
