@@ -36,7 +36,7 @@ public class RobotContainer {
     claw = ClawSubsystem.getInstance();
     intake = IntakeSubsytem.getInstance();
     // Initialize Choosers
-    autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser("Tests");
 
     configureBindings();
     configureDashboard();

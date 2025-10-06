@@ -55,27 +55,31 @@ public class SwerveCommands {
   }
 
   public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
-    Pose2d currentPose = swerve.getState().Pose;
-    Trajectory trajectory = generateTrajectory(currentPose, targetPosition);
-    var thetaController =
-        new ProfiledPIDController(
-            0.0, 0, 0, new Constraints(0.25, 120)); //TODO: THESE 12 VALUES ARE JUST PLACEHOLDERS
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-
-    return new SwerveControllerCommand(
-    trajectory, 
-    () -> getPose(),
-    swerve.getKinematics(),
-
-    new PIDController(0, 0, 0),
-    new PIDController(0, 0, 0), //TODO: THESE 0.1 VALUES ARE JUST PLACEHOLDERS
-    thetaController,
-    swerve::setModuleStates, 
-    swerve
-    );
-    // .andThen(stopDrive());
+    return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
   }
+
+  
+  // public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
+  //   Pose2d currentPose = swerve.getState().Pose;
+  //   Trajectory trajectory = generateTrajectory(currentPose, targetPosition);
+  //   var thetaController =
+  //       new ProfiledPIDController(
+  //           0.0, 0, 0, new Constraints(0.25, 120)); //TODO: THESE 12 VALUES ARE JUST PLACEHOLDERS
+  //   thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+  //   return new SwerveControllerCommand(
+  //   trajectory, 
+  //   () -> getPose(),
+  //   swerve.getKinematics(),
+
+  //   new PIDController(0, 0, 0),
+  //   new PIDController(0, 0, 0), //TODO: THESE 0.1 VALUES ARE JUST PLACEHOLDERS
+  //   thetaController,
+  //   swerve::setModuleStates, 
+  //   swerve
+  //   );
+  //   // .andThen(stopDrive());
+  // }
 
   public static Command driveToRedCRightPeg() {
     return driveToPose(new Pose2d(15, 7, new Rotation2d(0)));

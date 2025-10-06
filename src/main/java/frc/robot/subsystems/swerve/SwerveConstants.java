@@ -37,7 +37,7 @@ public class SwerveConstants {
           .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
 
   public static final Slot0Configs DRIVE_GAINS =
-      new Slot0Configs().withKP(0.1).withKI(0).withKD(0).withKS(0).withKV(0.124);
+      new Slot0Configs().withKP(0.1).withKI(0).withKD(0).withKS(0.1).withKV(0.124);
 
   public record Module(Angle encoderOffset) {}
 }
