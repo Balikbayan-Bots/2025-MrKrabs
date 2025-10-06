@@ -1,6 +1,5 @@
 package frc.robot.subsystems.manipulators;
 
-import static edu.wpi.first.units.Units.RevolutionsPerSecond;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_HIST;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_ID;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_SIGSTRENGTH;
@@ -18,7 +17,6 @@ import static frc.robot.subsystems.manipulators.ManipulatorConstants.kIntakeLimi
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -29,7 +27,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.ctre.phoenix6.signals.UpdateModeValue;
-
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -47,7 +44,6 @@ public class IntakeSubsytem extends SubsystemBase {
   private TalonFX deployMotor;
   private TalonFX centerMotor;
   private TalonFX rollersMotor;
- 
 
   private IntakeState state = IntakeState.START;
 
@@ -57,102 +53,98 @@ public class IntakeSubsytem extends SubsystemBase {
 
   private IntakeSetpoint activeSetpoint = IntakeSetpoint.STOWED_HANDOFF;
   private final CANBus kCANBus = new CANBus("rio");
-  private final CANrange canRange = new CANrange(INTAKE_CANRANGE_ID,kCANBus);
+  private final CANrange canRange = new CANrange(INTAKE_CANRANGE_ID, kCANBus);
   private double hasObject = canRange.getIsDetected().getValueAsDouble();
   private double getCoralDistance = canRange.getDistance().getValueAsDouble();
-  //private double threshDistance = getCoralDistance +.1 ;
-  
-    private IntakeSubsytem() {
-  
-      deployMotor = new TalonFX(INTAKE_DEPLOY_MOTOR_ID);
-      centerMotor = new TalonFX(INTAKE_CENTER_MOTOR_ID);
-      rollersMotor = new TalonFX(INTAKE_ROLLERS_MOTOR_ID);
-       
-  
-      CANrangeConfiguration config = new CANrangeConfiguration();
-      config.ProximityParams.MinSignalStrengthForValidMeasurement = INTAKE_CANRANGE_SIGSTRENGTH  ;
-      config.ProximityParams.ProximityThreshold = INTAKE_CANRANGE_THRESH;
-      config.ToFParams.UpdateMode = UpdateModeValue.ShortRangeUserFreq;
-      config.ProximityParams.ProximityHysteresis = INTAKE_CANRANGE_HIST;
-      canRange.getConfigurator().apply(config);
-    
-    
-    
-  
-      reZero();
-  
-      setDefaultCommand(new RunCommand(() -> setState(IntakeState.START), this));
-  
-      motionMagic = new MotionMagicVoltage(0).withSlot(0);
-      BaseStatusSignal.setUpdateFrequencyForAll(200, deployMotor.getPosition());
-      BaseStatusSignal.setUpdateFrequencyForAll(
-          50,
-          deployMotor.getSupplyVoltage(),
-          deployMotor.getFault_Hardware(),
-          deployMotor.getMotorVoltage(),
-          deployMotor.getSupplyCurrent(),
-          deployMotor.getStatorCurrent(),
-          deployMotor.getFault_DeviceTemp());
-      deployMotor.optimizeBusUtilization();
-    }
-  
-    private void configureMotor(TalonFXConfigurator motorConfig) {
-      TalonFXConfiguration newConfig = new TalonFXConfiguration();
-  
-      var limits = newConfig.SoftwareLimitSwitch;
-      limits.ForwardSoftLimitEnable = false; // TODO: PUT ACTUAL LIMITS
-      limits.ReverseSoftLimitEnable = false;
-  
-      var current = newConfig.CurrentLimits;
-      current.StatorCurrentLimit = kIntakeLimits.statorLimit();
-      current.StatorCurrentLimitEnable = true;
-      current.SupplyCurrentLimit = kIntakeLimits.supplyLimit();
-      current.SupplyCurrentLimitEnable = true;
-  
-      var voltage = newConfig.Voltage;
-      voltage.PeakForwardVoltage = INTAKE_MAX_VOLTAGE_FWD; // out
-      voltage.PeakReverseVoltage = INTAKE_MAX_VOLTAGE_REVERSE; // in
-  
-      Slot0Configs slot0 = newConfig.Slot0;
-      slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
-      slot0.kP = INTAKE_SLOT_ZERO[0];
-      slot0.kI = INTAKE_SLOT_ZERO[1];
-      slot0.kD = INTAKE_SLOT_ZERO[2];
-      slot0.kS = INTAKE_SLOT_ZERO[3];
-      slot0.kG = INTAKE_SLOT_ZERO[4];
-      slot0.kV = INTAKE_SLOT_ZERO[5];
-      slot0.kA = INTAKE_SLOT_ZERO[6];
-  
-      // Configuring MotionMagic
-      var motionMagic = newConfig.MotionMagic;
-      var output = newConfig.MotorOutput;
-      output.NeutralMode = NeutralModeValue.Brake;
-      motionMagic.MotionMagicAcceleration = INTAKE_MOTION_MAGIC_CONFIGS[0];
-      motionMagic.MotionMagicCruiseVelocity = INTAKE_MOTION_MAGIC_CONFIGS[1];
-      motionMagic.MotionMagicJerk = INTAKE_MOTION_MAGIC_CONFIGS[2];
-      motorConfig.apply(newConfig);
-    }
-  
-    public void reZero() {
-      deployMotor.setPosition(0);
-    }
-  
-    public void updateReference(double degrees) {
-      refrenceDegrees = degrees;
-    }
-  
-    public void periodic() {
-      updateReference(activeSetpoint.getDegrees());
-      deployMotor.setControl(
-          motionMagic
-              .withPosition(degreesToMotorRotations(refrenceDegrees))
-              .withSlot(0)
-              .withFeedForward(calculateFeedForward()));
-      rollersMotor.set(state.getRollerMotorSpeed());
-      centerMotor.set(state.getCenterMotorSpeed());
-      hasObject = canRange.getIsDetected().getValueAsDouble();
-      getCoralDistance = canRange.getDistance().getValueAsDouble();
-  
+
+  // private double threshDistance = getCoralDistance +.1 ;
+
+  private IntakeSubsytem() {
+
+    deployMotor = new TalonFX(INTAKE_DEPLOY_MOTOR_ID);
+    centerMotor = new TalonFX(INTAKE_CENTER_MOTOR_ID);
+    rollersMotor = new TalonFX(INTAKE_ROLLERS_MOTOR_ID);
+
+    CANrangeConfiguration config = new CANrangeConfiguration();
+    config.ProximityParams.MinSignalStrengthForValidMeasurement = INTAKE_CANRANGE_SIGSTRENGTH;
+    config.ProximityParams.ProximityThreshold = INTAKE_CANRANGE_THRESH;
+    config.ToFParams.UpdateMode = UpdateModeValue.ShortRangeUserFreq;
+    config.ProximityParams.ProximityHysteresis = INTAKE_CANRANGE_HIST;
+    canRange.getConfigurator().apply(config);
+
+    reZero();
+
+    setDefaultCommand(new RunCommand(() -> setState(IntakeState.START), this));
+
+    motionMagic = new MotionMagicVoltage(0).withSlot(0);
+    BaseStatusSignal.setUpdateFrequencyForAll(200, deployMotor.getPosition());
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        50,
+        deployMotor.getSupplyVoltage(),
+        deployMotor.getFault_Hardware(),
+        deployMotor.getMotorVoltage(),
+        deployMotor.getSupplyCurrent(),
+        deployMotor.getStatorCurrent(),
+        deployMotor.getFault_DeviceTemp());
+    deployMotor.optimizeBusUtilization();
+  }
+
+  private void configureMotor(TalonFXConfigurator motorConfig) {
+    TalonFXConfiguration newConfig = new TalonFXConfiguration();
+
+    var limits = newConfig.SoftwareLimitSwitch;
+    limits.ForwardSoftLimitEnable = false; // TODO: PUT ACTUAL LIMITS
+    limits.ReverseSoftLimitEnable = false;
+
+    var current = newConfig.CurrentLimits;
+    current.StatorCurrentLimit = kIntakeLimits.statorLimit();
+    current.StatorCurrentLimitEnable = true;
+    current.SupplyCurrentLimit = kIntakeLimits.supplyLimit();
+    current.SupplyCurrentLimitEnable = true;
+
+    var voltage = newConfig.Voltage;
+    voltage.PeakForwardVoltage = INTAKE_MAX_VOLTAGE_FWD; // out
+    voltage.PeakReverseVoltage = INTAKE_MAX_VOLTAGE_REVERSE; // in
+
+    Slot0Configs slot0 = newConfig.Slot0;
+    slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
+    slot0.kP = INTAKE_SLOT_ZERO[0];
+    slot0.kI = INTAKE_SLOT_ZERO[1];
+    slot0.kD = INTAKE_SLOT_ZERO[2];
+    slot0.kS = INTAKE_SLOT_ZERO[3];
+    slot0.kG = INTAKE_SLOT_ZERO[4];
+    slot0.kV = INTAKE_SLOT_ZERO[5];
+    slot0.kA = INTAKE_SLOT_ZERO[6];
+
+    // Configuring MotionMagic
+    var motionMagic = newConfig.MotionMagic;
+    var output = newConfig.MotorOutput;
+    output.NeutralMode = NeutralModeValue.Brake;
+    motionMagic.MotionMagicAcceleration = INTAKE_MOTION_MAGIC_CONFIGS[0];
+    motionMagic.MotionMagicCruiseVelocity = INTAKE_MOTION_MAGIC_CONFIGS[1];
+    motionMagic.MotionMagicJerk = INTAKE_MOTION_MAGIC_CONFIGS[2];
+    motorConfig.apply(newConfig);
+  }
+
+  public void reZero() {
+    deployMotor.setPosition(0);
+  }
+
+  public void updateReference(double degrees) {
+    refrenceDegrees = degrees;
+  }
+
+  public void periodic() {
+    updateReference(activeSetpoint.getDegrees());
+    deployMotor.setControl(
+        motionMagic
+            .withPosition(degreesToMotorRotations(refrenceDegrees))
+            .withSlot(0)
+            .withFeedForward(calculateFeedForward()));
+    rollersMotor.set(state.getRollerMotorSpeed());
+    centerMotor.set(state.getCenterMotorSpeed());
+    hasObject = canRange.getIsDetected().getValueAsDouble();
+    getCoralDistance = canRange.getDistance().getValueAsDouble();
   }
 
   private double calculateFeedForward() {
@@ -167,7 +159,7 @@ public class IntakeSubsytem extends SubsystemBase {
     return hasObject != 0;
   }
 
-  public double CoralDistance(){
+  public double CoralDistance() {
     return getCoralDistance;
   }
 
@@ -207,6 +199,6 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
     builder.addBooleanProperty("has coral", this::hasCoral, null);
-    builder.addDoubleProperty("coral Distance",this::CoralDistance,null);
+    builder.addDoubleProperty("coral Distance", this::CoralDistance, null);
   }
 }

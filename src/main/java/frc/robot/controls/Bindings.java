@@ -1,6 +1,7 @@
 package frc.robot.controls;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.BodyCommands;
 import frc.robot.commands.ManipulatorCommands;
@@ -21,13 +22,15 @@ public class Bindings {
 
     Controls.Swerve.reorient.onTrue(SwerveCommands.reorient());
 
+    Controls.Debug.megatagTest.whileTrue(SwerveCommands.driveToRedCRightPeg()).onFalse(SwerveCommands.stopDrive());
+
     // Controls.Swerve.test
     // .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85,
     // Rotation2d.fromDegrees(142.286))));
 
     Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
     swerve.registerTelemetry(logger::telemeterize);
-    //Controls.Swerve.rightPeg.onTrue((SwerveCommands.rightPegLineup()));
+    // Controls.Swerve.rightPeg.onTrue((SwerveCommands.rightPegLineup()));
   }
 
   public static void configureClawBinds() {
@@ -39,9 +42,8 @@ public class Bindings {
     //     .whileTrue(ManipulatorCommands.runOutake())
     //     .onFalse(ManipulatorCommands.stopIntake());
 
-    Controls.Manipulators.score
-        .onTrue(ManipulatorCommands.score());
-        //.onFalse(ManipulatorCommands.stopIntake());
+    Controls.Manipulators.score.onTrue(ManipulatorCommands.score());
+    // .onFalse(ManipulatorCommands.stopIntake());
   }
 
   public static void configureBodyBinds() {
@@ -59,17 +61,17 @@ public class Bindings {
     Controls.Manipulators.groundIntake
         .whileTrue(groundIntake())
         .onFalse(ManipulatorCommands.intakeLevelHandoff());
-     Controls.Manipulators.handOverIntake.onTrue(ManipulatorCommands.handover());
-     Controls.Manipulators.scoreLevelOne.onTrue(ManipulatorCommands.scoreLevelOne());
+    Controls.Manipulators.handOverIntake.onTrue(ManipulatorCommands.handover());
+    Controls.Manipulators.scoreLevelOne.onTrue(ManipulatorCommands.scoreLevelOne());
   }
 
-// public static Command score() {
-   // return new SequentialCommandGroup(
-     //   BodyCommands.armSetpointRun(BodySetpoint.SCORE),
-       // ManipulatorCommands.score(),
- //       n/ew WaitCommand(0.5),
- //       BodyCommands.positionStow());
-  //}
+  // public static Command score() {
+  // return new SequentialCommandGroup(
+  //   BodyCommands.armSetpointRun(BodySetpoint.SCORE),
+  // ManipulatorCommands.score(),
+  //       n/ew WaitCommand(0.5),
+  //       BodyCommands.positionStow());
+  // }
 
   public static Command intakeLevelOne() {
     return ManipulatorCommands.intakeLevelOne();

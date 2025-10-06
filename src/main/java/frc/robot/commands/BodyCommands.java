@@ -11,7 +11,6 @@ import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSetpoint;
-import frc.robot.subsystems.manipulators.IntakeState;
 import frc.robot.subsystems.manipulators.IntakeSubsytem;
 
 public class BodyCommands {
@@ -34,9 +33,8 @@ public class BodyCommands {
           elev.updateSetpoint(setpoint);
         },
         elev);
-      }
+  }
 
- 
   public static Command intakeSetpointRun(IntakeSetpoint setpoint) {
     return new RunCommand(
         () -> {
@@ -59,70 +57,66 @@ public class BodyCommands {
 
   public static Command positionLevelTwo() {
     return new SequentialCommandGroup(
-      new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.SAFE_START).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.SAFE_START).until(arm::isAtSetpoint)
-        ) ,
-      
-          // intakeSetpointRun(IntakeSetpoint.LVL_ONE),
-       // new SequentialCommandGroup(
+        new ParallelCommandGroup(
+            elevSetpointRun(BodySetpoint.SAFE_START).until(elev::isAtSetpoint),
+            armSetpointRun(BodySetpoint.SAFE_START).until(arm::isAtSetpoint)),
+
+        // intakeSetpointRun(IntakeSetpoint.LVL_ONE),
+        // new SequentialCommandGroup(
         new WaitCommand(.5),
         new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL2).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL2).until(arm::isAtSetpoint),
-        intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(1.0)
-        )
-    );
+            elevSetpointRun(BodySetpoint.CORAL_LEVEL2).until(elev::isAtSetpoint),
+            armSetpointRun(BodySetpoint.CORAL_LEVEL2).until(arm::isAtSetpoint),
+            intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(1.0)));
   }
 
   public static Command positionLevelThree() {
     return new SequentialCommandGroup(
-      new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.SAFE_START).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.SAFE_START).until(arm::isAtSetpoint)
-      ),
+        new ParallelCommandGroup(
+            elevSetpointRun(BodySetpoint.SAFE_START).until(elev::isAtSetpoint),
+            armSetpointRun(BodySetpoint.SAFE_START).until(arm::isAtSetpoint)),
         // /new SequentialCommandGroup
-      new ParallelCommandGroup(
-        new WaitCommand(1.0),
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL3).until(elev::isAtSetpoint),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL3).until(arm::isAtSetpoint)
-         )
-    );
+        new ParallelCommandGroup(
+            new WaitCommand(1.0),
+            elevSetpointRun(BodySetpoint.CORAL_LEVEL3).until(elev::isAtSetpoint),
+            armSetpointRun(BodySetpoint.CORAL_LEVEL3).until(arm::isAtSetpoint)));
   }
 
   public static Command positionLevelFour() {
     return // new SequentialCommandGroup(
-      new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL4), 
-        
+    new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.CORAL_LEVEL4),
+
         // new SequentialCommandGroup(
-        //new WaitCommand(1.0),
+        // new WaitCommand(1.0),
         armSetpointRun(BodySetpoint.CORAL_LEVEL4)
         // elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> elev.isAtSetpoint()),
         // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
         // )
         );
   }
+
   public static Command positionHighAlgae() {
     return // new SequentialCommandGroup(
-      new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.ALGAE_LEVEL3), 
-        
+    new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.ALGAE_LEVEL3),
+
         // new SequentialCommandGroup(
-        //new WaitCommand(1.0),
+        // new WaitCommand(1.0),
         armSetpointRun(BodySetpoint.ALGAE_LEVEL3)
         // elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> elev.isAtSetpoint()),
         // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
         // )
         );
   }
+
   public static Command positionNet() {
     return // new SequentialCommandGroup(
-      new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.HIGH_NET), 
-        
+    new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.HIGH_NET),
+
         // new SequentialCommandGroup(
-        //new WaitCommand(1.0),
+        // new WaitCommand(1.0),
         armSetpointRun(BodySetpoint.HIGH_NET)
         // elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> elev.isAtSetpoint()),
         // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())

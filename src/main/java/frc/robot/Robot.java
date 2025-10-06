@@ -15,7 +15,7 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
 
     Megatag.addLimelight(LimelightConfigs.ReefLimelight);
-    Megatag.addLimelight(LimelightConfigs.HPLimelight);
+    // Megatag.addLimelight(LimelightConfigs.HPLimelight);
   }
 
   @Override
@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    Megatag.updateAllIMU(2);
     autoCommand = robotContainer.getAutonomousCommand();
 
     if (autoCommand != null) {
@@ -35,9 +36,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Megatag.updateAllIMU(2);
     if (autoCommand != null) {
       autoCommand.cancel();
     }
+  }
+
+  @Override
+  public void disabledInit() {
+      Megatag.updateAllIMU(1);
   }
 
   @Override

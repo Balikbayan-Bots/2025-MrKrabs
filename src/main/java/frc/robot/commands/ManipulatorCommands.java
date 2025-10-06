@@ -1,12 +1,9 @@
 package frc.robot.commands;
 
-import java.util.Map;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -19,6 +16,7 @@ import frc.robot.subsystems.manipulators.ClawSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSetpoint;
 import frc.robot.subsystems.manipulators.IntakeState;
 import frc.robot.subsystems.manipulators.IntakeSubsytem;
+import java.util.Map;
 
 public class ManipulatorCommands {
 
@@ -28,11 +26,11 @@ public class ManipulatorCommands {
   private static ArmSubsystem arm = ArmSubsystem.getInstance();
 
   private static Command setClawState(ClawState state) {
-        return new RunCommand(
-            () -> {
-              claw.setState(state);
-            },
-            claw);
+    return new RunCommand(
+        () -> {
+          claw.setState(state);
+        },
+        claw);
   }
 
   private static Command setIntakeState(IntakeState state) {
@@ -71,46 +69,38 @@ public class ManipulatorCommands {
     return new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
         .until(() -> claw.getBeamBreak());
   }
+
   public static Command beamAlgaeIntake() {
     return new SequentialCommandGroup(
-      new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
-        .until(() -> claw.getBeamBreak()),
-        setClawState(ClawState.HOLDING_ALGAE)
-        );
+        new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
+            .until(() -> claw.getBeamBreak()),
+        setClawState(ClawState.HOLDING_ALGAE));
   }
-  public static Command algaeScore(){
-    return  new SequentialCommandGroup(
-      setClawState(ClawState.ALGAE_SCORE).withTimeout(1.0),
-      setClawState(ClawState.IDLE)
-      );
+
+  public static Command algaeScore() {
+    return new SequentialCommandGroup(
+        setClawState(ClawState.ALGAE_SCORE).withTimeout(1.0), setClawState(ClawState.IDLE));
   }
-  
 
   public static Command score() {
     return new SequentialCommandGroup(
         new SelectCommand<>(
             Map.of(
-            BodySetpoint.CORAL_LEVEL2, BodyCommands.armSetpointRun(BodySetpoint.SCORE_LEVEL2),
-            BodySetpoint.CORAL_LEVEL3, BodyCommands.armSetpointRun(BodySetpoint.SCORE),
-            BodySetpoint.CORAL_LEVEL4, BodyCommands.armSetpointRun(BodySetpoint.SCORE)
-            ),
+                BodySetpoint.CORAL_LEVEL2, BodyCommands.armSetpointRun(BodySetpoint.SCORE_LEVEL2),
+                BodySetpoint.CORAL_LEVEL3, BodyCommands.armSetpointRun(BodySetpoint.SCORE),
+                BodySetpoint.CORAL_LEVEL4, BodyCommands.armSetpointRun(BodySetpoint.SCORE)),
             () -> arm.getCurrentSetpoint()),
         new WaitCommand(0.1),
         new ParallelCommandGroup(
             setClawState(ClawState.SCORE).withTimeout(0.001),
             new SequentialCommandGroup(
-            BodyCommands.elevSetpointRun(BodySetpoint.SAFE_STOW).until(elevator::isAtSetpoint),
-            BodyCommands.armSetpointRun(BodySetpoint.SAFE_STOW).until(arm::isAtSetpoint)
-            )
-        ),
-        
-            BodyCommands.elevSetpointRun(BodySetpoint.STOW_POS).withTimeout(1.0),
-            stopIntake().withTimeout(0.001),
-            BodyCommands.armSetpointRun(BodySetpoint.STOW_POS).until(arm::isAtSetpoint),
-        
-        new WaitCommand(2.0)  , 
-        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(1.0)
-        );
+                BodyCommands.elevSetpointRun(BodySetpoint.SAFE_STOW).until(elevator::isAtSetpoint),
+                BodyCommands.armSetpointRun(BodySetpoint.SAFE_STOW).until(arm::isAtSetpoint))),
+        BodyCommands.elevSetpointRun(BodySetpoint.STOW_POS).withTimeout(1.0),
+        stopIntake().withTimeout(0.001),
+        BodyCommands.armSetpointRun(BodySetpoint.STOW_POS).until(arm::isAtSetpoint),
+        new WaitCommand(2.0),
+        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(1.0));
   }
 
   public static Command scoreLevelOne() {
@@ -134,11 +124,10 @@ public class ManipulatorCommands {
   public static Command groundIntake() {
     return new SequentialCommandGroup(
         intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25),
-        new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake).until(()->intake.hasCoral()),
+        new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake)
+            .until(() -> intake.hasCoral()),
         new WaitCommand(.25),
-        intakeLevelHandoff()
-        ); 
-
+        intakeLevelHandoff());
   }
 
   public static Command handoff() {
