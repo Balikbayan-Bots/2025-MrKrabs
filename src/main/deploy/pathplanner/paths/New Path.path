@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 3.4,
-        "y": 2.7
+        "y": 2.66
       },
       "prevControl": null,
       "nextControl": {
         "x": 3.15,
-        "y": 2.7
+        "y": 2.66
       },
       "isLocked": false,
       "linkedName": null
@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 3.4,
-        "y": 2.7
+        "y": 2.66
       },
       "prevControl": {
-        "x": 3.6500000000000004,
-        "y": 2.7
+        "x": 3.65,
+        "y": 2.66
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Test End"
     }
   ],
   "rotationTargets": [],

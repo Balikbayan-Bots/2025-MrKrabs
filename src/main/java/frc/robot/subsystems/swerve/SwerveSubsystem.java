@@ -215,7 +215,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
                       .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())),
           new PPHolonomicDriveController(
               // PID constants for translation
-              new PIDConstants(10, 0, 0),
+              new PIDConstants(10, 0, 0.01),
               // PID constants for rotation
               new PIDConstants(7, 0, 0)),
           config,

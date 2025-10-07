@@ -22,7 +22,7 @@ public class Bindings {
 
     Controls.Swerve.reorient.onTrue(SwerveCommands.reorient());
 
-    Controls.Debug.megatagTest.whileTrue(SwerveCommands.driveToRedCRightPeg()).onFalse(SwerveCommands.stopDrive());
+    Controls.Debug.megatagTest.onTrue(SwerveCommands.driveToRedCRightPeg());
 
     // Controls.Swerve.test
     // .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85,

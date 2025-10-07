@@ -20,7 +20,9 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
@@ -55,10 +57,10 @@ public class SwerveCommands {
   }
 
   public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
-    return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
+    return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0).andThen(stopDrive());
   }
 
-  
+
   // public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
   //   Pose2d currentPose = swerve.getState().Pose;
   //   Trajectory trajectory = generateTrajectory(currentPose, targetPosition);
@@ -82,7 +84,7 @@ public class SwerveCommands {
   // }
 
   public static Command driveToRedCRightPeg() {
-    return driveToPose(new Pose2d(15, 7, new Rotation2d(0)));
+    return driveToPose(new Pose2d(14.11, 5, new Rotation2d(Units.degreesToRadians(-31)))).withTimeout(2.5);
   }
 
   public static Command reorient() {

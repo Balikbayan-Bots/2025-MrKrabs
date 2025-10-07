@@ -14,7 +14,7 @@ public class Megatag {
 
   // Using Megatag 1
   public static void updateOdometry(LimelightConfig limelight) {
-    boolean usingMT2 = true;
+    boolean usingMT2 = false;
     LimelightHelpers.PoseEstimate limelightPoseEstimate;
     if (usingMT2) {
       LimelightHelpers.SetRobotOrientation(
