@@ -1,6 +1,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,6 +11,7 @@ import frc.robot.controls.OperatorInterface;
 import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.ClawSubsystem;
+import frc.robot.subsystems.manipulators.IntakeSubsytem;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class RobotContainer {
@@ -20,6 +23,7 @@ public class RobotContainer {
   public final ClawSubsystem claw;
   public final ArmSubsystem arm;
   public final ElevatorSubsystem elevator;
+  public final IntakeSubsytem intake;
   // Declare Choosers
   private final SendableChooser<Command> autoChooser;
 
@@ -32,9 +36,11 @@ public class RobotContainer {
     arm = ArmSubsystem.getInstance();
     elevator = ElevatorSubsystem.getInstance();
     claw = ClawSubsystem.getInstance();
+    intake = IntakeSubsytem.getInstance();
     // Initialize Choosers
-    autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser("Tests");
 
+    // NamedCommands.registerCommand("Limelight Source", );
     configureBindings();
     configureDashboard();
   }
@@ -43,6 +49,7 @@ public class RobotContainer {
     Bindings.configureSwerveBinds();
     Bindings.configureClawBinds();
     Bindings.configureBodyBinds();
+    Bindings.configureIntakeBinds();
   }
 
   private void configureDashboard() {
@@ -50,6 +57,7 @@ public class RobotContainer {
     SmartDashboard.putData(arm);
     SmartDashboard.putData(elevator);
     SmartDashboard.putData(claw);
+    SmartDashboard.putData(intake);
   }
 
   public Command getAutonomousCommand() {

@@ -5,8 +5,10 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveModule.ModuleRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -14,6 +16,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -212,7 +215,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
                       .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())),
           new PPHolonomicDriveController(
               // PID constants for translation
-              new PIDConstants(10, 0, 0),
+              new PIDConstants(10, 0, 0.01),
               // PID constants for rotation
               new PIDConstants(7, 0, 0)),
           config,
@@ -330,4 +333,12 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
     super.addVisionMeasurement(
         visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
   }
+
+  public void setModuleStates(SwerveModuleState[] states) {
+    SwerveModule[] modules = getModules();
+    for (int i = 0; i < modules.length; i++) {
+      modules[i].apply(new ModuleRequest().withState(states[i]));
+    }
+  }
+
 }

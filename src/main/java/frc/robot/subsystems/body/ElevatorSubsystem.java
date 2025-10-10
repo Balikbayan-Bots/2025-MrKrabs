@@ -33,7 +33,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     return m_instance;
   }
 
-  private BodySetpoint activeSetpoint = BodySetpoint.STOW_INTAKE;
+  private BodySetpoint activeSetpoint = BodySetpoint.START_CONFIG;
   private double referenceInches = 0;
   private TalonFX leftMotor;
   private TalonFX rightMotor;
@@ -166,5 +166,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     builder.addDoubleProperty("Refrence", this::getReferenceInches, null);
     builder.addDoubleProperty("Error", this::getError, null);
     builder.addDoubleProperty("Inches", this::getInches, null);
+    builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
   }
 }

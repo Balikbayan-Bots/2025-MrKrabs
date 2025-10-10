@@ -31,7 +31,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   private TalonFX motor;
-  private BodySetpoint activeSetpoint = BodySetpoint.STOW_INTAKE;
+  private BodySetpoint activeSetpoint = BodySetpoint.START_CONFIG;
   private double refrenceDegrees = 0;
   private MotionMagicVoltage motionMagic;
 
@@ -107,14 +107,13 @@ public class ArmSubsystem extends SubsystemBase {
     updateReference(activeSetpoint.getArmDegrees());
     motor.setControl(
         motionMagic
-            .withPosition((refrenceDegrees / 360) * ARM_GEAR_RATIO)
+            .withPosition(degreesToMotorRotations(refrenceDegrees))
             .withSlot(0)
             .withFeedForward(calculateFeedForward()));
-    // motor.setControl(new CoastOut());
   }
 
   private double calculateFeedForward() {
-    return Math.sin(Math.toRadians(getDegrees() - 0)) * (ARM_FEED_FWD);
+    return Math.sin(Math.toRadians(getDegrees() - 0)) * -(ARM_FEED_FWD);
   }
 
   private double getDegrees() {
@@ -141,6 +140,10 @@ public class ArmSubsystem extends SubsystemBase {
     return Math.abs(getError()) < 1.0;
   }
 
+  public BodySetpoint getCurrentSetpoint() {
+    return activeSetpoint;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("Arm");
@@ -148,5 +151,6 @@ public class ArmSubsystem extends SubsystemBase {
     builder.addDoubleProperty("Reference", this::getReferenceDegrees, null);
     builder.addDoubleProperty("Error", this::getError, null);
     builder.addDoubleProperty("Feed Forward", this::calculateFeedForward, null);
+    builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
   }
 }

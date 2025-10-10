@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -15,7 +16,7 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
 
     Megatag.addLimelight(LimelightConfigs.ReefLimelight);
-    Megatag.addLimelight(LimelightConfigs.HPLimelight);
+    // Megatag.addLimelight(LimelightConfigs.IntLimelight);
   }
 
   @Override
@@ -29,15 +30,24 @@ public class Robot extends TimedRobot {
     autoCommand = robotContainer.getAutonomousCommand();
 
     if (autoCommand != null) {
+      DriverStation.reportWarning("Auto picked" + autoCommand.getName(), true);
       autoCommand.schedule();
     }
+
+    Megatag.updateAllIMU(2);
   }
 
   @Override
   public void teleopInit() {
+    Megatag.updateAllIMU(2);
     if (autoCommand != null) {
       autoCommand.cancel();
     }
+  }
+
+  @Override
+  public void disabledInit() {
+      Megatag.updateAllIMU(1);
   }
 
   @Override

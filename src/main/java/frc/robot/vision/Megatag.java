@@ -18,7 +18,7 @@ public class Megatag {
     LimelightHelpers.PoseEstimate limelightPoseEstimate;
     if (usingMT2) {
       LimelightHelpers.SetRobotOrientation(
-          limelight.name(), swerve.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
+          limelight.name(), swerve.getState().Pose.getRotation().getDegrees() * -1, 0, 0, 0, 0, 0);
       limelightPoseEstimate =
           LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelight.name());
     } else {
@@ -43,6 +43,14 @@ public class Megatag {
 
   public static void updateAllOdometry() {
     limelights.forEach((limelight) -> updateOdometry(limelight));
+  }
+
+  public static void updateIMU(LimelightConfig limelight, int mode) {
+    LimelightHelpers.SetIMUMode(limelight.name(), mode);
+  }
+
+  public static void updateAllIMU(int mode) {
+    limelights.forEach((limelight) -> updateIMU(limelight, mode));
   }
 
   public record LimelightConfig(String name, double ambiguity, double distToCamera) {}

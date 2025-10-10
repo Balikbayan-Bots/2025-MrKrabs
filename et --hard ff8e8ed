@@ -1,0 +1,50 @@
+[33mff8e8ed[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mrepeat-command-handover[m[33m, [m[1;31morigin/repeat-command-handover[m[33m)[m functional state for pack expo. Replace initial active state with a start config state. added and uppower and lower stow state with safe intermediate pos, so arm intake don't conflict. driver can shoot L1 with rightBumper. got score sequence to work. Had to do some workouts due to issues with instant vs run commands and commands not being triggered to end.
+[33m937bf2e[m sequence and handoff work
+[33m6f13a2c[m started dubbuging sequence
+[33m61cbd51[m added repeat command to handover command
+[33m8fdb69e[m[33m ([m[1;31morigin/feature-intake-subsystem[m[33m)[m HANDOFF STUFF TECHNICALLY DONE BUT CLAW DOESNT WORK??????????
+[33mf2f6a16[m worked on Intake commands
+[33m82935c2[m Started IntakeSubsystem
+[33m78f4a47[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/7-feature-finalize-and-test-claw-subsystem[m[33m, [m[1;32mmain[m[33m)[m ran spotless (#37)
+[33m1a09ddc[m hotfix: fix broken code (#36)
+[33m40cbd64[m Merge branch '30-chore-improve-setpoint-command-end-conditions' into main
+[33medf6b7a[m Merge branch '30-chore-improve-setpoint-command-end-conditions' of https://github.com/Balikbayan-Bots/2025-Offseason into 30-chore-improve-setpoint-command-end-conditions
+[33me516a43[m i replaced the command group wait time to is at set point, also i created isAtSetpoint for arm and elev substystems
+[33m877c256[m added spotless, formatted all code
+[33mc417408[m Merge branch '30-chore-improve-setpoint-command-end-conditions' of https://github.com/Balikbayan-Bots/2025-Offseason into 30-chore-improve-setpoint-command-end-conditions
+[33m4f0b90f[m i replaced the command group wait time to is at set point, also i created isAtSetpoint for arm and elev substystems
+[33mf8a631a[m first successful score, needs major tuning (#31) (#32)
+[33m8e5749b[m first successful score, needs major tuning (#31)
+[33md04abcd[m Temp (#29)
+[33m101d717[m constructed outake binding (#28)
+[33m70abd27[m changed acceleration, cruise velocity, and jerk for the elevator/arm motion magic configs. (#27)
+[33m715cf4a[m created claw commands (#26)
+[33m285a723[m 8 chore refactor claw subsystem (#25)
+[33m2268e2e[m tuned PIDS to lower error amounts (#24)
+[33m67ed283[m Feature/arm setpoints (#23)
+[33mc938276[m stable elevator positions, error ranges 0-1 ish (#22)
+[33mbe60e81[m Claw Feature (#21)
+[33m7f2587b[m implement elevator inches calculations (#20)
+[33mc997ee0[m refactored arm subsystem (#19)
+[33m2a10cc2[m fixed the claw crash (#18)
+[33mc430558[m Chore scaffold climb (#17) and extra manipulator commands and bindings
+[33m21968e7[m refactored elevator subsystem - closes #11 (#15)
+[33m4e24aba[m set safe limits
+[33mad51ba7[m can bus prioritizing information
+[33m03395b9[m make new constants
+[33m8958894[m Setup smart dashboard for Elevator, Arm, and Claw.
+[33m4d29837[m fix error
+[33m94dd9b8[m Merge pull request #4 from Balikbayan-Bots/feature-scaffold-controls
+[33m0fb8387[m finished the elevator controls/setpoints and the arm controls/setpoints.
+[33m547dcab[m Merge pull request #3 from Balikbayan-Bots/feature-scaffold-controls
+[33m25fd961[m Merge branch 'feature-scaffold-controls' of https://github.com/Balikbayan-Bots/2025-Offseason into feature-scaffold-controls
+[33m2c12dcc[m Updated the controls
+[33m07948e3[m Updated the controls
+[33m7ae665b[m chore: made arm and elve subsystem framworks
+[33md95fa07[m chore: created files for subsystems
+[33m50425e9[m chore: updated pathplanner settings
+[33mf02ec82[m ASDFGHNM,
+[33m93a3311[m tuner redo
+[33m3345413[m put in both gear ratios via fractions
+[33m77605b0[m entered drive gear ratio
+[33me44e930[m Initial commit
