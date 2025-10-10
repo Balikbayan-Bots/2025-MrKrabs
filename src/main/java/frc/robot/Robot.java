@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-      Megatag.updateAllIMU(1);
+    Megatag.updateAllIMU(1);
   }
 
   @Override
