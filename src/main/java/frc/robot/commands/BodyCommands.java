@@ -110,6 +110,11 @@ public class BodyCommands {
         );
   }
 
+  public static Command positionLowAlgae() {
+    return new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.ALGAE_LEVEL2), armSetpointRun(BodySetpoint.ALGAE_LEVEL2));
+  }
+
   public static Command positionNet() {
     return // new SequentialCommandGroup(
     new ParallelCommandGroup(

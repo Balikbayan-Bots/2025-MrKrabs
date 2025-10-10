@@ -53,6 +53,7 @@ public class Bindings {
     Controls.Setpoint.lvlThree.onTrue(BodyCommands.positionLevelThree());
     Controls.Setpoint.lvlFour.onTrue(BodyCommands.positionLevelFour());
     Controls.Setpoint.algaeHigh.onTrue(BodyCommands.positionHighAlgae());
+    Controls.Setpoint.algaeLow.onTrue(BodyCommands.positionLowAlgae());
     Controls.Setpoint.netPos.onTrue(BodyCommands.positionNet());
   }
 
