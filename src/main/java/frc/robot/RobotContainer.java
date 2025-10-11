@@ -1,9 +1,14 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.BodyCommands;
+import frc.robot.commands.CommandRegistry;
+import frc.robot.commands.SwerveCommands;
 import frc.robot.controls.Bindings;
 import frc.robot.controls.OperatorInterface;
 import frc.robot.subsystems.body.ArmSubsystem;
@@ -37,6 +42,8 @@ public class RobotContainer {
     intake = IntakeSubsytem.getInstance();
     // Initialize Choosers
     autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    CommandRegistry.registerAllCommands(BodyCommands.bodyCommandList.toArray(new CommandRegistry.CommandWrapper[0]));
+    NamedCommands.registerCommand("ID 9 Left", SwerveCommands.driveTagNineLeft());
 
     // NamedCommands.registerCommand("Limelight Source", );
     configureBindings();

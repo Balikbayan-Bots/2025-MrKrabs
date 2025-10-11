@@ -49,7 +49,8 @@ public class SwerveCommands {
   }
 
   public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
-    return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0).andThen(stopDrive());
+    return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
+    // .andThen(stopDrive());
   }
 
   // public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
@@ -74,8 +75,13 @@ public class SwerveCommands {
   //   // .andThen(stopDrive());
   // }
 
-  public static Command driveToRedCRightPeg() {
-    return driveToPose(new Pose2d(14.11, 5, new Rotation2d(Units.degreesToRadians(-31))))
+  public static Command driveTagNineLeft() {
+    return driveToPose(new Pose2d(13.9, 5.27, new Rotation2d(Units.degreesToRadians(-33))))
+        .withTimeout(2.5);
+  }
+
+  public static Command debugTurn90() {
+    return driveToPose(new Pose2d(10.5, 5.76, new Rotation2d(Units.degreesToRadians(0))))
         .withTimeout(2.5);
   }
 

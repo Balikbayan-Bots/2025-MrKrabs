@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -217,7 +218,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
               // PID constants for translation
               new PIDConstants(10, 0, 0.01),
               // PID constants for rotation
-              new PIDConstants(7, 0, 0)),
+              new PIDConstants(22, 0, 0)),
           config,
           // Assume the path needs to be flipped for Red vs Blue, this is normally the case
           () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
@@ -334,10 +335,10 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
         visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
   }
 
-  public void setModuleStates(SwerveModuleState[] states) {
-    SwerveModule[] modules = getModules();
-    for (int i = 0; i < modules.length; i++) {
-      modules[i].apply(new ModuleRequest().withState(states[i]));
-    }
-  }
+  // public void setModuleStates(SwerveModuleState[] states) {
+  //   SwerveModule[] modules = getModules();
+  //   for (int i = 0; i < modules.length; i++) {
+  //     modules[i].apply(new ModuleRequest().withState(states[i]));
+  //   }
+  // }
 }

@@ -4,6 +4,8 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Megatag {
   private static List<LimelightConfig> limelights = new ArrayList<>();
   private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
@@ -13,12 +15,16 @@ public class Megatag {
   }
 
   // Using Megatag 1
+  // TODO: Get std dev to see confidence 
+  //TODO: constantly set robot orientation
+
   public static void updateOdometry(LimelightConfig limelight) {
-    boolean usingMT2 = false;
+    boolean usingMT2 = true;
     LimelightHelpers.PoseEstimate limelightPoseEstimate;
     if (usingMT2) {
       LimelightHelpers.SetRobotOrientation(
           limelight.name(), swerve.getState().Pose.getRotation().getDegrees() * -1, 0, 0, 0, 0, 0);
+          SmartDashboard.putNumber("heading", swerve.getState().Pose.getRotation().getDegrees() * -1);
       limelightPoseEstimate =
           LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelight.name());
     } else {
