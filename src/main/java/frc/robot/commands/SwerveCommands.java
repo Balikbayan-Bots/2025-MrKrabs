@@ -80,15 +80,31 @@ public class SwerveCommands {
         .withTimeout(3.0);
   }
 
+  public static Command driveTagTwentyTwoLeft() {
+    return driveToPose(new Pose2d(4.65, 2.61, new Rotation2d(Units.degreesToRadians(-146.14))))
+        .withTimeout(3.0);
+  }
+
+  public static Command driveTagTwentyOneLeft() {
+    return driveToPose(new Pose2d(5.54, 3.53, new Rotation2d(Units.degreesToRadians(-87.69))))
+        .withTimeout(3.0);
+  }
+
+
   public static Command driveTagTenLeft() {
     return driveToPose(new Pose2d(11.83, 4.32, new Rotation2d(Units.degreesToRadians(91))))
         .withTimeout(3.0);
   }
 
-  //public static Command debugTurn90() {
-    //return driveToPose(new Pose2d(13.1, 5.38, new Rotation2d(Units.degreesToRadians(0))))
-      //  .withTimeout(2.5);
-  //}
+  public static Command driveTagSeventeenRight() {
+    return driveToPose(new Pose2d(4.47, 4.13, new Rotation2d(Units.degreesToRadians(151.4))))
+        .withTimeout(3.0);
+  }
+
+  // public static Command debugTurn90() {
+  // return driveToPose(new Pose2d(13.1, 5.38, new Rotation2d(Units.degreesToRadians(0))))
+  //  .withTimeout(2.5);
+  // }
 
   public static Command reorient() {
     return swerve.runOnce(() -> swerve.seedFieldCentric());
