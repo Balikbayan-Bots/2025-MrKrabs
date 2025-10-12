@@ -94,11 +94,15 @@ public class BodyCommands {
   public static Command positionLevelFour() {
     return // new SequentialCommandGroup(
     new SequentialCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(elev::isAtSetpoint),
-
+        //elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(elev::isAtSetpoint),
+        new RunCommand(() -> elev.updateSetpoint(BodySetpoint.CORAL_LEVEL4), elev)
+          .withTimeout(1.0),
+          new RunCommand(() -> arm.updateSetpoint(BodySetpoint.CORAL_LEVEL4), arm)
+          .until(arm::isAtSetpoint)
         // new SequentialCommandGroup(
         // new WaitCommand(1.0),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(arm::isAtSetpoint)
+        //armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
+        //armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(arm::isAtSetpoint)
         // elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> elev.isAtSetpoint()),
         // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
         // )
@@ -124,6 +128,15 @@ public class BodyCommands {
         elevSetpointRun(BodySetpoint.ALGAE_LEVEL2), armSetpointRun(BodySetpoint.ALGAE_LEVEL2));
   }
 
+  public static Command positionFloorAlgae() {
+    return new SequentialCommandGroup(
+        intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.5),
+        
+      new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.FLOOR_ALGAE), armSetpointRun(BodySetpoint.FLOOR_ALGAE))
+    );
+  }
+
   public static Command positionNet() {
     return // new SequentialCommandGroup(
     new ParallelCommandGroup(
@@ -137,6 +150,7 @@ public class BodyCommands {
         // )
         );
   }
+
 
   public static Command positionStow() {
     return new SequentialCommandGroup(

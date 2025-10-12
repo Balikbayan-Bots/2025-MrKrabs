@@ -22,7 +22,7 @@ public class Bindings {
 
     Controls.Swerve.reorient.onTrue(SwerveCommands.reorient());
 
-    Controls.Debug.megatagTest.onTrue(SwerveCommands.debugTurn90());
+    Controls.Debug.megatagTest.onTrue(SwerveCommands.driveTagNineLeft());
 
     // Controls.Swerve.test
     // .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85,
@@ -55,6 +55,7 @@ public class Bindings {
     Controls.Setpoint.algaeHigh.onTrue(BodyCommands.positionHighAlgae());
     Controls.Setpoint.algaeLow.onTrue(BodyCommands.positionLowAlgae());
     Controls.Setpoint.netPos.onTrue(BodyCommands.positionNet());
+    Controls.Setpoint.algaeFloor.onTrue(BodyCommands.positionFloorAlgae());
   }
 
   public static void configureIntakeBinds() {

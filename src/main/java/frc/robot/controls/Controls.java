@@ -52,6 +52,7 @@ public class Controls {
     public static final Trigger magnetRezero = driver.povUpRight();
     public static final Trigger nudgeDown = coDriver.povRight();
     public static final Trigger nudgeUp = coDriver.povLeft();
+
     public static final Trigger megatagTest = driver.a();
   }
 
@@ -75,6 +76,7 @@ public class Controls {
     public static final Trigger algaeHigh = coDriver.povUp();
     public static final Trigger algaeLow = coDriver.povDown();
     public static final Trigger netPos = coDriver.povLeft();
+    public static final Trigger algaeFloor = coDriver.povRight();
   }
 
   public class Climb {

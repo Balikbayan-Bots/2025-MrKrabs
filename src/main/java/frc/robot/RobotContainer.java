@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.BodyCommands;
 import frc.robot.commands.CommandRegistry;
+import frc.robot.commands.ManipulatorCommands;
 import frc.robot.commands.SwerveCommands;
 import frc.robot.controls.Bindings;
 import frc.robot.controls.OperatorInterface;
@@ -41,9 +42,20 @@ public class RobotContainer {
     claw = ClawSubsystem.getInstance();
     intake = IntakeSubsytem.getInstance();
     // Initialize Choosers
-    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    
     CommandRegistry.registerAllCommands(BodyCommands.bodyCommandList.toArray(new CommandRegistry.CommandWrapper[0]));
     NamedCommands.registerCommand("ID 9 Left", SwerveCommands.driveTagNineLeft());
+    NamedCommands.registerCommand("ID 10 Left", SwerveCommands.driveTagTenLeft());
+    NamedCommands.registerCommand("LVL4",BodyCommands.positionLevelFour());
+    NamedCommands.registerCommand("score",ManipulatorCommands.autoL4score());
+    NamedCommands.registerCommand("upperStow",BodyCommands.positionStow());
+    NamedCommands.registerCommand("groundIntake", ManipulatorCommands.groundIntake());
+    NamedCommands.registerCommand("stowIntake", ManipulatorCommands.intakeLevelHandoff());
+    NamedCommands.registerCommand("grabLowAlgae", BodyCommands.positionLowAlgae());
+    NamedCommands.registerCommand("algaeIntake", ManipulatorCommands.beamAlgaeIntake());
+    NamedCommands.registerCommand("goNet", BodyCommands.positionNet());
+    NamedCommands.registerCommand("scoreNet", ManipulatorCommands.algaeScore());
+    autoChooser = AutoBuilder.buildAutoChooser("Tests");
 
     // NamedCommands.registerCommand("Limelight Source", );
     configureBindings();

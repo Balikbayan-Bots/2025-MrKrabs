@@ -110,6 +110,13 @@ public class ManipulatorCommands {
         setIntakeState(IntakeState.START));
   }
 
+  public static Command autoL4score() {
+    return new SequentialCommandGroup(
+      BodyCommands.armSetpointRun(BodySetpoint.SCORE),
+      setClawState(ClawState.SCORE).withTimeout(0.001)
+    );
+  }
+
   public static Command intakeLevelOne() {
 
     return intakeSetpointRun(IntakeSetpoint.LVL_ONE);

@@ -76,14 +76,19 @@ public class SwerveCommands {
   // }
 
   public static Command driveTagNineLeft() {
-    return driveToPose(new Pose2d(13.9, 5.27, new Rotation2d(Units.degreesToRadians(-33))))
-        .withTimeout(2.5);
+    return driveToPose(new Pose2d(13.30, 5.38, new Rotation2d(Units.degreesToRadians(29.8))))
+        .withTimeout(3.0);
   }
 
-  public static Command debugTurn90() {
-    return driveToPose(new Pose2d(10.5, 5.76, new Rotation2d(Units.degreesToRadians(0))))
-        .withTimeout(2.5);
+  public static Command driveTagTenLeft() {
+    return driveToPose(new Pose2d(11.83, 4.32, new Rotation2d(Units.degreesToRadians(91))))
+        .withTimeout(3.0);
   }
+
+  //public static Command debugTurn90() {
+    //return driveToPose(new Pose2d(13.1, 5.38, new Rotation2d(Units.degreesToRadians(0))))
+      //  .withTimeout(2.5);
+  //}
 
   public static Command reorient() {
     return swerve.runOnce(() -> swerve.seedFieldCentric());

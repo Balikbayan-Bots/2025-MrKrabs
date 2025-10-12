@@ -23,8 +23,8 @@ public class Megatag {
     LimelightHelpers.PoseEstimate limelightPoseEstimate;
     if (usingMT2) {
       LimelightHelpers.SetRobotOrientation(
-          limelight.name(), swerve.getState().Pose.getRotation().getDegrees() * -1, 0, 0, 0, 0, 0);
-          SmartDashboard.putNumber("heading", swerve.getState().Pose.getRotation().getDegrees() * -1);
+          limelight.name(), swerve.getState().Pose.getRotation().getDegrees()*-1 , 0, 0, 0, 0, 0);
+          SmartDashboard.putNumber("heading", swerve.getState().Pose.getRotation().getDegrees()*-1 );
       limelightPoseEstimate =
           LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelight.name());
     } else {
