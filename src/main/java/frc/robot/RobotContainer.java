@@ -80,6 +80,7 @@ public class RobotContainer {
     SmartDashboard.putData(elevator);
     SmartDashboard.putData(claw);
     SmartDashboard.putData(intake);
+    
   }
 
   public Command getAutonomousCommand() {

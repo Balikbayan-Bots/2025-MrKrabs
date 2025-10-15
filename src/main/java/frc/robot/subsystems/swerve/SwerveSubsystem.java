@@ -16,6 +16,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -24,7 +26,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.swerve.SwerveConfig.TunerSwerveDrivetrain;
+import frc.robot.vision.Megatag;
+import frc.robot.vision.Megatag.LimelightConfig;
+import frc.robot.vision.LimelightConfigs;
+
 import java.util.function.Supplier;
+
+import javax.naming.ReferralException;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements Subsystem so it can easily
@@ -32,6 +40,7 @@ import java.util.function.Supplier;
  */
 public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
   private static SwerveSubsystem instance;
+  static LimelightConfig limelight = LimelightConfigs.ReefLimelight;
 
   public static SwerveSubsystem getInstance() {
     if (instance == null) {
@@ -278,6 +287,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
                 m_hasAppliedOperatorPerspective = true;
               });
     }
+   // Megatag.updateOdometry(limelight);
   }
 
   private void startSimThread() {
