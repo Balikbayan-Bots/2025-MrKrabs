@@ -72,9 +72,10 @@ public class ManipulatorCommands {
 
   public static Command beamAlgaeIntake() {
     return new SequentialCommandGroup(
-        new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
-            .until(() -> claw.getBeamBreak()),
-        setClawState(ClawState.HOLDING_ALGAE)).withTimeout(.1);
+            new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
+                .until(() -> claw.getBeamBreak()),
+            setClawState(ClawState.HOLDING_ALGAE))
+        .withTimeout(.1);
   }
 
   public static Command algaeScore() {

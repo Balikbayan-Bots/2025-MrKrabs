@@ -4,7 +4,6 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,6 @@ public class Megatag {
   // TODO: Get std dev to see confidence
   // TODO: constantly set robot orientation
 
-  
   public static void updateOdometry(LimelightConfig limelight) {
     // CRITICAL FIX: The rejection flag must be local or reset every loop.
     boolean doRejectUpdate = false;
@@ -33,7 +31,7 @@ public class Megatag {
     if (mt1 == null) {
       return;
     }
-    
+
     Matrix<N3, N1> confid = getStdDev(mt1);
 
     // Initial rejection if no tags are seen or if the raw data is missing
@@ -65,21 +63,22 @@ public class Megatag {
     }
   }
 
-  public static Matrix<N3, N1> getStdDev (LimelightHelpers.PoseEstimate mt1pos){
-             
-      double xyStdev = 2.0;
+  public static Matrix<N3, N1> getStdDev(LimelightHelpers.PoseEstimate mt1pos) {
 
-      if (mt1pos.tagCount >= 2 && mt1pos.avgTagArea > 0.1) {
-        xyStdev = 0.5;
-      } else if (mt1pos.tagCount >= 2 || mt1pos.avgTagArea > 0.1) {
-        xyStdev = 0.75;
-      } else if (mt1pos.avgTagArea > 0.8) {
-        xyStdev = 0.8;
-      }
-      Matrix<N3, N1> confidenceStdDev = VecBuilder.fill(xyStdev, xyStdev, 9999999);
-      return confidenceStdDev;
+    double xyStdev = 2.0;
+
+    if (mt1pos.tagCount >= 2 && mt1pos.avgTagArea > 0.1) {
+      xyStdev = 0.5;
+    } else if (mt1pos.tagCount >= 2 || mt1pos.avgTagArea > 0.1) {
+      xyStdev = 0.75;
+    } else if (mt1pos.avgTagArea > 0.8) {
+      xyStdev = 0.8;
     }
-   /*/ boolean usingMT2 = true;
+    Matrix<N3, N1> confidenceStdDev = VecBuilder.fill(xyStdev, xyStdev, 9999999);
+    return confidenceStdDev;
+  }
+
+  /*/ boolean usingMT2 = true;
     LimelightHelpers.PoseEstimate limelightPoseEstimate;
     if (usingMT2) {
       LimelightHelpers.SetRobotOrientation(
