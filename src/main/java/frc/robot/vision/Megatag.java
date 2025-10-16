@@ -60,6 +60,7 @@ public class Megatag {
     if (!doRejectUpdate) {
       // CRITICAL FIX: Use the correct addVisionMeasurement overload to apply confidence (StdDev)
       swerve.addVisionMeasurement(mt1.pose, mt1.timestampSeconds, confid);
+      
     }
   }
 
@@ -67,14 +68,19 @@ public class Megatag {
 
     double xyStdev = 2.0;
 
+    double thetaStdev = 2.0;
+
     if (mt1pos.tagCount >= 2 && mt1pos.avgTagArea > 0.1) {
       xyStdev = 0.5;
+      thetaStdev = 0.5;
     } else if (mt1pos.tagCount >= 2 || mt1pos.avgTagArea > 0.1) {
       xyStdev = 0.75;
+      thetaStdev = 0.75;
     } else if (mt1pos.avgTagArea > 0.8) {
       xyStdev = 0.8;
+      thetaStdev = 0.8;
     }
-    Matrix<N3, N1> confidenceStdDev = VecBuilder.fill(xyStdev, xyStdev, 9999999);
+    Matrix<N3, N1> confidenceStdDev = VecBuilder.fill(xyStdev, xyStdev, thetaStdev);
     return confidenceStdDev;
   }
 

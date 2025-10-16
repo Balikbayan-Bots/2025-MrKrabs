@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.3665983606557375,
-        "y": 1.0280737704918033
+        "x": 1.745,
+        "y": 1.207249999999999
       },
       "prevControl": {
-        "x": 2.3376024590163933,
-        "y": 1.1599385245901646
+        "x": 2.7160040983606564,
+        "y": 1.3391147540983603
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 3.2397002961022343
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BL Auto",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -151.09081634885223

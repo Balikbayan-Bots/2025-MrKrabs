@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.745,
-        "y": 1.207
+        "x": 7.06,
+        "y": 2.57
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.236094262295082,
-        "y": 1.374901639344262
+        "x": 6.409085506374381,
+        "y": 2.561720631188868
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.237,
-        "y": 2.047028688524591
+        "x": 5.226,
+        "y": 2.913499999999999
       },
       "prevControl": {
-        "x": 2.8533934426229512,
-        "y": 1.7952868852459016
+        "x": 5.4759706394785335,
+        "y": 2.9173313703414085
       },
       "nextControl": null,
       "isLocked": false,
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.0,
-    "rotation": 145.8855270546589
+    "velocity": 0,
+    "rotation": -151.50436138175502
   },
   "reversed": false,
-  "folder": "BL Auto",
+  "folder": "OhlTest",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -151.09081634885223
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

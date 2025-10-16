@@ -81,7 +81,7 @@ public class SwerveCommands {
   }
 
   public static Command driveTagTwentyTwoLeft() {
-    return driveToPose(new Pose2d(4.65, 2.61, new Rotation2d(Units.degreesToRadians(-146.14))))
+    return driveToPose(new Pose2d(4.83, 2.62, new Rotation2d(Units.degreesToRadians(-147.8))))
         .withTimeout(3.0);
   }
 
@@ -96,7 +96,7 @@ public class SwerveCommands {
   }
 
   public static Command driveTagSeventeenRight() {
-    return driveToPose(new Pose2d(4.47, 4.13, new Rotation2d(Units.degreesToRadians(151.4))))
+    return driveToPose(new Pose2d(3.76, 2.83, new Rotation2d(Units.degreesToRadians(153.0))))
         .withTimeout(3.0);
   }
 

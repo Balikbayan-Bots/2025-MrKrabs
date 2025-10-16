@@ -45,7 +45,7 @@
     "rotation": -145.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BL Auto",
   "idealStartingState": {
     "velocity": 0.0,
     "rotation": -90.0
