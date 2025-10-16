@@ -41,7 +41,13 @@ public class Controls {
 
     /*** Driver 'Start' */
     public static final Trigger reorient = driver.start();
-    // public static final Trigger rightPeg = driver.b();
+
+
+    public static final Trigger rightPeg = driver.b();
+    public static final Trigger leftPeg = driver.x();
+    public static final Trigger center = driver.y();
+
+
   }
 
   public final class Debug {
@@ -53,7 +59,7 @@ public class Controls {
     public static final Trigger nudgeDown = coDriver.povRight();
     public static final Trigger nudgeUp = coDriver.povLeft();
 
-    public static final Trigger megatagTest = driver.a();
+    // public static final Trigger megatagTest = driver.a();
   }
 
   public class Setpoint {

@@ -14,10 +14,15 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.controls.Controls;
+import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
+import frc.robot.vision.LimelightHelpers;
+
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class SwerveCommands {
   private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
@@ -104,6 +109,15 @@ public class SwerveCommands {
   // return driveToPose(new Pose2d(13.1, 5.38, new Rotation2d(Units.degreesToRadians(0))))
   //  .withTimeout(2.5);
   // }
+
+  public static Supplier<Command> driveToPeg(SwervePositions.alignMent align) {
+    // DriverStation.reportWarning("Driving to peg: " + LimelightHelpers.getFiducialID("limelight-cbot") + " " + align,new St );
+    return () -> driveToPose(
+      SwervePositions.getScorePostition( 
+        swerve.getCurrentBestTag(),
+         align)
+        ).withTimeout(3);
+  }
 
   public static Command reorient() {
     return swerve.runOnce(() -> swerve.seedFieldCentric());

@@ -6,7 +6,7 @@ public enum BodySetpoint {
   // CORAL_LEVEL1(0.0, 90.0),
   CORAL_LEVEL2(2.0, 45.0),
   CORAL_LEVEL3(9.0, 45.0),
-  CORAL_LEVEL4(23.0, 55.0),
+  CORAL_LEVEL4(24.0, 55.0),
   ALGAE_LEVEL2(9.0, 90.0),
   ALGAE_LEVEL3(18.0, 92.0),
   SAFE_STOW(20.0, 90.0),

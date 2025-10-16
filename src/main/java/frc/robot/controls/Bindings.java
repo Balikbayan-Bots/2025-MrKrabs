@@ -7,6 +7,7 @@ import frc.robot.commands.BodyCommands;
 import frc.robot.commands.ManipulatorCommands;
 import frc.robot.commands.SwerveCommands;
 import frc.robot.subsystems.swerve.SwerveConstants;
+import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.subsystems.swerve.Telemetry;
 
@@ -22,7 +23,11 @@ public class Bindings {
 
     Controls.Swerve.reorient.onTrue(SwerveCommands.reorient());
 
-    Controls.Debug.megatagTest.onTrue(SwerveCommands.driveTagNineLeft());
+    // Controls.Debug.megatagTest.onTrue(SwerveCommands.driveTagNineLeft());
+
+    Controls.Swerve.rightPeg.onTrue(SwerveCommands.driveToPeg(SwervePositions.alignMent.RIGHT).get());
+    Controls.Swerve.leftPeg.onTrue(SwerveCommands.driveToPeg(SwervePositions.alignMent.LEFT).get());
+    Controls.Swerve.center.onTrue(SwerveCommands.driveToPeg(SwervePositions.alignMent.CENTER).get());
 
     // Controls.Swerve.test
     // .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85,

@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.swerve.SwerveConfig.TunerSwerveDrivetrain;
 import frc.robot.vision.LimelightConfigs;
+import frc.robot.vision.LimelightHelpers;
 import frc.robot.vision.Megatag.LimelightConfig;
 import java.util.function.Supplier;
 
@@ -35,6 +36,7 @@ import java.util.function.Supplier;
 public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
   private static SwerveSubsystem instance;
   static LimelightConfig limelight = LimelightConfigs.ReefLimelight;
+  public int currentBestTag = -1;
 
   public static SwerveSubsystem getInstance() {
     if (instance == null) {
@@ -282,6 +284,9 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
               });
     }
     // Megatag.updateOdometry(limelight);
+    currentBestTag = (int) Math.round(LimelightHelpers.getFiducialID(limelight.name()));
+    System.out.println(currentBestTag);
+
   }
 
   private void startSimThread() {
@@ -341,4 +346,8 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
   //     modules[i].apply(new ModuleRequest().withState(states[i]));
   //   }
   // }
+
+  public int getCurrentBestTag() {
+    return currentBestTag;
+  }
 }
