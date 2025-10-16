@@ -49,7 +49,8 @@ public class SwerveCommands {
   }
 
   public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
-    return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0).andThen(stopDrive());
+    return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
+    // .andThen(stopDrive());
   }
 
   // public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
@@ -74,10 +75,35 @@ public class SwerveCommands {
   //   // .andThen(stopDrive());
   // }
 
-  public static Command driveToRedCRightPeg() {
-    return driveToPose(new Pose2d(14.11, 5, new Rotation2d(Units.degreesToRadians(-31))))
-        .withTimeout(2.5);
+  public static Command driveTagNineLeft() {
+    return driveToPose(new Pose2d(13.30, 5.38, new Rotation2d(Units.degreesToRadians(29.8))))
+        .withTimeout(3.0);
   }
+
+  public static Command driveTagTwentyTwoLeft() {
+    return driveToPose(new Pose2d(4.83, 2.62, new Rotation2d(Units.degreesToRadians(-147.8))))
+        .withTimeout(3.0);
+  }
+
+  public static Command driveTagTwentyOneLeft() {
+    return driveToPose(new Pose2d(5.54, 3.53, new Rotation2d(Units.degreesToRadians(-87.69))))
+        .withTimeout(3.0);
+  }
+
+  public static Command driveTagTenLeft() {
+    return driveToPose(new Pose2d(11.83, 4.32, new Rotation2d(Units.degreesToRadians(91))))
+        .withTimeout(3.0);
+  }
+
+  public static Command driveTagSeventeenRight() {
+    return driveToPose(new Pose2d(3.76, 2.83, new Rotation2d(Units.degreesToRadians(153.0))))
+        .withTimeout(3.0);
+  }
+
+  // public static Command debugTurn90() {
+  // return driveToPose(new Pose2d(13.1, 5.38, new Rotation2d(Units.degreesToRadians(0))))
+  //  .withTimeout(2.5);
+  // }
 
   public static Command reorient() {
     return swerve.runOnce(() -> swerve.seedFieldCentric());

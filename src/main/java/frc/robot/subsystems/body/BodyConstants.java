@@ -33,7 +33,7 @@ public class BodyConstants {
   public static final double ELEV_FEED_FWD = 0.5;
 
   public static final double[] ARM_SLOT_ZERO = {
-    1.95, // kP
+    2.5, // kP
     0.0, // kI
     0.01, // kD
     0.0, // kS
@@ -45,14 +45,14 @@ public class BodyConstants {
   public static final double ARM_FEED_FWD = 1.0;
 
   public static final double[] ELEV_MOTION_MAGIC_CONFIGS = {
-    90.0, // Acceleration
-    20.0, // Cruise Velocity
+    120.0, // Acceleration
+    40.0, // Cruise Velocity
     1600.0 // Jerk
   };
 
   public static final double[] ARM_MOTION_MAGIC_CONFIGS = {
-    40.0, // Acceleration
-    20.0, // Cruise Velocity
+    70.0, // Acceleration
+    35.0, // Cruise Velocity
     1800.0 // Jerk
   };
 

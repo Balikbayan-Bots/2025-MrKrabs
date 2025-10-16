@@ -7,17 +7,25 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.commands.CommandRegistry.CommandWrapper;
 import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSetpoint;
 import frc.robot.subsystems.manipulators.IntakeSubsytem;
+import java.util.LinkedList;
 
 public class BodyCommands {
 
   private static ElevatorSubsystem elev = ElevatorSubsystem.getInstance();
   private static ArmSubsystem arm = ArmSubsystem.getInstance();
   private static IntakeSubsytem intake = IntakeSubsytem.getInstance();
+
+  public static LinkedList<CommandWrapper> bodyCommandList = new LinkedList<>();
+
+  static {
+    bodyCommandList.add(new CommandWrapper("Level Four", positionLevelFour()));
+  }
 
   public static Command armSetpointRun(BodySetpoint setpoint) {
     return new InstantCommand(
@@ -84,12 +92,15 @@ public class BodyCommands {
 
   public static Command positionLevelFour() {
     return // new SequentialCommandGroup(
-    new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.CORAL_LEVEL4),
-
+    new SequentialCommandGroup(
+        // elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(elev::isAtSetpoint),
+        new RunCommand(() -> elev.updateSetpoint(BodySetpoint.CORAL_LEVEL4), elev).withTimeout(1.0),
+        new RunCommand(() -> arm.updateSetpoint(BodySetpoint.CORAL_LEVEL4), arm)
+            .until(arm::isAtSetpoint)
         // new SequentialCommandGroup(
         // new WaitCommand(1.0),
-        armSetpointRun(BodySetpoint.CORAL_LEVEL4)
+        // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
+        // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(arm::isAtSetpoint)
         // elevSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> elev.isAtSetpoint()),
         // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
         // )
@@ -108,6 +119,18 @@ public class BodyCommands {
         // armSetpointRun(BodySetpoint.CORAL_LEVEL4).until(() -> arm.isAtSetpoint())
         // )
         );
+  }
+
+  public static Command positionLowAlgae() {
+    return new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.ALGAE_LEVEL2), armSetpointRun(BodySetpoint.ALGAE_LEVEL2));
+  }
+
+  public static Command positionFloorAlgae() {
+    return new SequentialCommandGroup(
+        intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.5),
+        new ParallelCommandGroup(
+            elevSetpointRun(BodySetpoint.FLOOR_ALGAE), armSetpointRun(BodySetpoint.FLOOR_ALGAE)));
   }
 
   public static Command positionNet() {
