@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
@@ -56,6 +57,10 @@ public class SwerveCommands {
   public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
     return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
     // .andThen(stopDrive());
+  }
+
+  public static ProxyCommand driveToPegProxy(SwervePositions.alignMent align) {
+    return new ProxyCommand(()->driveToPeg(align));
   }
 
   // public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
@@ -110,9 +115,9 @@ public class SwerveCommands {
   //  .withTimeout(2.5);
   // }
 
-  public static Supplier<Command> driveToPeg(SwervePositions.alignMent align) {
+  public static Command driveToPeg(SwervePositions.alignMent align) {
     // DriverStation.reportWarning("Driving to peg: " + LimelightHelpers.getFiducialID("limelight-cbot") + " " + align,new St );
-    return () -> driveToPose(
+    return driveToPose(
       SwervePositions.getScorePostition( 
         swerve.getCurrentBestTag(),
          align)

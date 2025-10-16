@@ -134,9 +134,10 @@ public class ManipulatorCommands {
     return new SequentialCommandGroup(
         intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25),
         new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake)
-            .until(() -> intake.hasCoral()),
-        new WaitCommand(.25),
-        intakeLevelHandoff());
+            // .until(() -> intake.hasCoral()),
+        // new WaitCommand(.25),
+        // intakeLevelHandoff()
+        );
   }
 
   public static Command handoff() {
