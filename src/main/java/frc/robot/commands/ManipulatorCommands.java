@@ -72,9 +72,10 @@ public class ManipulatorCommands {
 
   public static Command beamAlgaeIntake() {
     return new SequentialCommandGroup(
-        new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
-            .until(() -> claw.getBeamBreak()),
-        setClawState(ClawState.HOLDING_ALGAE));
+            new RunCommand(() -> claw.setState(ClawState.INTAKE), claw)
+                .until(() -> claw.getBeamBreak()),
+            setClawState(ClawState.HOLDING_ALGAE))
+        .withTimeout(.1);
   }
 
   public static Command algaeScore() {
@@ -110,6 +111,14 @@ public class ManipulatorCommands {
         setIntakeState(IntakeState.START));
   }
 
+  public static Command autoL4score() {
+    return new SequentialCommandGroup(
+        BodyCommands.armSetpointRun(BodySetpoint.SCORE),
+        setClawState(ClawState.SCORE).withTimeout(.1),
+        new WaitCommand(.25),
+        setClawState(ClawState.IDLE).withTimeout(.1));
+  }
+
   public static Command intakeLevelOne() {
 
     return intakeSetpointRun(IntakeSetpoint.LVL_ONE);
@@ -117,7 +126,7 @@ public class ManipulatorCommands {
 
   public static Command intakeLevelHandoff() {
     return new SequentialCommandGroup(
-        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).until(intake::isAtSetpoint),
+        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(0.5),
         setIntakeState(IntakeState.HOLD));
   }
 
@@ -125,9 +134,10 @@ public class ManipulatorCommands {
     return new SequentialCommandGroup(
         intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25),
         new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake)
-            .until(() -> intake.hasCoral()),
-        new WaitCommand(.25),
-        intakeLevelHandoff());
+            // .until(() -> intake.hasCoral()),
+        // new WaitCommand(.25),
+        // intakeLevelHandoff()
+        );
   }
 
   public static Command handoff() {

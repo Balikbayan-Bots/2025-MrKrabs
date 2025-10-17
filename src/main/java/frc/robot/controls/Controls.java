@@ -41,7 +41,13 @@ public class Controls {
 
     /*** Driver 'Start' */
     public static final Trigger reorient = driver.start();
-    // public static final Trigger rightPeg = driver.b();
+
+
+    public static final Trigger rightPeg = driver.b();
+    public static final Trigger leftPeg = driver.x();
+    public static final Trigger center = driver.y();
+
+
   }
 
   public final class Debug {
@@ -52,7 +58,8 @@ public class Controls {
     public static final Trigger magnetRezero = driver.povUpRight();
     public static final Trigger nudgeDown = coDriver.povRight();
     public static final Trigger nudgeUp = coDriver.povLeft();
-    public static final Trigger megatagTest = driver.a();
+
+    // public static final Trigger megatagTest = driver.a();
   }
 
   public class Setpoint {
@@ -69,11 +76,13 @@ public class Controls {
     public static final Trigger lvlFour = coDriver.y();
 
     // set to upper stow for scoring L4-L2 and Algae
-    public static final Trigger stowUp = coDriver.povUp();
+    public static final Trigger stowUp = coDriver.button(9); // Left stick button
     // set to lower stow for scoring L1 with Intake
-    public static final Trigger stowLow = coDriver.povDown();
-    public static final Trigger algaeHigh = coDriver.povRight();
+    public static final Trigger stowLow = coDriver.button(10); // Right stick button
+    public static final Trigger algaeHigh = coDriver.povUp();
+    public static final Trigger algaeLow = coDriver.povDown();
     public static final Trigger netPos = coDriver.povLeft();
+    public static final Trigger algaeFloor = coDriver.povRight();
   }
 
   public class Climb {

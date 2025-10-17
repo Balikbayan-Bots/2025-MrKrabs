@@ -75,7 +75,7 @@ public class IntakeLimelightSubsystem extends SubsystemBase implements Limelight
   }
 
   public int getPipeline() {
-    return (int) limelight.getEntry("pipeline").getDouble(0);
+    return (int) limelight.getEntry("pipeline").getDouble(7);
   }
 
   @Override
