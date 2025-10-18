@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import java.util.LinkedList;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -15,6 +13,7 @@ import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSetpoint;
 import frc.robot.subsystems.manipulators.IntakeSubsytem;
+import java.util.LinkedList;
 
 public class BodyCommands {
 
@@ -57,8 +56,7 @@ public class BodyCommands {
         elevSetpointRun(BodySetpoint.HANDOFF),
         new WaitUntilCommand(() -> elev.isAtSetpoint()),
         armSetpointRun(BodySetpoint.HANDOFF),
-        new WaitUntilCommand(() -> arm.isAtSetpoint())
-        );
+        new WaitUntilCommand(() -> arm.isAtSetpoint()));
   }
 
   public static Command positionLevelTwo() {
@@ -88,20 +86,15 @@ public class BodyCommands {
   }
 
   public static Command positionLevelFour() {
-    return
-    new SequentialCommandGroup(
+    return new SequentialCommandGroup(
         new RunCommand(() -> elev.updateSetpoint(BodySetpoint.CORAL_LEVEL4), elev).withTimeout(1.0),
         new RunCommand(() -> arm.updateSetpoint(BodySetpoint.CORAL_LEVEL4), arm)
-            .until(arm::isAtSetpoint)
-        );
+            .until(arm::isAtSetpoint));
   }
 
   public static Command positionHighAlgae() {
-    return
-    new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.ALGAE_LEVEL3),
-        armSetpointRun(BodySetpoint.ALGAE_LEVEL3)
-        );
+    return new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.ALGAE_LEVEL3), armSetpointRun(BodySetpoint.ALGAE_LEVEL3));
   }
 
   public static Command positionLowAlgae() {
@@ -117,11 +110,8 @@ public class BodyCommands {
   }
 
   public static Command positionNet() {
-    return
-    new ParallelCommandGroup(
-        elevSetpointRun(BodySetpoint.HIGH_NET),
-        armSetpointRun(BodySetpoint.HIGH_NET)
-        );
+    return new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.HIGH_NET), armSetpointRun(BodySetpoint.HIGH_NET));
   }
 
   public static Command positionStow() {

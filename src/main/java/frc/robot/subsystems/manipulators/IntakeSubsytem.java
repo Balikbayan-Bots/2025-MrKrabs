@@ -1,21 +1,5 @@
 package frc.robot.subsystems.manipulators;
 
-import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.configs.CANrangeConfiguration;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.hardware.CANrange;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
-import com.ctre.phoenix6.signals.UpdateModeValue;
-
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_HIST;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_ID;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_SIGSTRENGTH;
@@ -30,6 +14,22 @@ import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_MOTI
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_ROLLERS_MOTOR_ID;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_SLOT_ZERO;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.kIntakeLimits;
+
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.hardware.CANrange;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.ctre.phoenix6.signals.UpdateModeValue;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsytem extends SubsystemBase {
   public static IntakeSubsytem m_instance;

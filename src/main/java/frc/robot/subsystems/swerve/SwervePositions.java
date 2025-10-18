@@ -1,11 +1,10 @@
 package frc.robot.subsystems.swerve;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 // The reef positions go clockwise, index 0 is the farthest reef face at the driverstation that you
 // are at.
