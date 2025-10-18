@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.797,
-        "y": 3.929
+        "x": 2.0498975409836064,
+        "y": 1.5135758196721303
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.005713939989185,
-        "y": 4.231089154570068
+        "x": 2.5134367441667638,
+        "y": 1.3486446489417068
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "MD - BR 2"
     },
     {
       "anchor": {
-        "x": 7.792008196721311,
-        "y": 5.313678278688524
+        "x": 3.3445696721311475,
+        "y": 2.172899590163934
       },
       "prevControl": {
-        "x": 7.599813326716106,
-        "y": 4.663178921031457
+        "x": 3.0840718407440537,
+        "y": 2.220757586519893
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Algea end path"
+      "linkedName": "MD - BR 3"
     }
   ],
   "rotationTargets": [],
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 90.0
+    "velocity": 0.1,
+    "rotation": 150.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "MichaelDev",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 29.999999999999996
   },
   "useDefaultConstraints": false
 }

@@ -5,28 +5,35 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "ID 21 Left"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "LVL4"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Left Peg"
+                      }
+                    }
+                  ]
                 }
               },
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "LVL4"
+                  "waitTime": 3.5
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
           }
         },
         {
@@ -101,6 +108,18 @@
           "type": "named",
           "data": {
             "name": "scoreNet"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net Clear"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Lower Stow"
           }
         }
       ]

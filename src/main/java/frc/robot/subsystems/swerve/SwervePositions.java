@@ -2,7 +2,6 @@ package frc.robot.subsystems.swerve;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -49,29 +48,32 @@ public class SwervePositions {
   static {
     // Example of setting a position
     // ReefLeft[0] = new Pose2d(1.0, 2.0, new Rotation2d(Units.degreesToRadians(90.0)));
+    validIDS.add(7);
+    validIDS.add(8);
+    validIDS.add(9);
     validIDS.add(17);
     validIDS.add(18);
+    validIDS.add(19);
+    validIDS.add(20);
+    validIDS.add(21);
     validIDS.add(22);
     //TODO: make 12 instaed of 6
-    // ReefLeft.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    // ReefLeft.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    // ReefLeft.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
+
     ReefLeft.put(17,new Pose2d(3.45, 3.06, new Rotation2d(Units.degreesToRadians(149.5))));
     ReefLeft.put(18,new Pose2d(3.08, 4.41, new Rotation2d(Units.degreesToRadians(90.0))));
-    ReefLeft.put(22,new Pose2d(4.8, 2.64, new Rotation2d(Units.degreesToRadians(-153.9))));
-    
-    // ReefCenter.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    // ReefCenter.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    // ReefCenter.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    ReefCenter.put(17,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    ReefCenter.put(18,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    ReefCenter.put(22,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
+    ReefLeft.put(19,new Pose2d(4.115, 5.429, new Rotation2d(Units.degreesToRadians(30))));
+    ReefLeft.put(20,new Pose2d(5.48, 5.03, new Rotation2d(Units.degreesToRadians(-28.5))));
+    ReefLeft.put(21,new Pose2d(5.88, 3.67, new Rotation2d(Units.degreesToRadians(-90.5))));
+    ReefLeft.put(22,new Pose2d(4.885, 2.628, new Rotation2d(Units.degreesToRadians(-150))));
 
-    // ReefRight.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    // ReefRight.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
-    // ReefRight.put(0,new Pose2d(0.0, 0.0, new Rotation2d(Units.degreesToRadians(0.0))));
+    ReefCenter.put(21,new Pose2d(6.045, 3.840, new Rotation2d(Units.degreesToRadians(-90))));
+
+
     ReefRight.put(17,new Pose2d(3.74, 2.89, new Rotation2d(Units.degreesToRadians(147.8))));
     ReefRight.put(18,new Pose2d(3.11, 4.06, new Rotation2d(Units.degreesToRadians(90.0))));
-    ReefRight.put(22,new Pose2d(5.16, 2.86, new Rotation2d(Units.degreesToRadians(-148.8))));
+    ReefRight.put(19,new Pose2d(3.822,5.244 , new Rotation2d(Units.degreesToRadians(30))));
+    ReefRight.put(20,new Pose2d(5.23, 5.2, new Rotation2d(Units.degreesToRadians(-31.2))));
+    ReefRight.put(21,new Pose2d(5.84, 4, new Rotation2d(Units.degreesToRadians(-90.3))));
+    ReefRight.put(22,new Pose2d(5.155, 2.784, new Rotation2d(Units.degreesToRadians(-150))));
   }
 }

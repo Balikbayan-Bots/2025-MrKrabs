@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.Map;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -16,7 +18,6 @@ import frc.robot.subsystems.manipulators.ClawSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSetpoint;
 import frc.robot.subsystems.manipulators.IntakeState;
 import frc.robot.subsystems.manipulators.IntakeSubsytem;
-import java.util.Map;
 
 public class ManipulatorCommands {
 
@@ -126,8 +127,9 @@ public class ManipulatorCommands {
 
   public static Command intakeLevelHandoff() {
     return new SequentialCommandGroup(
-        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(0.5),
-        setIntakeState(IntakeState.HOLD));
+        setIntakeState(IntakeState.HOLD),
+        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(0.5)
+        );
   }
 
   public static Command groundIntake() {
@@ -136,7 +138,7 @@ public class ManipulatorCommands {
         new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake)
             // .until(() -> intake.hasCoral()),
         // new WaitCommand(.25),
-        // intakeLevelHandoff()
+        // intakeLevelHandoff()  TODO: FIX TOLERANCE?
         );
   }
 
@@ -147,6 +149,7 @@ public class ManipulatorCommands {
 
   public static Command handover() {
     return new SequentialCommandGroup(
+        intakeLevelHandoff(),
         BodyCommands.positionHandoff(),
 
         // new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
