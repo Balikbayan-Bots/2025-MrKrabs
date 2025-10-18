@@ -60,7 +60,6 @@ public class Megatag {
     if (!doRejectUpdate) {
       // CRITICAL FIX: Use the correct addVisionMeasurement overload to apply confidence (StdDev)
       swerve.addVisionMeasurement(mt1.pose, mt1.timestampSeconds, confid);
-      
     }
   }
 

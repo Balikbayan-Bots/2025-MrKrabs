@@ -42,12 +42,9 @@ public class Controls {
     /*** Driver 'Start' */
     public static final Trigger reorient = driver.start();
 
-
     public static final Trigger rightPeg = driver.b();
     public static final Trigger leftPeg = driver.x();
     public static final Trigger center = driver.y();
-
-
   }
 
   public final class Debug {

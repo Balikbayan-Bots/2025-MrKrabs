@@ -14,16 +14,12 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
-import frc.robot.vision.LimelightHelpers;
-
 import java.util.ArrayList;
-import java.util.function.Supplier;
 
 public class SwerveCommands {
   private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
@@ -60,7 +56,7 @@ public class SwerveCommands {
   }
 
   public static ProxyCommand driveToPegProxy(SwervePositions.alignMent align) {
-    return new ProxyCommand(()->driveToPeg(align));
+    return new ProxyCommand(() -> driveToPeg(align));
   }
 
   // public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
@@ -116,12 +112,10 @@ public class SwerveCommands {
   // }
 
   public static Command driveToPeg(SwervePositions.alignMent align) {
-    // DriverStation.reportWarning("Driving to peg: " + LimelightHelpers.getFiducialID("limelight-cbot") + " " + align,new St );
-    return driveToPose(
-      SwervePositions.getScorePostition( 
-        swerve.getCurrentBestTag(),
-         align)
-        ).withTimeout(3);
+    // DriverStation.reportWarning("Driving to peg: " +
+    // LimelightHelpers.getFiducialID("limelight-cbot") + " " + align,new St );
+    return driveToPose(SwervePositions.getScorePostition(swerve.getCurrentBestTag(), align))
+        .withTimeout(3);
   }
 
   public static Command reorient() {

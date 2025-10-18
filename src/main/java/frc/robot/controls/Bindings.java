@@ -25,7 +25,8 @@ public class Bindings {
 
     // Controls.Debug.megatagTest.onTrue(SwerveCommands.driveTagNineLeft());
 
-    Controls.Swerve.rightPeg.onTrue(SwerveCommands.driveToPegProxy(SwervePositions.alignMent.RIGHT));
+    Controls.Swerve.rightPeg.onTrue(
+        SwerveCommands.driveToPegProxy(SwervePositions.alignMent.RIGHT));
     Controls.Swerve.leftPeg.onTrue(SwerveCommands.driveToPegProxy(SwervePositions.alignMent.LEFT));
     Controls.Swerve.center.onTrue(SwerveCommands.driveToPegProxy(SwervePositions.alignMent.CENTER));
 
