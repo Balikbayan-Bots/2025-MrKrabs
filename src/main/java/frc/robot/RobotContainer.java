@@ -24,10 +24,11 @@ public class RobotContainer {
 
   // Declare Subsystems
   public final SwerveSubsystem swerve;
-  public final ClawSubsystem claw;
   public final ArmSubsystem arm;
   public final ElevatorSubsystem elevator;
+  public final ClawSubsystem claw;
   public final IntakeSubsytem intake;
+
   // Declare Choosers
   private final SendableChooser<Command> autoChooser;
 
@@ -41,8 +42,8 @@ public class RobotContainer {
     elevator = ElevatorSubsystem.getInstance();
     claw = ClawSubsystem.getInstance();
     intake = IntakeSubsytem.getInstance();
-    // Initialize Choosers
 
+    // Initialize Choosers
     CommandRegistry.registerAllCommands(
         BodyCommands.bodyCommandList.toArray(new CommandRegistry.CommandWrapper[0]));
     NamedCommands.registerCommand("ID 9 Left", SwerveCommands.driveTagNineLeft());
@@ -70,15 +71,14 @@ public class RobotContainer {
 
     autoChooser = AutoBuilder.buildAutoChooser("Tests");
 
-    // NamedCommands.registerCommand("Limelight Source", );
     configureBindings();
     configureDashboard();
   }
 
   private void configureBindings() {
     Bindings.configureSwerveBinds();
-    Bindings.configureClawBinds();
     Bindings.configureBodyBinds();
+    Bindings.configureClawBinds();
     Bindings.configureIntakeBinds();
   }
 

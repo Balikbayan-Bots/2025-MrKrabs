@@ -20,10 +20,10 @@ import java.util.Map;
 
 public class ManipulatorCommands {
 
-  private static ClawSubsystem claw = ClawSubsystem.getInstance();
-  private static IntakeSubsytem intake = IntakeSubsytem.getInstance();
-  private static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
-  private static ArmSubsystem arm = ArmSubsystem.getInstance();
+  private static final ClawSubsystem claw = ClawSubsystem.getInstance();
+  private static final IntakeSubsytem intake = IntakeSubsytem.getInstance();
+  private static final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
+  private static final ArmSubsystem arm = ArmSubsystem.getInstance();
 
   private static Command setClawState(ClawState state) {
     return new RunCommand(
@@ -133,11 +133,7 @@ public class ManipulatorCommands {
   public static Command groundIntake() {
     return new SequentialCommandGroup(
         intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25),
-        new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake)
-        // .until(() -> intake.hasCoral()),
-        // new WaitCommand(.25),
-        // intakeLevelHandoff()  TODO: FIX TOLERANCE?
-        );
+        new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake));
   }
 
   public static Command handoff() {
@@ -149,9 +145,6 @@ public class ManipulatorCommands {
     return new SequentialCommandGroup(
         intakeLevelHandoff(),
         BodyCommands.positionHandoff(),
-
-        // new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
-
         new ParallelDeadlineGroup(beamIntake(), setIntakeState(IntakeState.HANDOFF)).withTimeout(5),
         stopIntake().withTimeout(0.5),
         setIntakeState(IntakeState.START));

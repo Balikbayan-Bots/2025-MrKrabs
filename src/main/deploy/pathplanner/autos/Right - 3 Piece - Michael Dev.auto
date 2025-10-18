@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MD - BR 1"
+            "pathName": "Right - 3 Piece - Michael Dev - 1"
           }
         },
         {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "MD - BR 2"
+                  "pathName": "Right - 3 Piece - Michael Dev - 2"
                 }
               },
               {
@@ -99,7 +99,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "MD - BR 3"
+                  "pathName": "Right - 3 Piece - Michael Dev - 3"
                 }
               },
               {
@@ -156,7 +156,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "MD - BR 4"
+                  "pathName": "Right - 3 Piece - Michael Dev - 4"
                 }
               },
               {
@@ -200,7 +200,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "MD - BR 3"
+                  "pathName": "Right - 3 Piece - Michael Dev - 3"
                 }
               },
               {
@@ -248,6 +248,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Michael Dev",
+  "folder": "Right - 3 Piece",
   "choreoAuto": false
 }

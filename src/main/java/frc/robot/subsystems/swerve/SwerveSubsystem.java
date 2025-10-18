@@ -1,6 +1,7 @@
 package frc.robot.subsystems.swerve;
 
-import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
@@ -339,13 +340,6 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
     super.addVisionMeasurement(
         visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
   }
-
-  // public void setModuleStates(SwerveModuleState[] states) {
-  //   SwerveModule[] modules = getModules();
-  //   for (int i = 0; i < modules.length; i++) {
-  //     modules[i].apply(new ModuleRequest().withState(states[i]));
-  //   }
-  // }
 
   public int getCurrentBestTag() {
     return currentBestTag;

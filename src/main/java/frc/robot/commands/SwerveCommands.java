@@ -22,7 +22,7 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.util.ArrayList;
 
 public class SwerveCommands {
-  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
   private SwerveCommands() {
     throw new IllegalStateException("Utility class");
@@ -52,34 +52,11 @@ public class SwerveCommands {
 
   public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
     return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
-    // .andThen(stopDrive());
   }
 
   public static ProxyCommand driveToPegProxy(SwervePositions.alignMent align) {
     return new ProxyCommand(() -> driveToPeg(align));
   }
-
-  // public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
-  //   Pose2d currentPose = swerve.getState().Pose;
-  //   Trajectory trajectory = generateTrajectory(currentPose, targetPosition);
-  //   var thetaController =
-  //       new ProfiledPIDController(
-  //           0.0, 0, 0, new Constraints(0.25, 120)); //TODO: THESE 12 VALUES ARE JUST PLACEHOLDERS
-  //   thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-  //   return new SwerveControllerCommand(
-  //   trajectory,
-  //   () -> getPose(),
-  //   swerve.getKinematics(),
-
-  //   new PIDController(0, 0, 0),
-  //   new PIDController(0, 0, 0), //TODO: THESE 0.1 VALUES ARE JUST PLACEHOLDERS
-  //   thetaController,
-  //   swerve::setModuleStates,
-  //   swerve
-  //   );
-  //   // .andThen(stopDrive());
-  // }
 
   public static Command driveTagNineLeft() {
     return driveToPose(new Pose2d(13.30, 5.38, new Rotation2d(Units.degreesToRadians(29.8))))
@@ -106,14 +83,7 @@ public class SwerveCommands {
         .withTimeout(3.0);
   }
 
-  // public static Command debugTurn90() {
-  // return driveToPose(new Pose2d(13.1, 5.38, new Rotation2d(Units.degreesToRadians(0))))
-  //  .withTimeout(2.5);
-  // }
-
   public static Command driveToPeg(SwervePositions.alignMent align) {
-    // DriverStation.reportWarning("Driving to peg: " +
-    // LimelightHelpers.getFiducialID("limelight-cbot") + " " + align,new St );
     return driveToPose(SwervePositions.getScorePostition(swerve.getCurrentBestTag(), align))
         .withTimeout(3);
   }

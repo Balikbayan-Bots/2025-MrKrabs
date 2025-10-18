@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0498975409836064,
-        "y": 1.5135758196721303
+        "x": 7.06,
+        "y": 2.57
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5134367441667638,
-        "y": 1.3486446489417068
+        "x": 6.359385245901638,
+        "y": 2.4173647540983603
       },
       "isLocked": false,
-      "linkedName": "MD - BR 2"
+      "linkedName": "Right - 2 Piece - Blue - 1 - Start"
     },
     {
       "anchor": {
-        "x": 3.3445696721311475,
-        "y": 2.172899590163934
+        "x": 5.526331967213115,
+        "y": 2.3107581967213116
       },
       "prevControl": {
-        "x": 3.0840718407440537,
-        "y": 2.220757586519893
+        "x": 5.749938764963093,
+        "y": 2.4225615955963025
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MD - BR 3"
+      "linkedName": "Right - 2 Piece - Blue - 1 - End"
     }
   ],
   "rotationTargets": [],
@@ -34,21 +34,21 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 12.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.1,
-    "rotation": 150.0
+    "velocity": 1.0,
+    "rotation": -145.0
   },
   "reversed": false,
-  "folder": "MichaelDev",
+  "folder": "Right - 2 Piece - Blue",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 29.999999999999996
+    "velocity": 0.0,
+    "rotation": -90.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

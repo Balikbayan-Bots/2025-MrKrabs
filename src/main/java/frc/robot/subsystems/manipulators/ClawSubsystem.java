@@ -25,8 +25,8 @@ public class ClawSubsystem extends SubsystemBase {
 
   private ClawState state = ClawState.IDLE;
 
-  private TalonFX motor;
-  private DigitalInput beamBreak;
+  private final TalonFX motor;
+  private final DigitalInput beamBreak;
 
   private ClawSubsystem() {
     motor = new TalonFX(CLAW_MOTOR_ID);

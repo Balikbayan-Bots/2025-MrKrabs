@@ -41,23 +41,21 @@ public class IntakeSubsytem extends SubsystemBase {
     return m_instance;
   }
 
-  private TalonFX deployMotor;
-  private TalonFX centerMotor;
-  private TalonFX rollersMotor;
+  private final TalonFX deployMotor;
+  private final TalonFX centerMotor;
+  private final TalonFX rollersMotor;
 
   private IntakeState state = IntakeState.START;
 
   private double refrenceDegrees = 0;
 
-  private MotionMagicVoltage motionMagic;
+  private final MotionMagicVoltage motionMagic;
 
   private IntakeSetpoint activeSetpoint = IntakeSetpoint.STOWED_HANDOFF;
   private final CANBus kCANBus = new CANBus("rio");
   private final CANrange canRange = new CANrange(INTAKE_CANRANGE_ID, kCANBus);
   private double hasObject = canRange.getIsDetected().getValueAsDouble();
   private double getCoralDistance = canRange.getDistance().getValueAsDouble();
-
-  // private double threshDistance = getCoralDistance +.1 ;
 
   private IntakeSubsytem() {
 
@@ -93,7 +91,7 @@ public class IntakeSubsytem extends SubsystemBase {
     TalonFXConfiguration newConfig = new TalonFXConfiguration();
 
     var limits = newConfig.SoftwareLimitSwitch;
-    limits.ForwardSoftLimitEnable = false; // TODO: PUT ACTUAL LIMITS
+    limits.ForwardSoftLimitEnable = false;
     limits.ReverseSoftLimitEnable = false;
 
     var current = newConfig.CurrentLimits;
@@ -134,6 +132,7 @@ public class IntakeSubsytem extends SubsystemBase {
     refrenceDegrees = degrees;
   }
 
+  @Override
   public void periodic() {
     updateReference(activeSetpoint.getDegrees());
     deployMotor.setControl(

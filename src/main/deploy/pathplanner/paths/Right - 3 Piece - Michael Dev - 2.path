@@ -12,7 +12,7 @@
         "y": 1.9890725606950772
       },
       "isLocked": false,
-      "linkedName": "MD - BR 1"
+      "linkedName": "Right - 2 Piece - Michael Dev - 1 - End"
     },
     {
       "anchor": {
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MD - BR 2"
+      "linkedName": "Right - 2 Piece - Michael Dev - 2 - End"
     }
   ],
   "rotationTargets": [],
@@ -61,7 +61,7 @@
     "rotation": 29.999999999999996
   },
   "reversed": false,
-  "folder": "MichaelDev",
+  "folder": "Right - 3 Piece - Michael Dev",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -150.0

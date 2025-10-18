@@ -23,29 +23,20 @@ public class SwervePositions {
   }
 
   public static Pose2d getScorePostition(int tagNum, alignMent align) {
-    // if (index < 0 || index >= positions.length) {
-    //   throw new IndexOutOfBoundsException("Index out of bounds for position set");
-    // }
 
     if (!validIDS.contains(tagNum)) {
       return swerve.getState().Pose;
     }
 
-    switch (align) {
-      case LEFT:
-        return ReefLeft.get(tagNum);
-      case CENTER:
-        return ReefCenter.get(tagNum);
-      case RIGHT:
-        return ReefRight.get(tagNum);
-      default:
-        return swerve.getState().Pose;
-    }
+    return switch (align) {
+      case LEFT -> ReefLeft.get(tagNum);
+      case CENTER -> ReefCenter.get(tagNum);
+      case RIGHT -> ReefRight.get(tagNum);
+      default -> swerve.getState().Pose;
+    };
   }
 
   static {
-    // Example of setting a position
-    // ReefLeft[0] = new Pose2d(1.0, 2.0, new Rotation2d(Units.degreesToRadians(90.0)));
     validIDS.add(7);
     validIDS.add(8);
     validIDS.add(9);
@@ -55,7 +46,6 @@ public class SwervePositions {
     validIDS.add(20);
     validIDS.add(21);
     validIDS.add(22);
-    // TODO: make 12 instaed of 6
 
     ReefLeft.put(17, new Pose2d(3.45, 3.06, new Rotation2d(Units.degreesToRadians(149.5))));
     ReefLeft.put(18, new Pose2d(3.08, 4.41, new Rotation2d(Units.degreesToRadians(90.0))));
