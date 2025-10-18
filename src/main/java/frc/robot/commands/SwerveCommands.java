@@ -22,7 +22,7 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.util.ArrayList;
 
 public class SwerveCommands {
-  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
   private SwerveCommands() {
     throw new IllegalStateException("Utility class");

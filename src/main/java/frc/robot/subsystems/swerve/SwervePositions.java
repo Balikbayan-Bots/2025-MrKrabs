@@ -1,10 +1,11 @@
 package frc.robot.subsystems.swerve;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 // The reef positions go clockwise, index 0 is the farthest reef face at the driverstation that you
 // are at.
@@ -31,16 +32,12 @@ public class SwervePositions {
       return swerve.getState().Pose;
     }
 
-    switch (align) {
-      case LEFT:
-        return ReefLeft.get(tagNum);
-      case CENTER:
-        return ReefCenter.get(tagNum);
-      case RIGHT:
-        return ReefRight.get(tagNum);
-      default:
-        return swerve.getState().Pose;
-    }
+      return switch (align) {
+          case LEFT -> ReefLeft.get(tagNum);
+          case CENTER -> ReefCenter.get(tagNum);
+          case RIGHT -> ReefRight.get(tagNum);
+          default -> swerve.getState().Pose;
+      };
   }
 
   static {

@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import java.util.function.Supplier;
 
 public class Controls {
-  private static OperatorInterface oi = OperatorInterface.getInstance();
-  private static CommandXboxController driver = oi.getDriver();
-  private static CommandXboxController coDriver = oi.getCoDriver();
+  private static final OperatorInterface oi = OperatorInterface.getInstance();
+  private static final CommandXboxController driver = oi.getDriver();
+  private static final CommandXboxController coDriver = oi.getCoDriver();
 
   private Controls() {
     throw new IllegalStateException("Utility class");

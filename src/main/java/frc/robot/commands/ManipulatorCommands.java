@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.Map;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -16,14 +18,13 @@ import frc.robot.subsystems.manipulators.ClawSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSetpoint;
 import frc.robot.subsystems.manipulators.IntakeState;
 import frc.robot.subsystems.manipulators.IntakeSubsytem;
-import java.util.Map;
 
 public class ManipulatorCommands {
 
-  private static ClawSubsystem claw = ClawSubsystem.getInstance();
-  private static IntakeSubsytem intake = IntakeSubsytem.getInstance();
-  private static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
-  private static ArmSubsystem arm = ArmSubsystem.getInstance();
+  private static final ClawSubsystem claw = ClawSubsystem.getInstance();
+  private static final IntakeSubsytem intake = IntakeSubsytem.getInstance();
+  private static final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
+  private static final ArmSubsystem arm = ArmSubsystem.getInstance();
 
   private static Command setClawState(ClawState state) {
     return new RunCommand(
