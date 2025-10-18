@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,6 +16,7 @@ import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.ClawSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSubsytem;
+import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class RobotContainer {
@@ -59,6 +61,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("goNet", BodyCommands.positionNet());
     NamedCommands.registerCommand("scoreNet", ManipulatorCommands.algaeScore());
     NamedCommands.registerCommand("handover", ManipulatorCommands.handover());
+    NamedCommands.registerCommand("Left Peg", SwerveCommands.driveToPegProxy(SwervePositions.alignMent.LEFT));
+    NamedCommands.registerCommand("Right Peg", SwerveCommands.driveToPegProxy(SwervePositions.alignMent.RIGHT));
+    NamedCommands.registerCommand("Middle", SwerveCommands.driveToPegProxy(SwervePositions.alignMent.CENTER));
 
     autoChooser = AutoBuilder.buildAutoChooser("Tests");
 

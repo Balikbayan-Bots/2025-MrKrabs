@@ -4,10 +4,11 @@
   "holonomicMode": true,
   "pathFolders": [
     "BL Auto",
-    "Tuning",
-    "OhlTest"
+    "MichaelDev"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Michael Dev"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
