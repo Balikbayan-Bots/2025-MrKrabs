@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue Left path 1"
+            "pathName": "Right - 2 Piece - Blue - 1"
           }
         },
         {
@@ -48,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue 1 Piece path 2"
+                  "pathName": "Right - 2 Piece - Blue - 2"
                 }
               },
               {
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Blue 1 Piece path 3"
+                  "pathName": "Right - 2 Piece - Blue - 3"
                 }
               },
               {
@@ -125,13 +125,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue L Path 4"
+            "pathName": "Right - 2 Piece - Blue - 4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Right - 2 Piece",
   "choreoAuto": false
 }

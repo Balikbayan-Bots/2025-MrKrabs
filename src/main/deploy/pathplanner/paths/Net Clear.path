@@ -45,7 +45,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center - 1 Piece",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0

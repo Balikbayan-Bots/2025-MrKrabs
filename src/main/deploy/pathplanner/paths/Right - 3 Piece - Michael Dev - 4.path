@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.0,
-        "y": 4.0
+        "x": 3.3445696721311475,
+        "y": 2.172899590163934
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.000883433677666,
-        "y": 4.501993350434764
+        "x": 2.9055308383410403,
+        "y": 1.7485524517460558
       },
       "isLocked": false,
-      "linkedName": "Test End"
+      "linkedName": "Right - 2 Piece - Michael Dev - 3 - End"
     },
     {
       "anchor": {
-        "x": 7.0,
-        "y": 3.0
+        "x": 2.0498975409836064,
+        "y": 1.5135758196721303
       },
       "prevControl": {
-        "x": 6.999171669184726,
-        "y": 2.7482270125043833
+        "x": 3.2058812545442894,
+        "y": 1.8767833913627487
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right - 2 Piece - Michael Dev - 2 - End"
     }
   ],
   "rotationTargets": [],
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 12.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 29.999999999999996
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Right - 3 Piece - Michael Dev",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 150.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

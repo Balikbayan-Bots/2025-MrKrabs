@@ -3,11 +3,16 @@
   "robotLength": 0.806,
   "holonomicMode": true,
   "pathFolders": [
-    "BL Auto",
-    "MichaelDev"
+    "Center - 1 Piece",
+    "Right - 1 Piece - Red",
+    "Right - 2 Piece - Blue",
+    "Right - 3 Piece - Michael Dev"
   ],
   "autoFolders": [
-    "Michael Dev"
+    "Center - 1 Piece",
+    "Right - 3 Piece",
+    "Right - 1 Piece",
+    "Right - 2 Piece"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

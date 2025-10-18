@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.0,
-        "y": 4.0
+        "x": 7.084733606557376,
+        "y": 2.5924692622950816
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.0,
-        "y": 3.75
+        "x": 6.131346342038094,
+        "y": 2.2379890190872778
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right - 2 Piece - Michael Dev - 1 - Start"
     },
     {
       "anchor": {
-        "x": 7.0,
-        "y": 4.0
+        "x": 5.574282786885245,
+        "y": 2.304764344262295
       },
       "prevControl": {
-        "x": 7.0,
-        "y": 4.25
+        "x": 5.276211223046685,
+        "y": 2.3391653428219032
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Test End"
+      "linkedName": "Right - 2 Piece - Michael Dev - 1 - End"
     }
   ],
   "rotationTargets": [],
@@ -33,19 +33,19 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.1,
-    "maxAcceleration": 0.1,
-    "maxAngularVelocity": 0.1,
-    "maxAngularAcceleration": 0.1,
-    "nominalVoltage": 6.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 12.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -150.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Right - 3 Piece - Michael Dev",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0
