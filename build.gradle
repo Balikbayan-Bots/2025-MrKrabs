@@ -118,3 +118,7 @@ spotless {
         indentWithSpaces(4)
     }
 }
+
+tasks.named('build').configure {
+    dependsOn 'spotlessApply'
+}
