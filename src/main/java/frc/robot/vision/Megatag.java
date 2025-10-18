@@ -1,12 +1,13 @@
 package frc.robot.vision;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Megatag {
   private static List<LimelightConfig> limelights = new ArrayList<>();
@@ -17,8 +18,6 @@ public class Megatag {
   }
 
   // Using Megatag 1
-  // TODO: Get std dev to see confidence
-  // TODO: constantly set robot orientation
 
   public static void updateOdometry(LimelightConfig limelight) {
     // CRITICAL FIX: The rejection flag must be local or reset every loop.

@@ -1,11 +1,11 @@
 package frc.robot.controls;
 
-import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_ROT;
-import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import java.util.function.Supplier;
+import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_ROT;
+import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
 
 public class Controls {
   private static final OperatorInterface oi = OperatorInterface.getInstance();
@@ -56,7 +56,6 @@ public class Controls {
     public static final Trigger nudgeDown = coDriver.povRight();
     public static final Trigger nudgeUp = coDriver.povLeft();
 
-    // public static final Trigger megatagTest = driver.a();
   }
 
   public class Setpoint {
@@ -64,7 +63,6 @@ public class Controls {
       throw new IllegalStateException("Utility class");
     }
 
-    // public static final Trigger lvlOne = coDriver.povUp();
 
     public static final Trigger lvlTwo = coDriver.a();
 

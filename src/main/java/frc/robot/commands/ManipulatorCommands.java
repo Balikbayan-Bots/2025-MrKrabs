@@ -135,9 +135,6 @@ public class ManipulatorCommands {
     return new SequentialCommandGroup(
         intakeSetpointRun(IntakeSetpoint.DEPLOYED).withTimeout(0.25),
         new RunCommand(() -> intake.setState(IntakeState.INTAKE), intake)
-        // .until(() -> intake.hasCoral()),
-        // new WaitCommand(.25),
-        // intakeLevelHandoff()  TODO: FIX TOLERANCE?
         );
   }
 
@@ -150,9 +147,6 @@ public class ManipulatorCommands {
     return new SequentialCommandGroup(
         intakeLevelHandoff(),
         BodyCommands.positionHandoff(),
-
-        // new WaitCommand(4.0), // TODO: BANDIAD FIX FOR ISATSETPOINT
-
         new ParallelDeadlineGroup(beamIntake(), setIntakeState(IntakeState.HANDOFF)).withTimeout(5),
         stopIntake().withTimeout(0.5),
         setIntakeState(IntakeState.START));
