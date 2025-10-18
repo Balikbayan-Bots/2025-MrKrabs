@@ -11,7 +11,7 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.subsystems.swerve.Telemetry;
 
 public class Bindings {
-  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
   private Bindings() {
     throw new IllegalStateException("Utility class");

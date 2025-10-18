@@ -10,8 +10,8 @@ import edu.wpi.first.math.numbers.N3;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class Megatag {
-  private static List<LimelightConfig> limelights = new ArrayList<>();
-  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final List<LimelightConfig> limelights = new ArrayList<>();
+  private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
   public static void addLimelight(LimelightConfig limelight) {
     limelights.add(limelight);

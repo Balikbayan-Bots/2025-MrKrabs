@@ -41,15 +41,15 @@ public class IntakeSubsytem extends SubsystemBase {
     return m_instance;
   }
 
-  private TalonFX deployMotor;
-  private TalonFX centerMotor;
-  private TalonFX rollersMotor;
+  private final TalonFX deployMotor;
+  private final TalonFX centerMotor;
+  private final TalonFX rollersMotor;
 
   private IntakeState state = IntakeState.START;
 
   private double refrenceDegrees = 0;
 
-  private MotionMagicVoltage motionMagic;
+  private final MotionMagicVoltage motionMagic;
 
   private IntakeSetpoint activeSetpoint = IntakeSetpoint.STOWED_HANDOFF;
   private final CANBus kCANBus = new CANBus("rio");
@@ -132,6 +132,7 @@ public class IntakeSubsytem extends SubsystemBase {
     refrenceDegrees = degrees;
   }
 
+  @Override
   public void periodic() {
     updateReference(activeSetpoint.getDegrees());
     deployMotor.setControl(

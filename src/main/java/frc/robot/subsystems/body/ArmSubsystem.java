@@ -30,10 +30,10 @@ public class ArmSubsystem extends SubsystemBase {
     return m_instance;
   }
 
-  private TalonFX motor;
+  private final TalonFX motor;
   private BodySetpoint activeSetpoint = BodySetpoint.START_CONFIG;
   private double refrenceDegrees = 0;
-  private MotionMagicVoltage motionMagic;
+  private final MotionMagicVoltage motionMagic;
 
   private ArmSubsystem() {
     motor = new TalonFX(ARM_MOTOR_ID);
