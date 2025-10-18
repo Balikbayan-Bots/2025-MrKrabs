@@ -51,8 +51,8 @@ public class BodyConstants {
   };
 
   public static final double[] ARM_MOTION_MAGIC_CONFIGS = {
-    70.0, // Acceleration
-    35.0, // Cruise Velocity
+    60.0, // Acceleration
+    25.0, // Cruise Velocity
     1800.0 // Jerk
   };
 

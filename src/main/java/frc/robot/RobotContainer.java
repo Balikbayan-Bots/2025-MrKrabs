@@ -54,6 +54,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("LVL4", BodyCommands.positionLevelFour());
     NamedCommands.registerCommand("score", ManipulatorCommands.autoL4score());
     NamedCommands.registerCommand("upperStow", BodyCommands.positionStow());
+    NamedCommands.registerCommand("Lower Stow", BodyCommands.positionStart());
     NamedCommands.registerCommand("groundIntake", ManipulatorCommands.groundIntake());
     NamedCommands.registerCommand("stowIntake", ManipulatorCommands.intakeLevelHandoff());
     NamedCommands.registerCommand("grabLowAlgae", BodyCommands.positionLowAlgae());

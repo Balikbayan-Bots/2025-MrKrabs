@@ -3,7 +3,7 @@ package frc.robot.subsystems.manipulators;
 public enum IntakeState {
   START(0, 0),
   INTAKE(0.1, 0.7),
-  HOLD(0.0, 0.07),
+  HOLD(0.01, 0.15),
   HANDOFF(0.0, -0.7),
   SHOOT(0.0, -0.7);
 
