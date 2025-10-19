@@ -45,7 +45,7 @@ public class IntakeSubsytem extends SubsystemBase {
   private final TalonFX centerMotor;
   private final TalonFX rollersMotor;
 
-  private IntakeState state = IntakeState.START;
+  private IntakeState state;
 
   private double refrenceDegrees = 0;
 
@@ -59,9 +59,9 @@ public class IntakeSubsytem extends SubsystemBase {
     centerMotor = new TalonFX(INTAKE_CENTER_MOTOR_ID);
     rollersMotor = new TalonFX(INTAKE_ROLLERS_MOTOR_ID);
 
-    reZero();
+    state = IntakeState.IDLE;
 
-    setDefaultCommand(new RunCommand(() -> setState(IntakeState.START), this));
+    reZero();
 
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
     BaseStatusSignal.setUpdateFrequencyForAll(200, deployMotor.getPosition());
@@ -166,6 +166,14 @@ public class IntakeSubsytem extends SubsystemBase {
     return getReferenceDegrees() - getDegrees();
   }
 
+  public IntakeState getState() {
+    return state;
+  }  
+
+  public String getStateName() {
+    return state.toString();
+  }  
+
   public boolean isAtSetpoint() {
     return Math.abs(getError()) < 1.0;
   }
@@ -177,5 +185,6 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Degrees", this::getDegrees, null);
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
+    builder.addStringProperty("Intake State", this::getStateName, null);
   }
 }

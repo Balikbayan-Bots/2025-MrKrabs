@@ -108,7 +108,7 @@ public class ManipulatorCommands {
     return new SequentialCommandGroup(
         new RunCommand(() -> intake.setState(IntakeState.SHOOT)).withTimeout(0.5),
         intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).until(intake::isAtSetpoint),
-        setIntakeState(IntakeState.START));
+        setIntakeState(IntakeState.IDLE));
   }
 
   public static Command autoL4score() {
@@ -149,6 +149,6 @@ public class ManipulatorCommands {
         BodyCommands.positionHandoff(),
         new ParallelDeadlineGroup(beamIntake(), setIntakeState(IntakeState.HANDOFF)).withTimeout(5),
         stopIntake().withTimeout(0.5),
-        setIntakeState(IntakeState.START));
+        setIntakeState(IntakeState.IDLE));
   }
 }
