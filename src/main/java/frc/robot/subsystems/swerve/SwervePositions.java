@@ -3,8 +3,10 @@ package frc.robot.subsystems.swerve;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.commands.SwerveCommands;
 import frc.robot.commands.CommandRegistry.CommandWrapper;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,7 +41,21 @@ public class SwervePositions {
     };
   }
 
-  
+  private static void registerPositionMap(HashMap<Integer, Pose2d> map, String suffix){
+
+    //method here
+    for (Map.Entry<Integer, Pose2d> entry : map.entrySet()) {
+      String commandName = entry.getKey() + "-" + suffix;
+      System.out.println("Registering command: " + commandName);
+      NamedCommands.registerCommand(commandName, SwerveCommands.driveToPose(entry.getValue()));
+    }
+  }
+
+  public static void registerPositionMaps() {
+    registerPositionMap(ReefLeft, "Left");
+    registerPositionMap(ReefCenter, "Center");
+    registerPositionMap(ReefRight, "Right");
+  }
 
   // Near is the sides facing the driver station's perspective, far is opposite.
   static {

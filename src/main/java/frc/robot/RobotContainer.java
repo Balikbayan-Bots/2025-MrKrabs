@@ -43,6 +43,9 @@ public class RobotContainer {
     claw = ClawSubsystem.getInstance();
     intake = IntakeSubsytem.getInstance();
 
+    // Register April Tag Positions
+    SwervePositions.registerPositionMaps();
+
     // Initialize Choosers
     CommandRegistry.registerAllCommands(
         BodyCommands.bodyCommandList.toArray(new CommandRegistry.CommandWrapper[0]));
