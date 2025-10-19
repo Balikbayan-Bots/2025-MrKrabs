@@ -32,13 +32,16 @@ public class ClawSubsystem extends SubsystemBase {
     motor = new TalonFX(CLAW_MOTOR_ID);
     beamBreak = new DigitalInput(BEAM_BREAK_ID);
     configureclaw(motor);
-    // BaseStatusSignal.setUpdateFrequencyForAll(
-        // 5,
-        // motor.getVelocity(),
-        // motor.getMotorVoltage(),
-        // motor.getSupplyCurrent(), TODO: UNCOMMENT IF PHOENIX TUNER
-        // motor.getStatorCurrent()
-    // );
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        10,
+        motor.getVelocity(),
+        motor.getSupplyVoltage(),
+        motor.getFault_Hardware(),
+        motor.getMotorVoltage(),
+        motor.getSupplyCurrent(),
+        motor.getStatorCurrent(),
+        motor.getFault_DeviceTemp()
+    );
     motor.optimizeBusUtilization();
   }
 
