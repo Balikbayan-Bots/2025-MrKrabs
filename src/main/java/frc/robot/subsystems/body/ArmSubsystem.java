@@ -41,14 +41,12 @@ public class ArmSubsystem extends SubsystemBase {
     reZero();
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
     BaseStatusSignal.setUpdateFrequencyForAll(200, motor.getPosition());
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        10,
-        motor.getSupplyVoltage(),
-        motor.getFault_Hardware(),
-        motor.getMotorVoltage(),
-        motor.getSupplyCurrent(),
-        motor.getStatorCurrent(),
-        motor.getFault_DeviceTemp());
+    // BaseStatusSignal.setUpdateFrequencyForAll(
+    //     5, TODO: UNCOMMENT IF PHOENIX TUNER
+    //     motor.getMotorVoltage(),
+    //     motor.getSupplyCurrent(),
+    //     motor.getStatorCurrent()
+    //   );
 
     motor.optimizeBusUtilization();
   }

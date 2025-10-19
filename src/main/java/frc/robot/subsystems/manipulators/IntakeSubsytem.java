@@ -65,13 +65,12 @@ public class IntakeSubsytem extends SubsystemBase {
 
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
     BaseStatusSignal.setUpdateFrequencyForAll(200, deployMotor.getPosition());
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        10,
-        deployMotor.getSupplyVoltage(),
-        deployMotor.getMotorVoltage(),
-        deployMotor.getSupplyCurrent(),
-        deployMotor.getStatorCurrent()
-    );
+    // BaseStatusSignal.setUpdateFrequencyForAll(
+    //     5, TODO: UNCOMMENT IF PHOENIX TUNER
+    //     deployMotor.getMotorVoltage(),
+    //     deployMotor.getSupplyCurrent(),
+    //     deployMotor.getStatorCurrent()
+    // );
     deployMotor.optimizeBusUtilization();
     centerMotor.optimizeBusUtilization();
     rollersMotor.optimizeBusUtilization();

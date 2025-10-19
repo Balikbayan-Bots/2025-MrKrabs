@@ -48,21 +48,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
     BaseStatusSignal.setUpdateFrequencyForAll(
         200, leftMotor.getPosition(), rightMotor.getPosition());
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        10,
-        leftMotor.getSupplyVoltage(),
-        leftMotor.getFault_Hardware(),
-        leftMotor.getMotorVoltage(),
-        leftMotor.getSupplyCurrent(),
-        leftMotor.getStatorCurrent(),
-        leftMotor.getFault_DeviceTemp(),
-        rightMotor.getSupplyVoltage(),
-        rightMotor.getFault_Hardware(),
-        rightMotor.getMotorVoltage(),
-        rightMotor.getSupplyCurrent(),
-        rightMotor.getStatorCurrent(),
-        rightMotor.getFault_DeviceTemp());
-
+    // BaseStatusSignal.setUpdateFrequencyForAll(
+    //     5, TODO: UNCOMMENT IF PHOENIX TUNER
+    //     leftMotor.getMotorVoltage(),
+    //     leftMotor.getSupplyCurrent(),
+    //     leftMotor.getStatorCurrent(),
+    //     rightMotor.getMotorVoltage(),
+    //     rightMotor.getSupplyCurrent(),
+    //     rightMotor.getStatorCurrent()
+    // );
     leftMotor.optimizeBusUtilization();
     rightMotor.optimizeBusUtilization();
   }
