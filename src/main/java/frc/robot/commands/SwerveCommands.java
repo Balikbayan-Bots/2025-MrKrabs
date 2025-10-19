@@ -18,7 +18,10 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
@@ -27,6 +30,7 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class SwerveCommands {
   private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
@@ -78,8 +82,8 @@ public class SwerveCommands {
     return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
   }
 
-  public static ProxyCommand driveToPegProxy(SwervePositions.alignMent align) {
-    return new ProxyCommand(() -> driveToPeg(align));
+  public static Command driveToPegProxy(SwervePositions.alignMent align) {
+    return Commands.defer(() -> {return driveToPeg(align);}, Set.of(swerve));
   }
 
   public static Command driveTagNineLeft() {

@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -85,10 +86,12 @@ public class BodyCommands {
   }
 
   public static Command positionLevelFour() {
-    return new SequentialCommandGroup(
-        new RunCommand(() -> elev.updateSetpoint(BodySetpoint.CORAL_LEVEL4), elev).withTimeout(1.0),
-        new RunCommand(() -> arm.updateSetpoint(BodySetpoint.CORAL_LEVEL4), arm)
-            .until(arm::isAtSetpoint));
+    return Commands.sequence(
+          Commands.runOnce(() -> elev.updateSetpoint(BodySetpoint.CORAL_LEVEL4), elev),
+          Commands.idle(arm).until(elev::isAtSetpoint),
+          Commands.runOnce(() -> arm.updateSetpoint(BodySetpoint.CORAL_LEVEL4), arm),
+          Commands.waitSeconds(0.25)
+          );
   }
 
   public static Command positionHighAlgae() {
