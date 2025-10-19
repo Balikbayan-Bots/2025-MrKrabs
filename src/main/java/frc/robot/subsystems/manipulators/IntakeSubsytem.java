@@ -77,14 +77,15 @@ public class IntakeSubsytem extends SubsystemBase {
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
     BaseStatusSignal.setUpdateFrequencyForAll(200, deployMotor.getPosition());
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50,
+        10,
         deployMotor.getSupplyVoltage(),
-        deployMotor.getFault_Hardware(),
         deployMotor.getMotorVoltage(),
         deployMotor.getSupplyCurrent(),
-        deployMotor.getStatorCurrent(),
-        deployMotor.getFault_DeviceTemp());
+        deployMotor.getStatorCurrent()
+    );
     deployMotor.optimizeBusUtilization();
+    centerMotor.optimizeBusUtilization();
+    rollersMotor.optimizeBusUtilization();
   }
 
   private void configureMotor(TalonFXConfigurator motorConfig) {

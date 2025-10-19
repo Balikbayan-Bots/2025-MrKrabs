@@ -32,15 +32,16 @@ public class ClawSubsystem extends SubsystemBase {
     motor = new TalonFX(CLAW_MOTOR_ID);
     beamBreak = new DigitalInput(BEAM_BREAK_ID);
     configureclaw(motor);
-    BaseStatusSignal.setUpdateFrequencyForAll(200, motor.getPosition(), motor.getVelocity());
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50,
+        10,
+        motor.getVelocity(),
         motor.getSupplyVoltage(),
         motor.getFault_Hardware(),
         motor.getMotorVoltage(),
         motor.getSupplyCurrent(),
         motor.getStatorCurrent(),
-        motor.getFault_DeviceTemp());
+        motor.getFault_DeviceTemp()
+    );
     motor.optimizeBusUtilization();
   }
 
@@ -59,6 +60,7 @@ public class ClawSubsystem extends SubsystemBase {
     var voltage = newConfig.Voltage;
     voltage.PeakForwardVoltage = CLAW_MAX_VOLTAGE_FORWARD; // Down
     voltage.PeakReverseVoltage = CLAW_MAX_VOLTAGE_REVERSE; // Up
+    motor.getConfigurator().apply(newConfig);
   }
 
   public boolean getBeamBreak() {

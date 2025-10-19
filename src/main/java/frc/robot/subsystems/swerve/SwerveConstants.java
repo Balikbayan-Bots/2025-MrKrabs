@@ -15,9 +15,9 @@ import edu.wpi.first.units.measure.LinearVelocity;
 public class SwerveConstants {
   public static final LinearVelocity SPEED_AT_12V = MetersPerSecond.of(5.84);
 
-  public static final Double MAX_TELEOP_SPEED = 0.35 * SPEED_AT_12V.in(MetersPerSecond);
+  public static final Double MAX_TELEOP_SPEED = 0.75 * SPEED_AT_12V.in(MetersPerSecond);
   public static final Double MAX_TELEOP_ROT =
-      0.35 * RotationsPerSecond.of(1.5).in(RadiansPerSecond);
+      0.50 * RotationsPerSecond.of(1.5).in(RadiansPerSecond);
 
   public static final Module FRONT_LEFT_MODULE = new Module(Rotations.of(0.39892578125));
   public static final Module FRONT_RIGHT_MODULE = new Module(Rotations.of(0.067626953125));

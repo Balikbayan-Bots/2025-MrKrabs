@@ -5,19 +5,19 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "ID 10 Left"
+                  "name": "LVL4"
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "LVL4"
+                  "pathName": "Drive to left ten"
                 }
               }
             ]
@@ -26,7 +26,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 0.5
           }
         },
         {
@@ -50,7 +50,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 0.5
           }
         },
         {
@@ -70,6 +70,49 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Algae Net Path"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "goNet"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "scoreNet"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net Clear"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Lower Stow"
           }
         }
       ]

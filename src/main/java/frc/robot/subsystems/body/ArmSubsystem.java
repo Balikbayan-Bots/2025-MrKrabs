@@ -42,7 +42,7 @@ public class ArmSubsystem extends SubsystemBase {
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
     BaseStatusSignal.setUpdateFrequencyForAll(200, motor.getPosition());
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50,
+        10,
         motor.getSupplyVoltage(),
         motor.getFault_Hardware(),
         motor.getMotorVoltage(),

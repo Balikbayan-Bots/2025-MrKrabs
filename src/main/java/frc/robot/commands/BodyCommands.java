@@ -73,9 +73,8 @@ public class BodyCommands {
 
   public static Command positionLevelThree() {
     return new SequentialCommandGroup(
-        new ParallelCommandGroup(
-            elevSetpointRun(BodySetpoint.STOW_POS).until(elev::isAtSetpoint),
-            armSetpointRun(BodySetpoint.STOW_POS).until(arm::isAtSetpoint)),
+        elevSetpointRun(BodySetpoint.STOW_POS),
+        new WaitCommand(0.4),
         new ParallelCommandGroup(
             elevSetpointRun(BodySetpoint.SAFE_START).until(elev::isAtSetpoint),
             armSetpointRun(BodySetpoint.SAFE_START).until(arm::isAtSetpoint)),

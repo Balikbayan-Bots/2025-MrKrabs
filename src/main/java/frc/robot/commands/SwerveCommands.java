@@ -6,7 +6,10 @@ import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
+
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,16 +20,29 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import frc.robot.controls.Controls;
+import frc.robot.subsystems.body.BodySetpoint;
+import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SwerveCommands {
   private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
 
   private SwerveCommands() {
     throw new IllegalStateException("Utility class");
   }
+
+  // private void registerHashMap(HashMap<Integer, Pose2d> map, String suffix){
+
+  //   //method here
+  //   for (Map.Entry<Integer, Pose2d> entry : map.entrySet()) {
+  //     NamedCommand.registerCommand(suffix, entry.getValue());
+  //   }
+  // }
 
   public static Command manualDrive(double deadband) {
     SwerveRequest.FieldCentric drive =
@@ -38,10 +54,18 @@ public class SwerveCommands {
     return swerve.applyRequest(
         () ->
             drive
-                .withVelocityX(Controls.Swerve.translateX.get())
-                .withVelocityY(Controls.Swerve.translateY.get())
-                .withRotationalRate(Controls.Swerve.rotate.get()));
+                .withVelocityX(Controls.Swerve.translateX.get() * getDriveMultiplier())
+                .withVelocityY(Controls.Swerve.translateY.get() * getDriveMultiplier())
+                .withRotationalRate(Controls.Swerve.rotate.get() * getDriveMultiplier()));
   }
+
+  public static double getDriveMultiplier() {
+    double currentPos = elevator.getInches();
+    double maxPos = BodySetpoint.HIGH_NET.getElevTravel();
+    double ratio = Math.abs(currentPos/maxPos);
+    double speedMultiplier = 100D - (60D)*(ratio);
+    return speedMultiplier/100D;
+}
 
   public static Command driveToPose(Pose2d targetPosition) {
     PathConstraints constraints =
@@ -59,7 +83,7 @@ public class SwerveCommands {
   }
 
   public static Command driveTagNineLeft() {
-    return driveToPose(new Pose2d(13.30, 5.38, new Rotation2d(Units.degreesToRadians(29.8))))
+    return driveToPose(new Pose2d(12.683, 5.428, new Rotation2d(Units.degreesToRadians(29.8))))
         .withTimeout(3.0);
   }
 
@@ -74,7 +98,7 @@ public class SwerveCommands {
   }
 
   public static Command driveTagTenLeft() {
-    return driveToPose(new Pose2d(11.83, 4.32, new Rotation2d(Units.degreesToRadians(91))))
+    return driveToPose(new Pose2d(11.661, 4.386, new Rotation2d(Units.degreesToRadians(91))))
         .withTimeout(3.0);
   }
 

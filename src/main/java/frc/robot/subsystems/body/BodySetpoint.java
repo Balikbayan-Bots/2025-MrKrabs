@@ -6,8 +6,8 @@ public enum BodySetpoint {
   CORAL_LEVEL2(2.0, 45.0),
   CORAL_LEVEL3(9.0, 45.0),
   CORAL_LEVEL4(24.0, 55.0),
-  ALGAE_LEVEL2(9.0, 90.0),
-  ALGAE_LEVEL3(18.0, 92.0),
+  ALGAE_LEVEL2(10.5, 90.0),
+  ALGAE_LEVEL3(19.0, 92.0),
   SAFE_STOW(20.0, 90.0),
   STOW_POS(20.0, 180.0),
   HIGH_NET(26.5, 22.0),
@@ -15,7 +15,7 @@ public enum BodySetpoint {
   SCORE(0.0, 80.0),
   HANDOFF(18, 180),
   SCORE_LEVEL2(0.0, 50.0),
-  FLOOR_ALGAE(2, 110);
+  FLOOR_ALGAE(1.75, 100.0);
 
   private final double elevTravel;
   private final double armDegrees;

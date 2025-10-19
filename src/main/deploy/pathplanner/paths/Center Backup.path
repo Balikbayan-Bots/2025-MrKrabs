@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.24,
-        "y": 3.6935
+        "x": 5.88,
+        "y": 3.67
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.658930327868854,
-        "y": 3.7032499999999993
+        "x": 6.298930327868853,
+        "y": 3.6797499999999994
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "10/21 left"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "center backup end"
     }
   ],
   "rotationTargets": [],
@@ -48,7 +48,7 @@
   "folder": "Center - 1 Piece",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -88.80651057601791
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

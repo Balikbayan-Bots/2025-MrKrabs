@@ -114,6 +114,7 @@ public class ManipulatorCommands {
   public static Command autoL4score() {
     return new SequentialCommandGroup(
         BodyCommands.armSetpointRun(BodySetpoint.SCORE),
+        new WaitCommand(0.25),
         setClawState(ClawState.SCORE).withTimeout(.1),
         new WaitCommand(.25),
         setClawState(ClawState.IDLE).withTimeout(.1));

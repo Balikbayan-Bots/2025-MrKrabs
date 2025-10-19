@@ -49,7 +49,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     BaseStatusSignal.setUpdateFrequencyForAll(
         200, leftMotor.getPosition(), rightMotor.getPosition());
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50,
+        10,
         leftMotor.getSupplyVoltage(),
         leftMotor.getFault_Hardware(),
         leftMotor.getMotorVoltage(),
