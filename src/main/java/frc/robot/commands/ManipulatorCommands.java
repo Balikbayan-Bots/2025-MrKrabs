@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
@@ -105,10 +106,15 @@ public class ManipulatorCommands {
   }
 
   public static Command scoreLevelOne() {
-    return new SequentialCommandGroup(
-        new RunCommand(() -> intake.setState(IntakeState.SHOOT)).withTimeout(0.5),
-        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).until(intake::isAtSetpoint),
-        setIntakeState(IntakeState.IDLE));
+    return Commands.sequence(
+        Commands.runOnce(() -> intake.setState(IntakeState.SHOOT), intake),
+        Commands.waitSeconds(0.4),        
+        Commands.runEnd(
+          () -> intake.updateSetpoint(IntakeSetpoint.STOWED_HANDOFF), 
+          () -> intake.setState(IntakeState.IDLE), 
+          intake)
+          .until(intake::isAtSetpoint)
+        );
   }
 
   public static Command autoL4score() {

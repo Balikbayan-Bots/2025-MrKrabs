@@ -175,7 +175,7 @@ public class IntakeSubsytem extends SubsystemBase {
   }  
 
   public boolean isAtSetpoint() {
-    return Math.abs(getError()) < 1.0;
+    return Math.abs(getError()) < 15.0;
   }
 
   @Override
