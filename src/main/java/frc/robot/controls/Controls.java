@@ -44,7 +44,7 @@ public class Controls {
 
     public static final Trigger rightPeg = driver.b();
     public static final Trigger leftPeg = driver.x();
-    public static final Trigger center = driver.y();
+    public static final Trigger center = driver.a();
   }
 
   public final class Debug {

@@ -91,7 +91,7 @@ public class ManipulatorCommands {
                 BodySetpoint.CORAL_LEVEL3, BodyCommands.armSetpointRun(BodySetpoint.SCORE),
                 BodySetpoint.CORAL_LEVEL4, BodyCommands.armSetpointRun(BodySetpoint.SCORE)),
             () -> arm.getCurrentSetpoint()),
-        new WaitCommand(0.1),
+        new WaitCommand(0.2),
         new ParallelCommandGroup(
             setClawState(ClawState.SCORE).withTimeout(0.001),
             new SequentialCommandGroup(
@@ -114,7 +114,7 @@ public class ManipulatorCommands {
   public static Command autoL4score() {
     return new SequentialCommandGroup(
         BodyCommands.armSetpointRun(BodySetpoint.SCORE),
-        new WaitCommand(0.25),
+        new WaitCommand(0.4),
         setClawState(ClawState.SCORE).withTimeout(.1),
         new WaitCommand(.25),
         setClawState(ClawState.IDLE).withTimeout(.1));

@@ -10,7 +10,7 @@ public enum BodySetpoint {
   ALGAE_LEVEL3(19.0, 92.0),
   SAFE_STOW(20.0, 90.0),
   STOW_POS(20.0, 180.0),
-  HIGH_NET(26.5, 22.0),
+  HIGH_NET(26.5, 26.0),
   PROCESSOR(0.0, 0.0),
   SCORE(0.0, 80.0),
   HANDOFF(18, 180),

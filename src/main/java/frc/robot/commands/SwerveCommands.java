@@ -63,7 +63,7 @@ public class SwerveCommands {
     double currentPos = elevator.getInches();
     double maxPos = BodySetpoint.HIGH_NET.getElevTravel();
     double ratio = Math.abs(currentPos/maxPos);
-    double speedMultiplier = 100D - (60D)*(ratio);
+    double speedMultiplier = 100D - (33D)*(ratio);
     return speedMultiplier/100D;
 }
 
@@ -93,7 +93,7 @@ public class SwerveCommands {
   }
 
   public static Command driveTagTwentyOneLeft() {
-    return driveToPose(new Pose2d(5.54, 3.53, new Rotation2d(Units.degreesToRadians(-87.69))))
+    return driveToPose(new Pose2d(5.92, 3.67, new Rotation2d(Units.degreesToRadians(-90.5))))
         .withTimeout(3.0);
   }
 
