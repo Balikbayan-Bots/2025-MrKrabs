@@ -15,7 +15,7 @@ public enum BodySetpoint {
   SCORE(0.0, 80.0),
   HANDOFF(18, 180),
   SCORE_LEVEL2(0.0, 50.0),
-  FLOOR_ALGAE(3, 115.0);
+  FLOOR_ALGAE(6, 125.0);
 
   private final double elevTravel;
   private final double armDegrees;

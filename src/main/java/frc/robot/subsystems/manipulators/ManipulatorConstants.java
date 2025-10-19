@@ -16,8 +16,8 @@ public class ManipulatorConstants {
   public static final double INTAKE_CANRANGE_THRESH = 0.75;
   public static final double INTAKE_GEAR_RATIO = 17.778D;
   public static final int BEAM_BREAK_ID = 9;
-  public static final int CLAW_MAX_VOLTAGE_FORWARD = 10;
-  public static final int CLAW_MAX_VOLTAGE_REVERSE = -10;
+  public static final double CLAW_MAX_VOLTAGE_FORWARD = 10;
+  public static final double CLAW_MAX_VOLTAGE_REVERSE = -10.5;
   public static BodyConstants.Limits kclawLimits = new Limits(65.0, 45.0, 0, 0);
 
   public static final Limits kIntakeLimits =
