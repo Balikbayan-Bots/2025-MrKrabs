@@ -127,8 +127,9 @@ public class ManipulatorCommands {
 
   public static Command intakeLevelHandoff() {
     return new SequentialCommandGroup(
-        setIntakeState(IntakeState.HOLD),
-        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(0.5));
+        intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(0.5),
+        setIntakeState(IntakeState.HOLD)
+        );
   }
 
   public static Command groundIntake() {
