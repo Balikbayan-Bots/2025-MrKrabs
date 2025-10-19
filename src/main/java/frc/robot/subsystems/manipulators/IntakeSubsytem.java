@@ -52,23 +52,12 @@ public class IntakeSubsytem extends SubsystemBase {
   private final MotionMagicVoltage motionMagic;
 
   private IntakeSetpoint activeSetpoint = IntakeSetpoint.STOWED_HANDOFF;
-  private final CANBus kCANBus = new CANBus("rio");
-  private final CANrange canRange = new CANrange(INTAKE_CANRANGE_ID, kCANBus);
-  private double hasObject = canRange.getIsDetected().getValueAsDouble();
-  private double getCoralDistance = canRange.getDistance().getValueAsDouble();
 
   private IntakeSubsytem() {
 
     deployMotor = new TalonFX(INTAKE_DEPLOY_MOTOR_ID);
     centerMotor = new TalonFX(INTAKE_CENTER_MOTOR_ID);
     rollersMotor = new TalonFX(INTAKE_ROLLERS_MOTOR_ID);
-
-    CANrangeConfiguration config = new CANrangeConfiguration();
-    config.ProximityParams.MinSignalStrengthForValidMeasurement = INTAKE_CANRANGE_SIGSTRENGTH;
-    config.ProximityParams.ProximityThreshold = INTAKE_CANRANGE_THRESH;
-    config.ToFParams.UpdateMode = UpdateModeValue.ShortRangeUserFreq;
-    config.ProximityParams.ProximityHysteresis = INTAKE_CANRANGE_HIST;
-    canRange.getConfigurator().apply(config);
 
     reZero();
 
@@ -143,8 +132,6 @@ public class IntakeSubsytem extends SubsystemBase {
             .withFeedForward(calculateFeedForward()));
     rollersMotor.set(state.getRollerMotorSpeed());
     centerMotor.set(state.getCenterMotorSpeed());
-    hasObject = canRange.getIsDetected().getValueAsDouble();
-    getCoralDistance = canRange.getDistance().getValueAsDouble();
   }
 
   private double calculateFeedForward() {
@@ -153,14 +140,6 @@ public class IntakeSubsytem extends SubsystemBase {
 
   private double getDegrees() {
     return motorRotationsToDegrees(deployMotor.getPosition().getValueAsDouble());
-  }
-
-  public boolean hasCoral() {
-    return hasObject != 0;
-  }
-
-  public double CoralDistance() {
-    return getCoralDistance;
   }
 
   public static double motorRotationsToDegrees(double rotations) {
@@ -198,7 +177,5 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Degrees", this::getDegrees, null);
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
-    builder.addBooleanProperty("has coral", this::hasCoral, null);
-    builder.addDoubleProperty("coral Distance", this::CoralDistance, null);
   }
 }
