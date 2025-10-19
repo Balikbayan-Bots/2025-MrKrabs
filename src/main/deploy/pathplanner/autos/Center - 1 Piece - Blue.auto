@@ -27,7 +27,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Left Peg"
+                        "name": "ID 21 Left"
                       }
                     }
                   ]
@@ -111,21 +111,28 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "scoreNet"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "scoreNet"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Net Clear"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Lower Stow"
           }
         }
       ]

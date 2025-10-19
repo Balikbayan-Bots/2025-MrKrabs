@@ -5,28 +5,41 @@
     "data": {
       "commands": [
         {
-          "type": "sequential",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "LVL4"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Drive to left ten"
-                }
-              }
-            ]
+            "pathName": "Cross Line - Center"
           }
         },
         {
-          "type": "wait",
+          "type": "race",
           "data": {
-            "waitTime": 0.5
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "LVL4"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ID 10 Left"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.5
+                }
+              }
+            ]
           }
         },
         {
@@ -98,21 +111,28 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "scoreNet"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "scoreNet"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Net Clear"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Lower Stow"
           }
         }
       ]
