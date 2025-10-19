@@ -9,6 +9,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+sourceSets {
+    dev
+}
+
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
@@ -73,6 +77,11 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    devImplementation sourceSets.main.output
+    devImplementation sourceSets.main.runtimeClasspath
+    
+    devRuntimeOnly sourceSets.main.runtimeClasspath
 }
 
 test {
@@ -102,6 +111,14 @@ wpi.java.configureTestTasks(test)
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
+}
+
+// Update Linked Waypoints Pathplanner task
+task updateLinkedWaypoints(type: JavaExec) {
+    group = "Development"
+    description = "Updates all linked Pathplanner waypoints using SwervePositions.java"
+    classpath = sourceSets.dev.runtimeClasspath
+    mainClass.set("frc.tools.UpdateLinkedWaypoints")
 }
 
 // spotless config

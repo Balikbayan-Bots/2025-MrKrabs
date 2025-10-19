@@ -40,8 +40,7 @@ public class ClawSubsystem extends SubsystemBase {
         motor.getMotorVoltage(),
         motor.getSupplyCurrent(),
         motor.getStatorCurrent(),
-        motor.getFault_DeviceTemp()
-    );
+        motor.getFault_DeviceTemp());
     motor.optimizeBusUtilization();
   }
 

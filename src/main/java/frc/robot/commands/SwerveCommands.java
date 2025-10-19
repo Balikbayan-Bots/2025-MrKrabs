@@ -6,10 +6,7 @@ import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
-
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -25,8 +22,6 @@ import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SwerveCommands {
   private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
@@ -62,10 +57,10 @@ public class SwerveCommands {
   public static double getDriveMultiplier() {
     double currentPos = elevator.getInches();
     double maxPos = BodySetpoint.HIGH_NET.getElevTravel();
-    double ratio = Math.abs(currentPos/maxPos);
-    double speedMultiplier = 100D - (33D)*(ratio);
-    return speedMultiplier/100D;
-}
+    double ratio = Math.abs(currentPos / maxPos);
+    double speedMultiplier = 100D - (33D) * (ratio);
+    return speedMultiplier / 100D;
+  }
 
   public static Command driveToPose(Pose2d targetPosition) {
     PathConstraints constraints =
