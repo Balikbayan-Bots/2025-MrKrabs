@@ -35,9 +35,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private BodySetpoint activeSetpoint = BodySetpoint.START_CONFIG;
   private double referenceInches = 0;
-  private TalonFX leftMotor;
-  private TalonFX rightMotor;
-  private MotionMagicVoltage motionMagic;
+  private final TalonFX leftMotor;
+  private final TalonFX rightMotor;
+  private final MotionMagicVoltage motionMagic;
 
   public ElevatorSubsystem() {
     leftMotor = new TalonFX(ELEV_MOTOR_LEFT);
@@ -49,7 +49,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     BaseStatusSignal.setUpdateFrequencyForAll(
         200, leftMotor.getPosition(), rightMotor.getPosition());
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50,
+        10,
         leftMotor.getSupplyVoltage(),
         leftMotor.getFault_Hardware(),
         leftMotor.getMotorVoltage(),
@@ -156,7 +156,6 @@ public class ElevatorSubsystem extends SubsystemBase {
             .withPosition(inchesToMotorRotations(referenceInches))
             .withSlot(0)
             .withFeedForward(ELEV_FEED_FWD));
-    // leftMotor.setControl(new CoastOut());
   }
 
   @Override

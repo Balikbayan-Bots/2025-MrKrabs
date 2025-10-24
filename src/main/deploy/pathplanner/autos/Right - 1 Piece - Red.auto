@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "seed"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RL path1"
+            "pathName": "Right - 1 Piece - Red - 1"
           }
         },
         {
@@ -47,7 +41,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RL path2"
+                  "pathName": "Right - 1 Piece - Red - 2"
                 }
               },
               {
@@ -71,11 +65,17 @@
               }
             ]
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stowIntake"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Right - 1 Piece",
   "choreoAuto": false
 }

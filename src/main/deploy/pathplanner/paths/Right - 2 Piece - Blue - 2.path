@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.914959016393443,
-        "y": 2.1189549180327867
+        "x": 5.526331967213115,
+        "y": 2.3107581967213116
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.68719262295082,
-        "y": 1.6034836065573779
+        "x": 5.298565573770492,
+        "y": 1.7952868852459027
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right - 2 Piece - Blue - 1 - End"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right - 2 Piece - Blue - 2 - End"
     }
   ],
   "rotationTargets": [],
@@ -45,10 +45,10 @@
     "rotation": 3.2397002961022343
   },
   "reversed": false,
-  "folder": "BL Auto",
+  "folder": "Right - 2 Piece - Blue",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -151.09081634885223
+    "rotation": -145.0
   },
   "useDefaultConstraints": true
 }

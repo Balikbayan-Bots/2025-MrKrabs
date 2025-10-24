@@ -8,47 +8,52 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.821004098360655,
-        "y": 4.2048155737704915
+        "x": 6.825,
+        "y": 4.414999999999999
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.3125,
-        "y": 4.8881147540983605
+        "x": 8.05,
+        "y": 5.313678278688524
       },
       "prevControl": {
-        "x": 7.192622950819673,
-        "y": 4.62438524590164
+        "x": 6.63,
+        "y": 5.10725
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Algea end path"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4603389830508454,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 9.0,
+    "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 96.20344790169185
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center - 1 Piece",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -89.34031237745815
+    "rotation": -90.0
   },
   "useDefaultConstraints": false
 }

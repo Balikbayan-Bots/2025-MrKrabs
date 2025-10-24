@@ -30,10 +30,10 @@ public class ArmSubsystem extends SubsystemBase {
     return m_instance;
   }
 
-  private TalonFX motor;
+  private final TalonFX motor;
   private BodySetpoint activeSetpoint = BodySetpoint.START_CONFIG;
   private double refrenceDegrees = 0;
-  private MotionMagicVoltage motionMagic;
+  private final MotionMagicVoltage motionMagic;
 
   private ArmSubsystem() {
     motor = new TalonFX(ARM_MOTOR_ID);
@@ -42,7 +42,7 @@ public class ArmSubsystem extends SubsystemBase {
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
     BaseStatusSignal.setUpdateFrequencyForAll(200, motor.getPosition());
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50,
+        10,
         motor.getSupplyVoltage(),
         motor.getFault_Hardware(),
         motor.getMotorVoltage(),
@@ -61,7 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
     TalonFXConfiguration newConfig = new TalonFXConfiguration();
 
     var limits = newConfig.SoftwareLimitSwitch;
-    limits.ForwardSoftLimitEnable = false; // TODO: PUT ACTUAL LIMITS
+    limits.ForwardSoftLimitEnable = false;
     limits.ReverseSoftLimitEnable = false;
 
     var current = newConfig.CurrentLimits;

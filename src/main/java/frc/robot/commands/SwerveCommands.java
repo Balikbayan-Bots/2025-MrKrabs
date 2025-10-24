@@ -14,23 +14,31 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ProxyCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.controls.Controls;
+import frc.robot.subsystems.body.BodySetpoint;
+import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
-import frc.robot.vision.LimelightHelpers;
-
 import java.util.ArrayList;
-import java.util.function.Supplier;
+import java.util.Set;
 
 public class SwerveCommands {
-  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
 
   private SwerveCommands() {
     throw new IllegalStateException("Utility class");
   }
+
+  // private void registerHashMap(HashMap<Integer, Pose2d> map, String suffix){
+
+  //   //method here
+  //   for (Map.Entry<Integer, Pose2d> entry : map.entrySet()) {
+  //     NamedCommand.registerCommand(suffix, entry.getValue());
+  //   }
+  // }
 
   public static Command manualDrive(double deadband) {
     SwerveRequest.FieldCentric drive =
@@ -42,9 +50,17 @@ public class SwerveCommands {
     return swerve.applyRequest(
         () ->
             drive
-                .withVelocityX(Controls.Swerve.translateX.get())
-                .withVelocityY(Controls.Swerve.translateY.get())
-                .withRotationalRate(Controls.Swerve.rotate.get()));
+                .withVelocityX(Controls.Swerve.translateX.get() * getDriveMultiplier())
+                .withVelocityY(Controls.Swerve.translateY.get() * getDriveMultiplier())
+                .withRotationalRate(Controls.Swerve.rotate.get() * getDriveMultiplier()));
+  }
+
+  public static double getDriveMultiplier() {
+    double currentPos = elevator.getInches();
+    double maxPos = BodySetpoint.HIGH_NET.getElevTravel();
+    double ratio = Math.abs(currentPos / maxPos);
+    double speedMultiplier = 100D - (33D) * (ratio);
+    return speedMultiplier / 100D;
   }
 
   public static Command driveToPose(Pose2d targetPosition) {
@@ -56,37 +72,18 @@ public class SwerveCommands {
 
   public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
     return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
-    // .andThen(stopDrive());
   }
 
-  public static ProxyCommand driveToPegProxy(SwervePositions.alignMent align) {
-    return new ProxyCommand(()->driveToPeg(align));
+  public static Command driveToPegProxy(SwervePositions.alignMent align) {
+    return Commands.defer(
+        () -> {
+          return driveToPeg(align);
+        },
+        Set.of(swerve));
   }
-
-  // public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
-  //   Pose2d currentPose = swerve.getState().Pose;
-  //   Trajectory trajectory = generateTrajectory(currentPose, targetPosition);
-  //   var thetaController =
-  //       new ProfiledPIDController(
-  //           0.0, 0, 0, new Constraints(0.25, 120)); //TODO: THESE 12 VALUES ARE JUST PLACEHOLDERS
-  //   thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-  //   return new SwerveControllerCommand(
-  //   trajectory,
-  //   () -> getPose(),
-  //   swerve.getKinematics(),
-
-  //   new PIDController(0, 0, 0),
-  //   new PIDController(0, 0, 0), //TODO: THESE 0.1 VALUES ARE JUST PLACEHOLDERS
-  //   thetaController,
-  //   swerve::setModuleStates,
-  //   swerve
-  //   );
-  //   // .andThen(stopDrive());
-  // }
 
   public static Command driveTagNineLeft() {
-    return driveToPose(new Pose2d(13.30, 5.38, new Rotation2d(Units.degreesToRadians(29.8))))
+    return driveToPose(new Pose2d(12.683, 5.428, new Rotation2d(Units.degreesToRadians(29.8))))
         .withTimeout(3.0);
   }
 
@@ -96,12 +93,12 @@ public class SwerveCommands {
   }
 
   public static Command driveTagTwentyOneLeft() {
-    return driveToPose(new Pose2d(5.54, 3.53, new Rotation2d(Units.degreesToRadians(-87.69))))
+    return driveToPose(new Pose2d(5.92, 3.67, new Rotation2d(Units.degreesToRadians(-90.5))))
         .withTimeout(3.0);
   }
 
   public static Command driveTagTenLeft() {
-    return driveToPose(new Pose2d(11.83, 4.32, new Rotation2d(Units.degreesToRadians(91))))
+    return driveToPose(new Pose2d(11.661, 4.386, new Rotation2d(Units.degreesToRadians(91))))
         .withTimeout(3.0);
   }
 
@@ -110,18 +107,9 @@ public class SwerveCommands {
         .withTimeout(3.0);
   }
 
-  // public static Command debugTurn90() {
-  // return driveToPose(new Pose2d(13.1, 5.38, new Rotation2d(Units.degreesToRadians(0))))
-  //  .withTimeout(2.5);
-  // }
-
   public static Command driveToPeg(SwervePositions.alignMent align) {
-    // DriverStation.reportWarning("Driving to peg: " + LimelightHelpers.getFiducialID("limelight-cbot") + " " + align,new St );
-    return driveToPose(
-      SwervePositions.getScorePostition( 
-        swerve.getCurrentBestTag(),
-         align)
-        ).withTimeout(3);
+    return driveToPose(SwervePositions.getScorePostition(swerve.getCurrentBestTag(), align))
+        .withTimeout(3);
   }
 
   public static Command reorient() {

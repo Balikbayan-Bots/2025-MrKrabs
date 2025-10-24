@@ -15,6 +15,7 @@ import frc.robot.subsystems.body.ArmSubsystem;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.ClawSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSubsytem;
+import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class RobotContainer {
@@ -23,10 +24,11 @@ public class RobotContainer {
 
   // Declare Subsystems
   public final SwerveSubsystem swerve;
-  public final ClawSubsystem claw;
   public final ArmSubsystem arm;
   public final ElevatorSubsystem elevator;
+  public final ClawSubsystem claw;
   public final IntakeSubsytem intake;
+
   // Declare Choosers
   private final SendableChooser<Command> autoChooser;
 
@@ -40,8 +42,11 @@ public class RobotContainer {
     elevator = ElevatorSubsystem.getInstance();
     claw = ClawSubsystem.getInstance();
     intake = IntakeSubsytem.getInstance();
-    // Initialize Choosers
 
+    // Register April Tag Positions
+    SwervePositions.registerPositionMaps();
+
+    // Initialize Choosers
     CommandRegistry.registerAllCommands(
         BodyCommands.bodyCommandList.toArray(new CommandRegistry.CommandWrapper[0]));
     NamedCommands.registerCommand("ID 9 Left", SwerveCommands.driveTagNineLeft());
@@ -52,6 +57,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("LVL4", BodyCommands.positionLevelFour());
     NamedCommands.registerCommand("score", ManipulatorCommands.autoL4score());
     NamedCommands.registerCommand("upperStow", BodyCommands.positionStow());
+    NamedCommands.registerCommand("Lower Stow", BodyCommands.positionStart());
     NamedCommands.registerCommand("groundIntake", ManipulatorCommands.groundIntake());
     NamedCommands.registerCommand("stowIntake", ManipulatorCommands.intakeLevelHandoff());
     NamedCommands.registerCommand("grabLowAlgae", BodyCommands.positionLowAlgae());
@@ -59,18 +65,23 @@ public class RobotContainer {
     NamedCommands.registerCommand("goNet", BodyCommands.positionNet());
     NamedCommands.registerCommand("scoreNet", ManipulatorCommands.algaeScore());
     NamedCommands.registerCommand("handover", ManipulatorCommands.handover());
+    NamedCommands.registerCommand(
+        "Left Peg", SwerveCommands.driveToPegProxy(SwervePositions.alignMent.LEFT));
+    NamedCommands.registerCommand(
+        "Right Peg", SwerveCommands.driveToPegProxy(SwervePositions.alignMent.RIGHT));
+    NamedCommands.registerCommand(
+        "Middle", SwerveCommands.driveToPegProxy(SwervePositions.alignMent.CENTER));
 
     autoChooser = AutoBuilder.buildAutoChooser("Tests");
 
-    // NamedCommands.registerCommand("Limelight Source", );
     configureBindings();
     configureDashboard();
   }
 
   private void configureBindings() {
     Bindings.configureSwerveBinds();
-    Bindings.configureClawBinds();
     Bindings.configureBodyBinds();
+    Bindings.configureClawBinds();
     Bindings.configureIntakeBinds();
   }
 

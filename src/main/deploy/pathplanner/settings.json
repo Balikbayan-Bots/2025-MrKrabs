@@ -1,13 +1,19 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.806,
+  "robotLength": 0.806,
   "holonomicMode": true,
   "pathFolders": [
-    "BL Auto",
-    "Tuning",
-    "OhlTest"
+    "Center - 1 Piece",
+    "Right - 1 Piece - Red",
+    "Right - 2 Piece - Blue",
+    "Right - 3 Piece - Michael Dev"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Center - 1 Piece",
+    "Right - 3 Piece",
+    "Right - 1 Piece",
+    "Right - 2 Piece"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
@@ -32,5 +38,10 @@
   "brModuleY": -0.273,
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
-  "robotFeatures": []
+  "robotFeatures": [
+    "{\"name\":\"Battery\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.24,\"y\":0.0},\"size\":{\"width\":0.18415,\"length\":0.171},\"borderRadius\":0.005,\"strokeWidth\":0.02,\"filled\":true}}",
+    "{\"name\":\"Scoring Lineup\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.203,\"y\":0.41},\"end\":{\"x\":-0.203,\"y\":-0.7},\"strokeWidth\":0.01}}",
+    "{\"name\":\"Circle\",\"type\":\"circle\",\"data\":{\"center\":{\"x\":-0.203,\"y\":-0.4},\"radius\":0.05,\"strokeWidth\":0.02,\"filled\":true}}",
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.203,\"y\":-0.48},\"size\":{\"width\":0.1397,\"length\":0.305},\"borderRadius\":0.03,\"strokeWidth\":0.01,\"filled\":false}}"
+  ]
 }

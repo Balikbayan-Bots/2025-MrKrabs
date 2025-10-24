@@ -1,9 +1,5 @@
 package frc.robot.subsystems.manipulators;
 
-import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_HIST;
-import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_ID;
-import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_SIGSTRENGTH;
-import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CANRANGE_THRESH;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_CENTER_MOTOR_ID;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_DEPLOY_MOTOR_ID;
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_FEED_FWD;
@@ -16,19 +12,14 @@ import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_SLOT
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.kIntakeLimits;
 
 import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
-import com.ctre.phoenix6.signals.UpdateModeValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsytem extends SubsystemBase {
@@ -41,23 +32,17 @@ public class IntakeSubsytem extends SubsystemBase {
     return m_instance;
   }
 
-  private TalonFX deployMotor;
-  private TalonFX centerMotor;
-  private TalonFX rollersMotor;
+  private final TalonFX deployMotor;
+  private final TalonFX centerMotor;
+  private final TalonFX rollersMotor;
 
-  private IntakeState state = IntakeState.START;
+  private IntakeState state;
 
   private double refrenceDegrees = 0;
 
-  private MotionMagicVoltage motionMagic;
+  private final MotionMagicVoltage motionMagic;
 
   private IntakeSetpoint activeSetpoint = IntakeSetpoint.STOWED_HANDOFF;
-  private final CANBus kCANBus = new CANBus("rio");
-  private final CANrange canRange = new CANrange(INTAKE_CANRANGE_ID, kCANBus);
-  private double hasObject = canRange.getIsDetected().getValueAsDouble();
-  private double getCoralDistance = canRange.getDistance().getValueAsDouble();
-
-  // private double threshDistance = getCoralDistance +.1 ;
 
   private IntakeSubsytem() {
 
@@ -65,35 +50,28 @@ public class IntakeSubsytem extends SubsystemBase {
     centerMotor = new TalonFX(INTAKE_CENTER_MOTOR_ID);
     rollersMotor = new TalonFX(INTAKE_ROLLERS_MOTOR_ID);
 
-    CANrangeConfiguration config = new CANrangeConfiguration();
-    config.ProximityParams.MinSignalStrengthForValidMeasurement = INTAKE_CANRANGE_SIGSTRENGTH;
-    config.ProximityParams.ProximityThreshold = INTAKE_CANRANGE_THRESH;
-    config.ToFParams.UpdateMode = UpdateModeValue.ShortRangeUserFreq;
-    config.ProximityParams.ProximityHysteresis = INTAKE_CANRANGE_HIST;
-    canRange.getConfigurator().apply(config);
+    state = IntakeState.IDLE;
 
     reZero();
-
-    setDefaultCommand(new RunCommand(() -> setState(IntakeState.START), this));
 
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
     BaseStatusSignal.setUpdateFrequencyForAll(200, deployMotor.getPosition());
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50,
+        10,
         deployMotor.getSupplyVoltage(),
-        deployMotor.getFault_Hardware(),
         deployMotor.getMotorVoltage(),
         deployMotor.getSupplyCurrent(),
-        deployMotor.getStatorCurrent(),
-        deployMotor.getFault_DeviceTemp());
+        deployMotor.getStatorCurrent());
     deployMotor.optimizeBusUtilization();
+    centerMotor.optimizeBusUtilization();
+    rollersMotor.optimizeBusUtilization();
   }
 
   private void configureMotor(TalonFXConfigurator motorConfig) {
     TalonFXConfiguration newConfig = new TalonFXConfiguration();
 
     var limits = newConfig.SoftwareLimitSwitch;
-    limits.ForwardSoftLimitEnable = false; // TODO: PUT ACTUAL LIMITS
+    limits.ForwardSoftLimitEnable = false;
     limits.ReverseSoftLimitEnable = false;
 
     var current = newConfig.CurrentLimits;
@@ -134,6 +112,7 @@ public class IntakeSubsytem extends SubsystemBase {
     refrenceDegrees = degrees;
   }
 
+  @Override
   public void periodic() {
     updateReference(activeSetpoint.getDegrees());
     deployMotor.setControl(
@@ -143,8 +122,6 @@ public class IntakeSubsytem extends SubsystemBase {
             .withFeedForward(calculateFeedForward()));
     rollersMotor.set(state.getRollerMotorSpeed());
     centerMotor.set(state.getCenterMotorSpeed());
-    hasObject = canRange.getIsDetected().getValueAsDouble();
-    getCoralDistance = canRange.getDistance().getValueAsDouble();
   }
 
   private double calculateFeedForward() {
@@ -153,14 +130,6 @@ public class IntakeSubsytem extends SubsystemBase {
 
   private double getDegrees() {
     return motorRotationsToDegrees(deployMotor.getPosition().getValueAsDouble());
-  }
-
-  public boolean hasCoral() {
-    return hasObject != 0;
-  }
-
-  public double CoralDistance() {
-    return getCoralDistance;
   }
 
   public static double motorRotationsToDegrees(double rotations) {
@@ -187,8 +156,16 @@ public class IntakeSubsytem extends SubsystemBase {
     return getReferenceDegrees() - getDegrees();
   }
 
+  public IntakeState getState() {
+    return state;
+  }
+
+  public String getStateName() {
+    return state.toString();
+  }
+
   public boolean isAtSetpoint() {
-    return Math.abs(getError()) < 1.0;
+    return Math.abs(getError()) < 15.0;
   }
 
   @Override
@@ -198,7 +175,6 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Degrees", this::getDegrees, null);
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
-    builder.addBooleanProperty("has coral", this::hasCoral, null);
-    builder.addDoubleProperty("coral Distance", this::CoralDistance, null);
+    builder.addStringProperty("Intake State", this::getStateName, null);
   }
 }

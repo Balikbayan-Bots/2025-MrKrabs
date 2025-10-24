@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.06,
-        "y": 2.57
+        "x": 7.084733606557376,
+        "y": 2.5924692622950816
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.409085506374381,
-        "y": 2.561720631188868
+        "x": 6.131346342038094,
+        "y": 2.2379890190872778
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right - 2 Piece - Michael Dev - 1 - Start"
     },
     {
       "anchor": {
-        "x": 5.226,
-        "y": 2.913499999999999
+        "x": 5.574282786885245,
+        "y": 2.304764344262295
       },
       "prevControl": {
-        "x": 5.4759706394785335,
-        "y": 2.9173313703414085
+        "x": 5.276211223046685,
+        "y": 2.3391653428219032
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right - 2 Piece - Michael Dev - 1 - End"
     }
   ],
   "rotationTargets": [],
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 12.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -151.50436138175502
+    "rotation": -150.0
   },
   "reversed": false,
-  "folder": "OhlTest",
+  "folder": "Right - 3 Piece - Michael Dev",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

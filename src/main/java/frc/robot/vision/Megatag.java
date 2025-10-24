@@ -9,16 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Megatag {
-  private static List<LimelightConfig> limelights = new ArrayList<>();
-  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final List<LimelightConfig> limelights = new ArrayList<>();
+  private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
   public static void addLimelight(LimelightConfig limelight) {
     limelights.add(limelight);
   }
 
   // Using Megatag 1
-  // TODO: Get std dev to see confidence
-  // TODO: constantly set robot orientation
 
   public static void updateOdometry(LimelightConfig limelight) {
     // CRITICAL FIX: The rejection flag must be local or reset every loop.
@@ -60,7 +58,6 @@ public class Megatag {
     if (!doRejectUpdate) {
       // CRITICAL FIX: Use the correct addVisionMeasurement overload to apply confidence (StdDev)
       swerve.addVisionMeasurement(mt1.pose, mt1.timestampSeconds, confid);
-      
     }
   }
 

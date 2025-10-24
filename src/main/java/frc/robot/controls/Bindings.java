@@ -12,7 +12,7 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.subsystems.swerve.Telemetry;
 
 public class Bindings {
-  private static SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private static final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 
   private Bindings() {
     throw new IllegalStateException("Utility class");
@@ -23,32 +23,21 @@ public class Bindings {
 
     Controls.Swerve.reorient.onTrue(SwerveCommands.reorient());
 
-    // Controls.Debug.megatagTest.onTrue(SwerveCommands.driveTagNineLeft());
-
-    Controls.Swerve.rightPeg.onTrue(SwerveCommands.driveToPegProxy(SwervePositions.alignMent.RIGHT));
+    Controls.Swerve.rightPeg.onTrue(
+        SwerveCommands.driveToPegProxy(SwervePositions.alignMent.RIGHT));
     Controls.Swerve.leftPeg.onTrue(SwerveCommands.driveToPegProxy(SwervePositions.alignMent.LEFT));
     Controls.Swerve.center.onTrue(SwerveCommands.driveToPegProxy(SwervePositions.alignMent.CENTER));
 
-    // Controls.Swerve.test
-    // .onTrue(SwerveCommands.driveToPose(new Pose2d(16.25, 6.85,
-    // Rotation2d.fromDegrees(142.286))));
-
     Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
     swerve.registerTelemetry(logger::telemeterize);
-    // Controls.Swerve.rightPeg.onTrue((SwerveCommands.rightPegLineup()));
   }
 
   public static void configureClawBinds() {
     Controls.Manipulators.intake.whileTrue(ManipulatorCommands.beamIntake());
     Controls.Manipulators.intakeAlgae.onTrue(ManipulatorCommands.beamAlgaeIntake());
     Controls.Manipulators.scoreAlgae.onTrue(ManipulatorCommands.algaeScore());
-    // .onFalse(ManipulatorCommands.stopIntake());
-    // Controls.Manipulators.outake
-    //     .whileTrue(ManipulatorCommands.runOutake())
-    //     .onFalse(ManipulatorCommands.stopIntake());
 
     Controls.Manipulators.score.onTrue(ManipulatorCommands.score());
-    // .onFalse(ManipulatorCommands.stopIntake());
   }
 
   public static void configureBodyBinds() {
@@ -71,14 +60,6 @@ public class Bindings {
     Controls.Manipulators.handOverIntake.onTrue(ManipulatorCommands.handover());
     Controls.Manipulators.scoreLevelOne.onTrue(ManipulatorCommands.scoreLevelOne());
   }
-
-  // public static Command score() {
-  // return new SequentialCommandGroup(
-  //   BodyCommands.armSetpointRun(BodySetpoint.SCORE),
-  // ManipulatorCommands.score(),
-  //       n/ew WaitCommand(0.5),
-  //       BodyCommands.positionStow());
-  // }
 
   public static Command intakeLevelOne() {
     return ManipulatorCommands.intakeLevelOne();
