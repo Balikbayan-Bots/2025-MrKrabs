@@ -6,10 +6,7 @@ import static frc.robot.subsystems.swerve.SwerveConstants.MAX_TELEOP_SPEED;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
-
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,17 +16,12 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.DeferredCommand;
-import edu.wpi.first.wpilibj2.command.ProxyCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class SwerveCommands {
@@ -66,10 +58,10 @@ public class SwerveCommands {
   public static double getDriveMultiplier() {
     double currentPos = elevator.getInches();
     double maxPos = BodySetpoint.HIGH_NET.getElevTravel();
-    double ratio = Math.abs(currentPos/maxPos);
-    double speedMultiplier = 100D - (33D)*(ratio);
-    return speedMultiplier/100D;
-}
+    double ratio = Math.abs(currentPos / maxPos);
+    double speedMultiplier = 100D - (33D) * (ratio);
+    return speedMultiplier / 100D;
+  }
 
   public static Command driveToPose(Pose2d targetPosition) {
     PathConstraints constraints =
@@ -83,7 +75,11 @@ public class SwerveCommands {
   }
 
   public static Command driveToPegProxy(SwervePositions.alignMent align) {
-    return Commands.defer(() -> {return driveToPeg(align);}, Set.of(swerve));
+    return Commands.defer(
+        () -> {
+          return driveToPeg(align);
+        },
+        Set.of(swerve));
   }
 
   public static Command driveTagNineLeft() {

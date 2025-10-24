@@ -87,11 +87,10 @@ public class BodyCommands {
 
   public static Command positionLevelFour() {
     return Commands.sequence(
-          Commands.runOnce(() -> elev.updateSetpoint(BodySetpoint.CORAL_LEVEL4), elev),
-          Commands.idle(arm).until(elev::isAtSetpoint),
-          Commands.runOnce(() -> arm.updateSetpoint(BodySetpoint.CORAL_LEVEL4), arm),
-          Commands.waitSeconds(0.25)
-          );
+        Commands.runOnce(() -> elev.updateSetpoint(BodySetpoint.CORAL_LEVEL4), elev),
+        Commands.idle(arm).until(elev::isAtSetpoint),
+        Commands.runOnce(() -> arm.updateSetpoint(BodySetpoint.CORAL_LEVEL4), arm),
+        Commands.waitSeconds(0.25));
   }
 
   public static Command positionHighAlgae() {

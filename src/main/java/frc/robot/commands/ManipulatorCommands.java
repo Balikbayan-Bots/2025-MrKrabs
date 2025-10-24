@@ -108,13 +108,12 @@ public class ManipulatorCommands {
   public static Command scoreLevelOne() {
     return Commands.sequence(
         Commands.runOnce(() -> intake.setState(IntakeState.SHOOT), intake),
-        Commands.waitSeconds(0.4),        
+        Commands.waitSeconds(0.4),
         Commands.runEnd(
-          () -> intake.updateSetpoint(IntakeSetpoint.STOWED_HANDOFF), 
-          () -> intake.setState(IntakeState.IDLE), 
-          intake)
-          .until(intake::isAtSetpoint)
-        );
+                () -> intake.updateSetpoint(IntakeSetpoint.STOWED_HANDOFF),
+                () -> intake.setState(IntakeState.IDLE),
+                intake)
+            .until(intake::isAtSetpoint));
   }
 
   public static Command autoL4score() {
@@ -134,8 +133,7 @@ public class ManipulatorCommands {
   public static Command intakeLevelHandoff() {
     return new SequentialCommandGroup(
         intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF).withTimeout(0.5),
-        setIntakeState(IntakeState.HOLD)
-        );
+        setIntakeState(IntakeState.HOLD));
   }
 
   public static Command groundIntake() {

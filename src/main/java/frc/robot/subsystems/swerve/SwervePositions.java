@@ -1,18 +1,13 @@
 package frc.robot.subsystems.swerve;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.commands.SwerveCommands;
-import frc.robot.commands.CommandRegistry.CommandWrapper;
-
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-
-import com.pathplanner.lib.auto.NamedCommands;
 
 public class SwervePositions {
   public static final HashMap<Integer, Pose2d> ReefLeft = new HashMap<>();
@@ -41,9 +36,9 @@ public class SwervePositions {
     };
   }
 
-  private static void registerPositionMap(HashMap<Integer, Pose2d> map, String suffix){
+  private static void registerPositionMap(HashMap<Integer, Pose2d> map, String suffix) {
 
-    //method here
+    // method here
     for (Map.Entry<Integer, Pose2d> entry : map.entrySet()) {
       String commandName = entry.getKey() + "-" + suffix;
       System.out.println("Registering command: " + commandName);
@@ -105,7 +100,7 @@ public class SwervePositions {
 
     ReefCenter.put(17, new Pose2d(3.548, 2.778, new Rotation2d(Units.degreesToRadians(150))));
     ReefCenter.put(18, new Pose2d(2.949, 4.217, new Rotation2d(Units.degreesToRadians(90))));
-    ReefCenter.put(19, new Pose2d(3.932,5.452, new Rotation2d(Units.degreesToRadians(30))));
+    ReefCenter.put(19, new Pose2d(3.932, 5.452, new Rotation2d(Units.degreesToRadians(30))));
     ReefCenter.put(20, new Pose2d(5.430, 5.248, new Rotation2d(Units.degreesToRadians(-30))));
     ReefCenter.put(21, new Pose2d(6.045, 3.840, new Rotation2d(Units.degreesToRadians(-90))));
     ReefCenter.put(22, new Pose2d(5.070, 2.601, new Rotation2d(Units.degreesToRadians(-150.0))));
