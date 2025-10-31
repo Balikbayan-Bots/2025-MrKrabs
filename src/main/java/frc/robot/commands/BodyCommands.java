@@ -132,4 +132,26 @@ public class BodyCommands {
             armSetpointRun(BodySetpoint.START_CONFIG).until(arm::isAtSetpoint),
             elevSetpointRun(BodySetpoint.START_CONFIG).until(arm::isAtSetpoint)));
   }
+
+  public static Command spook() {
+    return new SequentialCommandGroup(
+      new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.HIGH_NET),
+        armSetpointRun(BodySetpoint.HIGH_NET)
+      ),
+      new WaitCommand(2),
+      new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.SPOOK),
+        armSetpointRun(BodySetpoint.SPOOK)
+      ),
+      new WaitCommand(2),
+      new ParallelCommandGroup(
+        elevSetpointRun(BodySetpoint.HIGH_NET),
+        armSetpointRun(BodySetpoint.HIGH_NET)
+      ),
+      new WaitCommand(3),
+      positionStart()
+
+    );
+  }
 }

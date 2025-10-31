@@ -82,7 +82,6 @@ public class RobotContainer {
     Bindings.configureSwerveBinds();
     Bindings.configureBodyBinds();
     Bindings.configureClawBinds();
-    Bindings.configureIntakeBinds();
   }
 
   private void configureDashboard() {

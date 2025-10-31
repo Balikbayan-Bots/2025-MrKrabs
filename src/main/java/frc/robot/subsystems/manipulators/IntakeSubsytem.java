@@ -15,6 +15,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -40,8 +41,6 @@ public class IntakeSubsytem extends SubsystemBase {
 
   private double refrenceDegrees = 0;
 
-  private final MotionMagicVoltage motionMagic;
-
   private IntakeSetpoint activeSetpoint = IntakeSetpoint.STOWED_HANDOFF;
 
   private IntakeSubsytem() {
@@ -54,17 +53,13 @@ public class IntakeSubsytem extends SubsystemBase {
 
     reZero();
 
-    motionMagic = new MotionMagicVoltage(0).withSlot(0);
-    BaseStatusSignal.setUpdateFrequencyForAll(200, deployMotor.getPosition());
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        10,
-        deployMotor.getSupplyVoltage(),
-        deployMotor.getMotorVoltage(),
-        deployMotor.getSupplyCurrent(),
-        deployMotor.getStatorCurrent());
     deployMotor.optimizeBusUtilization();
     centerMotor.optimizeBusUtilization();
     rollersMotor.optimizeBusUtilization();
+
+    configureMotor(deployMotor.getConfigurator());
+    configureMotor(centerMotor.getConfigurator());
+    configureMotor(rollersMotor.getConfigurator());
   }
 
   private void configureMotor(TalonFXConfigurator motorConfig) {
@@ -81,8 +76,8 @@ public class IntakeSubsytem extends SubsystemBase {
     current.SupplyCurrentLimitEnable = true;
 
     var voltage = newConfig.Voltage;
-    voltage.PeakForwardVoltage = INTAKE_MAX_VOLTAGE_FWD; // out
-    voltage.PeakReverseVoltage = INTAKE_MAX_VOLTAGE_REVERSE; // in
+    voltage.PeakForwardVoltage = 0.0; // out
+    voltage.PeakReverseVoltage = 0.0; // in
 
     Slot0Configs slot0 = newConfig.Slot0;
     slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
@@ -115,13 +110,9 @@ public class IntakeSubsytem extends SubsystemBase {
   @Override
   public void periodic() {
     updateReference(activeSetpoint.getDegrees());
-    deployMotor.setControl(
-        motionMagic
-            .withPosition(degreesToMotorRotations(refrenceDegrees))
-            .withSlot(0)
-            .withFeedForward(calculateFeedForward()));
-    rollersMotor.set(state.getRollerMotorSpeed());
-    centerMotor.set(state.getCenterMotorSpeed());
+    deployMotor.setControl( new CoastOut());
+    rollersMotor.setControl(new CoastOut());
+    centerMotor.setControl(new CoastOut());
   }
 
   private double calculateFeedForward() {

@@ -8,6 +8,7 @@ import static frc.robot.subsystems.manipulators.ManipulatorConstants.kclawLimits
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -32,15 +33,6 @@ public class ClawSubsystem extends SubsystemBase {
     motor = new TalonFX(CLAW_MOTOR_ID);
     beamBreak = new DigitalInput(BEAM_BREAK_ID);
     configureclaw(motor);
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        10,
-        motor.getVelocity(),
-        motor.getSupplyVoltage(),
-        motor.getFault_Hardware(),
-        motor.getMotorVoltage(),
-        motor.getSupplyCurrent(),
-        motor.getStatorCurrent(),
-        motor.getFault_DeviceTemp());
     motor.optimizeBusUtilization();
   }
 
@@ -57,8 +49,8 @@ public class ClawSubsystem extends SubsystemBase {
     current.SupplyCurrentLimitEnable = true;
 
     var voltage = newConfig.Voltage;
-    voltage.PeakForwardVoltage = CLAW_MAX_VOLTAGE_FORWARD; // Down
-    voltage.PeakReverseVoltage = CLAW_MAX_VOLTAGE_REVERSE; // Up
+    voltage.PeakForwardVoltage = 0.0; // Down
+    voltage.PeakReverseVoltage = 0.0; // Up
     motor.getConfigurator().apply(newConfig);
   }
 
@@ -76,7 +68,7 @@ public class ClawSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    motor.set(state.getSpeed());
+    motor.setControl(new CoastOut());
   }
 
   public void setState(ClawState state) {

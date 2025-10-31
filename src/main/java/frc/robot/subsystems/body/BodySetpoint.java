@@ -9,13 +9,14 @@ public enum BodySetpoint {
   ALGAE_LEVEL2(10, 90.0),
   ALGAE_LEVEL3(18.5, 92.0),
   SAFE_STOW(20.0, 90.0),
-  STOW_POS(20.0, 180.0),
+  STOW_POS(20.0, 0.0),
   HIGH_NET(26.5, 26.0),
+  SPOOK(26.5,-26.0),
   PROCESSOR(0.0, 0.0),
   SCORE(0.0, 80.0),
-  HANDOFF(18, 180),
+  HANDOFF(18, 0.0),
   SCORE_LEVEL2(0.0, 50.0),
-  FLOOR_ALGAE(6, 125.0);
+  FLOOR_ALGAE(6, 0.0);
 
   private final double elevTravel;
   private final double armDegrees;
