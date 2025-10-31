@@ -10,6 +10,7 @@ import static frc.robot.subsystems.body.BodyConstants.ARM_SLOT_ZERO;
 import static frc.robot.subsystems.body.BodyConstants.kArmLimits;
 
 import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
@@ -64,7 +65,7 @@ public class ArmSubsystem extends SubsystemBase {
     limits.ForwardSoftLimitEnable = false;
     limits.ReverseSoftLimitEnable = false;
 
-    var current = newConfig.CurrentLimits;
+    CurrentLimitsConfigs current = newConfig.CurrentLimits;
     current.StatorCurrentLimit = kArmLimits.statorLimit();
     current.StatorCurrentLimitEnable = true;
     current.SupplyCurrentLimit = kArmLimits.supplyLimit();
@@ -96,6 +97,10 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void reZero() {
     motor.setPosition(0);
+  }
+  
+  public void updateReference(BodySetpoint setpoint) {
+    refrenceDegrees = setpoint.getArmDegrees();
   }
 
   public void updateReference(double degrees) {
