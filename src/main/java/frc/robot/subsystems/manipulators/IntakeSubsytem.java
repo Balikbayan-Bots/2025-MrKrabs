@@ -21,6 +21,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.vision.CoralDetection;
 
 public class IntakeSubsytem extends SubsystemBase {
   public static IntakeSubsytem m_instance;
@@ -176,5 +177,6 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
     builder.addStringProperty("Intake State", this::getStateName, null);
+    builder.addDoubleProperty("Distance From Coral", () -> CoralDetection.getCoralDistance(), null);
   }
 }
