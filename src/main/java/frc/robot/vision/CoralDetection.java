@@ -5,27 +5,48 @@
 package frc.robot.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 /** Add your docs here. */
 public class CoralDetection {
-    public static final String LIMELIGHT = "limelight-cbotint";
-    public static double getCoralDistance() {
-        double targetOffsetAngle_Vertical = LimelightHelpers.getTY(LIMELIGHT);
-        double limelightMountAngleDegrees = -30.0;
-        double limelightLenseHeightMeters = 0.770077;
-        double goalHeightMeters = .05715;
+  public static final String LIMELIGHT = "limelight-cbotint";
 
-        double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+  public static double getCoralDistance() {
+    double targetOffsetAngle_Vertical = LimelightHelpers.getTY(LIMELIGHT);
+    double limelightMountAngleDegrees = -30.0;
+    double limelightLenseHeightMeters = 0.770077;
+    double goalHeightMeters = .05715;
 
-        double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
+    double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
 
-        double distanceToGoalMeters = (goalHeightMeters - limelightLenseHeightMeters) / Math.tan(angleToGoalRadians);
+    double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
 
-        return distanceToGoalMeters;
-    }
+    double distanceToGoalMeters =
+        (goalHeightMeters - limelightLenseHeightMeters) / Math.tan(angleToGoalRadians);
 
-    public static Pose2d getCoralPose(Pose2d robotPose) {
-        return new Pose2d();
-        
-    }
+    return distanceToGoalMeters;
+  }
+
+  public static Pose2d getCoralPose(Pose2d robotPose) {
+
+    double innerAngle = robotPose.getRotation().getRadians() + Math.PI;
+    double dy = Math.sin(innerAngle) * getCoralDistance();
+    double dx = Math.cos(innerAngle) * getCoralDistance();
+
+    return new Pose2d(robotPose.getX() + dx, robotPose.getY() + dy, robotPose.getRotation());
+  }
+
+  public static boolean validTarget() {
+    return LimelightHelpers.getTV(LIMELIGHT);
+  }
+
+  public static Pose2d squareUpPose(Pose2d robotPose) {
+
+    double tx = LimelightHelpers.getTX(LIMELIGHT);
+
+    return new Pose2d(
+        robotPose.getX(),
+        robotPose.getY(),
+        robotPose.getRotation().plus(Rotation2d.fromDegrees(tx)));
+  }
 }

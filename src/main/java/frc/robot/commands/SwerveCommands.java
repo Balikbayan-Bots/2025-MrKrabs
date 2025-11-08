@@ -19,8 +19,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
+import frc.robot.subsystems.manipulators.IntakeSetpoint;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
+import frc.robot.vision.CoralDetection;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -72,6 +74,25 @@ public class SwerveCommands {
 
   public static Command driveToPose(Pose2d targetPosition, PathConstraints constraints) {
     return AutoBuilder.pathfindToPose(targetPosition, constraints, 0.0);
+  }
+
+  public static Command squareUpCoral() {
+
+    return driveToPose(CoralDetection.squareUpPose(swerve.getState().Pose));
+  }
+
+  public static Command driveToCoral() {
+
+    return driveToPose(CoralDetection.getCoralPose(swerve.getState().Pose));
+  }
+
+  public static Command magicCoral() {
+
+    return Commands.parallel(
+        ManipulatorCommands.groundIntake(),
+        Commands.sequence(
+            // Commands.defer(() -> squareUpCoral(), Set.of(swerve))
+            Commands.defer(() -> driveToCoral(), Set.of(swerve)))).andThen(ManipulatorCommands.intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF));
   }
 
   public static Command driveToPegProxy(SwervePositions.alignMent align) {

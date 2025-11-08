@@ -178,5 +178,6 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
     builder.addStringProperty("Intake State", this::getStateName, null);
     builder.addDoubleProperty("Distance From Coral", () -> CoralDetection.getCoralDistance(), null);
+    builder.addBooleanProperty(("Valid Target Detected"), () -> CoralDetection.validTarget(), null);
   }
 }

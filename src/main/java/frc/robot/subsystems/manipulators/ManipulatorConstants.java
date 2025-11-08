@@ -25,26 +25,26 @@ public class ManipulatorConstants {
           70.0,
           35.0,
           ArmSubsystem.degreesToMotorRotations(0),
-          ArmSubsystem.degreesToMotorRotations(-133));
+          ArmSubsystem.degreesToMotorRotations(133));
 
   public static final double INTAKE_MAX_VOLTAGE_FWD = 7;
   public static final double INTAKE_MAX_VOLTAGE_REVERSE = -7;
 
   public static final double[] INTAKE_SLOT_ZERO = {
-    0.02, // kP
+    0.1, // kP
     0.0, // kI
     0.0, // kD
     0.0, // kS
     0.0, // kG
-    0.01, // kV
+    0.15, // kV
     0.0 // kA
   };
 
-  public static final double INTAKE_FEED_FWD = 0.0005;
+  public static final double INTAKE_FEED_FWD = 0.5;
 
   public static final double[] INTAKE_MOTION_MAGIC_CONFIGS = {
-    30.0, // Acceleration
-    10.0, // Cruise Velocity
+    200.0, // Acceleration
+    100.0, // Cruise Velocity
     1800.0 // Jerk
   };
 }

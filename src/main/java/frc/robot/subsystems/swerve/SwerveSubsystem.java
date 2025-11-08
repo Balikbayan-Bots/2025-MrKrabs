@@ -21,11 +21,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.swerve.SwerveConfig.TunerSwerveDrivetrain;
+import frc.robot.vision.CoralDetection;
 import frc.robot.vision.LimelightConfigs;
 import frc.robot.vision.LimelightHelpers;
 import frc.robot.vision.Megatag.LimelightConfig;
@@ -39,6 +42,9 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
   private static SwerveSubsystem instance;
   static LimelightConfig limelight = LimelightConfigs.ReefLimelight;
   public int currentBestTag = -1;
+  private final Field2d m_field = new Field2d();
+
+  private FieldObject2d coral = m_field.getObject("Coral");
 
   public static SwerveSubsystem getInstance() {
     if (instance == null) {
@@ -146,6 +152,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
       startSimThread();
     }
     configureAutoBuilder();
+    SmartDashboard.putData("Field", m_field);
   }
 
   /**
@@ -288,6 +295,16 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
     // Megatag.updateOdometry(limelight);
     currentBestTag = (int) Math.round(LimelightHelpers.getFiducialID(limelight.name()));
     SmartDashboard.putNumber("currentBestTag", currentBestTag);
+
+    Pose2d coralPose = CoralDetection.getCoralPose(getState().Pose);
+
+    SmartDashboard.putNumber("Coral X Pose", coralPose.getX());
+
+    SmartDashboard.putNumber("Coral Y Pose", coralPose.getY());
+
+    m_field.setRobotPose(getState().Pose);
+
+    coral.setPose(coralPose);
   }
 
   private void startSimThread() {

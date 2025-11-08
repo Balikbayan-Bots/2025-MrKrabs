@@ -98,7 +98,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void reZero() {
     motor.setPosition(0);
   }
-  
+
   public void updateReference(BodySetpoint setpoint) {
     refrenceDegrees = setpoint.getArmDegrees();
   }
