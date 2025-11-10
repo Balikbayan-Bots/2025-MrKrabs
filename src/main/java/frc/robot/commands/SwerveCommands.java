@@ -16,13 +16,16 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
 import frc.robot.subsystems.manipulators.IntakeSetpoint;
+import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.vision.CoralDetection;
+import frc.robot.vision.LimelightHelpers;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -57,6 +60,13 @@ public class SwerveCommands {
                 .withRotationalRate(Controls.Swerve.rotate.get() * getDriveMultiplier()));
   }
 
+  public static Command coralAim() {
+    SwerveRequest.RobotCentric drive =
+        new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
+    return swerve.applyRequest(() -> drive.withRotationalRate(CoralDetection.aimAtCoral()));
+  }
+
   public static double getDriveMultiplier() {
     double currentPos = elevator.getInches();
     double maxPos = BodySetpoint.HIGH_NET.getElevTravel();
@@ -67,7 +77,7 @@ public class SwerveCommands {
 
   public static Command driveToPose(Pose2d targetPosition) {
     PathConstraints constraints =
-        new PathConstraints(1.0, 4.0, Units.degreesToRadians(540), Units.degreesToRadians(720));
+        new PathConstraints(1.5, 4.0, Units.degreesToRadians(540), Units.degreesToRadians(720));
 
     return driveToPose(targetPosition, constraints);
   }
@@ -88,11 +98,15 @@ public class SwerveCommands {
 
   public static Command magicCoral() {
 
-    return Commands.parallel(
-        ManipulatorCommands.groundIntake(),
-        Commands.sequence(
-            // Commands.defer(() -> squareUpCoral(), Set.of(swerve))
-            Commands.defer(() -> driveToCoral(), Set.of(swerve)))).andThen(ManipulatorCommands.intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF));
+    return Commands.sequence(
+       Commands.race(Commands.waitSeconds(1), coralAim().until(() -> (Math.abs(CoralDetection.aimAtCoral()) < 0.15))),
+       Commands.waitSeconds(1.0),
+        Commands.parallel(
+                ManipulatorCommands.groundIntake(),
+                Commands.sequence(
+                    // Commands.defer(() -> squareUpCoral(), Set.of(swerve))
+                    Commands.defer(() -> driveToCoral(), Set.of(swerve))))
+            .andThen(ManipulatorCommands.intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF)));
   }
 
   public static Command driveToPegProxy(SwervePositions.alignMent align) {

@@ -11,7 +11,7 @@ public class ManipulatorConstants {
   public static final int INTAKE_CENTER_MOTOR_ID = 41;
   public static final int INTAKE_ROLLERS_MOTOR_ID = 42;
   public static final int INTAKE_CANRANGE_ID = 43;
-  public static final double INTAKE_CANRANGE_SIGSTRENGTH = 5700;
+  public static final double INTAKE_CANRANGE_SIGSTRENGTH = 10000;
   public static final double INTAKE_CANRANGE_HIST = 0.005;
   public static final double INTAKE_CANRANGE_THRESH = 0.75;
   public static final double INTAKE_GEAR_RATIO = 17.778D;
@@ -31,12 +31,12 @@ public class ManipulatorConstants {
   public static final double INTAKE_MAX_VOLTAGE_REVERSE = -7;
 
   public static final double[] INTAKE_SLOT_ZERO = {
-    0.1, // kP
+    0.075, // kP
     0.0, // kI
     0.0, // kD
     0.0, // kS
     0.0, // kG
-    0.15, // kV
+    0.125, // kV
     0.0 // kA
   };
 
@@ -44,7 +44,9 @@ public class ManipulatorConstants {
 
   public static final double[] INTAKE_MOTION_MAGIC_CONFIGS = {
     200.0, // Acceleration
-    100.0, // Cruise Velocity
+    50.0, // Cruise Velocity
     1800.0 // Jerk
   };
+
+  public static final double DRIVE_THRU_MULTIPLIER = 1.5;
 }

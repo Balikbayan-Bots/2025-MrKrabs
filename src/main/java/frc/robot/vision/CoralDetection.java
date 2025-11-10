@@ -6,8 +6,9 @@ package frc.robot.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.subsystems.manipulators.ManipulatorConstants;
+import frc.robot.subsystems.swerve.SwerveConstants;
 
-/** Add your docs here. */
 public class CoralDetection {
   public static final String LIMELIGHT = "limelight-cbotint";
 
@@ -24,7 +25,7 @@ public class CoralDetection {
     double distanceToGoalMeters =
         (goalHeightMeters - limelightLenseHeightMeters) / Math.tan(angleToGoalRadians);
 
-    return distanceToGoalMeters;
+    return distanceToGoalMeters * ManipulatorConstants.DRIVE_THRU_MULTIPLIER;
   }
 
   public static Pose2d getCoralPose(Pose2d robotPose) {
@@ -48,5 +49,17 @@ public class CoralDetection {
         robotPose.getX(),
         robotPose.getY(),
         robotPose.getRotation().plus(Rotation2d.fromDegrees(tx)));
+  }
+
+  public static double aimAtCoral() {
+    double kP = .035;
+
+    double targetingAngularVelocity = LimelightHelpers.getTX(LIMELIGHT) * kP;
+
+    targetingAngularVelocity *= SwerveConstants.MAX_TELEOP_ROT;
+
+    targetingAngularVelocity *= -1.0;
+
+    return targetingAngularVelocity;
   }
 }
