@@ -30,6 +30,8 @@ public class Bindings {
 
     Telemetry logger = new Telemetry(SwerveConstants.SPEED_AT_12V.in(MetersPerSecond));
     swerve.registerTelemetry(logger::telemeterize);
+
+    Controls.Manipulators.magicCoral.onTrue(SwerveCommands.magicCoral());
   }
 
   public static void configureClawBinds() {

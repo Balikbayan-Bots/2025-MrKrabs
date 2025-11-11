@@ -12,15 +12,20 @@ import static frc.robot.subsystems.manipulators.ManipulatorConstants.INTAKE_SLOT
 import static frc.robot.subsystems.manipulators.ManipulatorConstants.kIntakeLimits;
 
 import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.ctre.phoenix6.signals.UpdateModeValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.vision.CoralDetection;
 
 public class IntakeSubsytem extends SubsystemBase {
   public static IntakeSubsytem m_instance;
@@ -35,6 +40,7 @@ public class IntakeSubsytem extends SubsystemBase {
   private final TalonFX deployMotor;
   private final TalonFX centerMotor;
   private final TalonFX rollersMotor;
+  private final CANrange canRange;
 
   private IntakeState state;
 
@@ -52,6 +58,10 @@ public class IntakeSubsytem extends SubsystemBase {
 
     state = IntakeState.IDLE;
 
+    deployMotor.getConfigurator().apply(getDeployMotorConfig());
+    rollersMotor.getConfigurator().apply(getRollerMotorConfig());
+    centerMotor.getConfigurator().apply(getCenterMotorConfig());
+
     reZero();
 
     motionMagic = new MotionMagicVoltage(0).withSlot(0);
@@ -65,9 +75,16 @@ public class IntakeSubsytem extends SubsystemBase {
     deployMotor.optimizeBusUtilization();
     centerMotor.optimizeBusUtilization();
     rollersMotor.optimizeBusUtilization();
+    canRange = new CANrange(ManipulatorConstants.INTAKE_CANRANGE_ID);
+    CANrangeConfiguration canRangeConfig = new CANrangeConfiguration();
+    canRangeConfig.ProximityParams.MinSignalStrengthForValidMeasurement =
+        ManipulatorConstants.INTAKE_CANRANGE_SIGSTRENGTH;
+    canRangeConfig.ProximityParams.ProximityThreshold = ManipulatorConstants.INTAKE_CANRANGE_THRESH;
+    canRangeConfig.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
+    canRange.getConfigurator().apply(canRangeConfig);
   }
 
-  private void configureMotor(TalonFXConfigurator motorConfig) {
+  private TalonFXConfiguration getDefaultMotorConfig() {
     TalonFXConfiguration newConfig = new TalonFXConfiguration();
 
     var limits = newConfig.SoftwareLimitSwitch;
@@ -101,7 +118,23 @@ public class IntakeSubsytem extends SubsystemBase {
     motionMagic.MotionMagicAcceleration = INTAKE_MOTION_MAGIC_CONFIGS[0];
     motionMagic.MotionMagicCruiseVelocity = INTAKE_MOTION_MAGIC_CONFIGS[1];
     motionMagic.MotionMagicJerk = INTAKE_MOTION_MAGIC_CONFIGS[2];
-    motorConfig.apply(newConfig);
+    return newConfig;
+
+  }
+
+  private TalonFXConfiguration getRollerMotorConfig() {
+    TalonFXConfiguration newConfig = getDefaultMotorConfig();
+    return newConfig;
+  }
+
+  private TalonFXConfiguration getCenterMotorConfig() {
+    TalonFXConfiguration newConfig = getDefaultMotorConfig();
+    return newConfig;
+  }
+
+  private TalonFXConfiguration getDeployMotorConfig() {
+    TalonFXConfiguration newConfig = getDefaultMotorConfig();
+    return newConfig;
   }
 
   public void reZero() {
@@ -168,6 +201,11 @@ public class IntakeSubsytem extends SubsystemBase {
     return Math.abs(getError()) < 15.0;
   }
 
+  public boolean hasCoral() {
+    boolean isDetected = canRange.getIsDetected(true).getValue();
+    return isDetected;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
@@ -176,5 +214,10 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
     builder.addStringProperty("Intake State", this::getStateName, null);
+    builder.addDoubleProperty("Distance From Coral", () -> CoralDetection.getCoralDistance(), null);
+    builder.addBooleanProperty(("Valid Target Detected"), () -> CoralDetection.validTarget(), null);
+    builder.addBooleanProperty("Has Coral", () -> hasCoral(), null);
+    builder.addDoubleProperty("Signal Strength", () -> canRange.getSignalStrength().getValueAsDouble(), null);
+    builder.addDoubleProperty("Aim At Coral", () -> CoralDetection.aimAtCoral(), null);
   }
 }

@@ -11,7 +11,7 @@ public class ManipulatorConstants {
   public static final int INTAKE_CENTER_MOTOR_ID = 41;
   public static final int INTAKE_ROLLERS_MOTOR_ID = 42;
   public static final int INTAKE_CANRANGE_ID = 43;
-  public static final double INTAKE_CANRANGE_SIGSTRENGTH = 5700;
+  public static final double INTAKE_CANRANGE_SIGSTRENGTH = 10000;
   public static final double INTAKE_CANRANGE_HIST = 0.005;
   public static final double INTAKE_CANRANGE_THRESH = 0.75;
   public static final double INTAKE_GEAR_RATIO = 17.778D;
@@ -25,26 +25,28 @@ public class ManipulatorConstants {
           70.0,
           35.0,
           ArmSubsystem.degreesToMotorRotations(0),
-          ArmSubsystem.degreesToMotorRotations(-133));
+          ArmSubsystem.degreesToMotorRotations(133));
 
   public static final double INTAKE_MAX_VOLTAGE_FWD = 7;
   public static final double INTAKE_MAX_VOLTAGE_REVERSE = -7;
 
   public static final double[] INTAKE_SLOT_ZERO = {
-    0.02, // kP
+    0.075, // kP
     0.0, // kI
     0.0, // kD
     0.0, // kS
     0.0, // kG
-    0.01, // kV
+    0.125, // kV
     0.0 // kA
   };
 
-  public static final double INTAKE_FEED_FWD = 0.0005;
+  public static final double INTAKE_FEED_FWD = 0.5;
 
   public static final double[] INTAKE_MOTION_MAGIC_CONFIGS = {
-    30.0, // Acceleration
-    10.0, // Cruise Velocity
+    200.0, // Acceleration
+    50.0, // Cruise Velocity
     1800.0 // Jerk
   };
+
+  public static final double DRIVE_THRU_MULTIPLIER = 1.5;
 }

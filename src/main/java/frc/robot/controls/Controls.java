@@ -100,5 +100,7 @@ public class Controls {
     public static final Trigger intakeLevelOne = coDriver.x();
     public static final Trigger groundIntake = driver.leftBumper();
     public static final Trigger intakeAlgae = driver.leftTrigger();
+
+    public static final Trigger magicCoral = driver.povDown();
   }
 }
