@@ -91,24 +91,6 @@ public class SwerveCommands {
     return driveToPose(ObjectDetection.squareUpPose(swerve.getState().Pose));
   }
 
-  public static Command driveToCoral() {
-
-    return driveToPose(ObjectDetection.getCoralPose(swerve.getState().Pose));
-  }
-
-  public static Command magicCoral() {
-
-    return Commands.sequence(
-       Commands.race(Commands.waitSeconds(1), coralAim().until(() -> (Math.abs(ObjectDetection.aimAtCoral()) < 0.15))),
-       Commands.waitSeconds(1.0),
-        Commands.parallel(
-                ManipulatorCommands.groundIntake(),
-                Commands.sequence(
-                    // Commands.defer(() -> squareUpCoral(), Set.of(swerve))
-                    Commands.defer(() -> driveToCoral(), Set.of(swerve))))
-            .andThen(ManipulatorCommands.intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF)));
-  }
-
   public static Command driveToPegProxy(SwervePositions.alignMent align) {
     return Commands.defer(
         () -> {
