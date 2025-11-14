@@ -25,7 +25,7 @@ import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.ctre.phoenix6.signals.UpdateModeValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.vision.CoralDetection;
+import frc.robot.vision.ObjectDetection;
 
 public class IntakeSubsytem extends SubsystemBase {
   public static IntakeSubsytem m_instance;
@@ -218,11 +218,11 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
     builder.addStringProperty("Intake State", this::getStateName, null);
-    builder.addDoubleProperty("Distance From Coral", () -> CoralDetection.getCoralDistance(), null);
-    builder.addBooleanProperty(("Valid Target Detected"), () -> CoralDetection.validTarget(), null);
+    builder.addDoubleProperty("Distance From Coral", () -> ObjectDetection.getCoralDistance(), null);
+    builder.addBooleanProperty(("Valid Target Detected"), () -> ObjectDetection.validTarget(), null);
     builder.addBooleanProperty("Has Coral", () -> hasCoral(), null);
     builder.addDoubleProperty("Signal Strength", () -> canRange.getSignalStrength().getValueAsDouble(), null);
-    builder.addDoubleProperty("Aim At Coral", () -> CoralDetection.aimAtCoral(), null);
+    builder.addDoubleProperty("Aim At Coral", () -> ObjectDetection.aimAtCoral(), null);
     builder.addDoubleProperty("CAN Range Distance", this::rangeDistance, null);
   }
 }

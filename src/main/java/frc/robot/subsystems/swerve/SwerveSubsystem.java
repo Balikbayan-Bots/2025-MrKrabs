@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.manipulators.SwerveConfig;
 import frc.robot.subsystems.manipulators.SwerveConfig.TunerSwerveDrivetrain;
-import frc.robot.vision.CoralDetection;
+import frc.robot.vision.ObjectDetection;
 import frc.robot.vision.LimelightConfigs;
 import frc.robot.vision.LimelightHelpers;
 import frc.robot.vision.Megatag.LimelightConfig;
@@ -297,7 +297,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
     currentBestTag = (int) Math.round(LimelightHelpers.getFiducialID(limelight.name()));
     SmartDashboard.putNumber("currentBestTag", currentBestTag);
 
-    Pose2d coralPose = CoralDetection.getCoralPose(getState().Pose);
+    Pose2d coralPose = ObjectDetection.getCoralPose(getState().Pose);
 
     SmartDashboard.putNumber("Coral X Pose", coralPose.getX());
 

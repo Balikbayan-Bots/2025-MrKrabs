@@ -9,8 +9,16 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.subsystems.manipulators.ManipulatorConstants;
 import frc.robot.subsystems.swerve.SwerveConstants;
 
-public class CoralDetection {
+public class ObjectDetection {
   public static final String LIMELIGHT = "limelight-cbotint";
+
+  public static void switchToCoralMode() {
+    LimelightHelpers.setPipelineIndex(LIMELIGHT, 0);
+  }
+
+  public static void switchToAlgaeMode() {
+    LimelightHelpers.setPipelineIndex(LIMELIGHT, 1);
+  }
 
   public static double getCoralDistance() {
     double targetOffsetAngle_Vertical = LimelightHelpers.getTY(LIMELIGHT);
@@ -29,7 +37,7 @@ public class CoralDetection {
   }
 
   public static Pose2d getCoralPose(Pose2d robotPose) {
-
+    switchToCoralMode();
     double innerAngle = robotPose.getRotation().getRadians() + Math.PI;
     double dy = Math.sin(innerAngle) * getCoralDistance();
     double dx = Math.cos(innerAngle) * getCoralDistance();
