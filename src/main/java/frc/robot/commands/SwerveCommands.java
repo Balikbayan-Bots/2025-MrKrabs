@@ -24,7 +24,7 @@ import frc.robot.subsystems.manipulators.IntakeSetpoint;
 import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
-import frc.robot.vision.CoralDetection;
+import frc.robot.vision.ObjectDetection;
 import frc.robot.vision.LimelightHelpers;
 import java.util.ArrayList;
 import java.util.Set;
@@ -64,7 +64,7 @@ public class SwerveCommands {
     SwerveRequest.RobotCentric drive =
         new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-    return swerve.applyRequest(() -> drive.withRotationalRate(CoralDetection.aimAtCoral()));
+    return swerve.applyRequest(() -> drive.withRotationalRate(ObjectDetection.aimAtCoral()));
   }
 
   public static double getDriveMultiplier() {
@@ -88,18 +88,18 @@ public class SwerveCommands {
 
   public static Command squareUpCoral() {
 
-    return driveToPose(CoralDetection.squareUpPose(swerve.getState().Pose));
+    return driveToPose(ObjectDetection.squareUpPose(swerve.getState().Pose));
   }
 
   public static Command driveToCoral() {
 
-    return driveToPose(CoralDetection.getCoralPose(swerve.getState().Pose));
+    return driveToPose(ObjectDetection.getCoralPose(swerve.getState().Pose));
   }
 
   public static Command magicCoral() {
 
     return Commands.sequence(
-       Commands.race(Commands.waitSeconds(1), coralAim().until(() -> (Math.abs(CoralDetection.aimAtCoral()) < 0.15))),
+       Commands.race(Commands.waitSeconds(1), coralAim().until(() -> (Math.abs(ObjectDetection.aimAtCoral()) < 0.15))),
        Commands.waitSeconds(1.0),
         Commands.parallel(
                 ManipulatorCommands.groundIntake(),
