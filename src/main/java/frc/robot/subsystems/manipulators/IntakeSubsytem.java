@@ -206,6 +206,10 @@ public class IntakeSubsytem extends SubsystemBase {
     return isDetected;
   }
 
+  public double rangeDistance() {
+    return canRange.getDistance().getValueAsDouble();
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
@@ -219,5 +223,6 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addBooleanProperty("Has Coral", () -> hasCoral(), null);
     builder.addDoubleProperty("Signal Strength", () -> canRange.getSignalStrength().getValueAsDouble(), null);
     builder.addDoubleProperty("Aim At Coral", () -> CoralDetection.aimAtCoral(), null);
+    builder.addDoubleProperty("CAN Range Distance", this::rangeDistance, null);
   }
 }

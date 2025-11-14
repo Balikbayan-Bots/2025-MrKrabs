@@ -11,9 +11,9 @@ public class ManipulatorConstants {
   public static final int INTAKE_CENTER_MOTOR_ID = 41;
   public static final int INTAKE_ROLLERS_MOTOR_ID = 42;
   public static final int INTAKE_CANRANGE_ID = 43;
-  public static final double INTAKE_CANRANGE_SIGSTRENGTH = 10000;
+  public static final double INTAKE_CANRANGE_SIGSTRENGTH = 5000;
   public static final double INTAKE_CANRANGE_HIST = 0.005;
-  public static final double INTAKE_CANRANGE_THRESH = 0.75;
+  public static final double INTAKE_CANRANGE_THRESH = 0.08;
   public static final double INTAKE_GEAR_RATIO = 17.778D;
   public static final int BEAM_BREAK_ID = 9;
   public static final double CLAW_MAX_VOLTAGE_FORWARD = 10;
