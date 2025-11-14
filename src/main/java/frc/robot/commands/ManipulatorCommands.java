@@ -141,7 +141,6 @@ public class ManipulatorCommands {
         Commands.runOnce(() -> intake.setState(IntakeState.INTAKE), intake),
         intakeSetpointRun(IntakeSetpoint.DEPLOYED)
             .until(() -> intake.hasCoral()),
-            Commands.waitSeconds(0.5),
         new ParallelCommandGroup(
             intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF),
             new RunCommand(() -> intake.setState(IntakeState.HOLD))));
