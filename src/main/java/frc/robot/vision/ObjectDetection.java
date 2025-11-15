@@ -35,19 +35,39 @@ public class ObjectDetection {
     double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
 
     double distanceToGoalMeters =
-        (goalHeightMeters - limelight.position().getY()) / Math.tan(angleToGoalRadians);
+        (goalHeightMeters - limelight.position().getZ()) / Math.tan(angleToGoalRadians);
 
     return distanceToGoalMeters * ManipulatorConstants.DRIVE_THRU_MULTIPLIER;
   }
 
+  // 3D Wizardry
   public static Pose2d getCoralPose(Pose2d robotPose) {
     switchToCoralMode();
 
-    Translation2d coralFieldLocation = getCoralTranslation(robotPose, LimelightHelpers.getTX(limelight.name()), LimelightHelpers.getTY(limelight.name()), 0.5715);
+    Translation2d coralFieldLocation = getCoralTranslation(robotPose, LimelightHelpers.getTX(limelight.name()), LimelightHelpers.getTY(limelight.name()), 0.05715);
 
+
+    if(coralFieldLocation != null){
     return new Pose2d(coralFieldLocation, robotPose.getRotation());
+    } else {
+      return new Pose2d(0,0,new Rotation2d());
+    }
 
   }
+
+  // Pure Math
+  // public static Pose2d getCoralPose(Pose2d robotPose) {
+  //   switchToCoralMode();
+
+  //   double coralDistance = getCoralDistance();
+  //   double trueCoralDistance = coralDistance/Math.cos((LimelightHelpers.getTY(limelight.name())) * (Math.PI / 180.0));
+  //   double coralOffDistance = Math.sqrt(Math.pow(trueCoralDistance, 2) - Math.pow(coralDistance, 2));
+  //   double innerAngle = robotPose.getRotation().getRadians() + Math.PI;
+  //   double dx = (Math.cos(innerAngle) * coralDistance) - (Math.sin(innerAngle) * coralOffDistance);
+  //   double dy = (Math.sin(innerAngle) * coralDistance) + (Math.cos(innerAngle) * coralOffDistance);
+
+  //   return new Pose2d(robotPose.getX() + dx, robotPose.getY() + dy, Rotation2d.fromDegrees(robotPose.getRotation().getDegrees() + LimelightHelpers.getTY(limelight.name())));
+  // }
 
   public static boolean validTarget() {
     return LimelightHelpers.getTV(limelight.name());
@@ -80,7 +100,7 @@ public class ObjectDetection {
 
     Transform3d cameraToRobotTransform =  new Transform3d(limelight.position(), limelight.rotation());
 
-    Pose3d cameraFieldPose = robotPose3d.transformBy(cameraToRobotTransform);
+    Pose3d cameraFieldPose = robotPose3d.transformBy(cameraToRobotTransform.inverse());
 
     Translation3d cameraTranslationField = cameraFieldPose.getTranslation();
 
@@ -108,6 +128,6 @@ public class ObjectDetection {
 
   public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {};
 
-  private static final LimelightConfig limelight = new LimelightConfig("limelight-cbotint", new Rotation3d(4.98,-30,173), new Translation3d(0.0838454,0.2179066,0.770077));
+  private static final LimelightConfig limelight = new LimelightConfig("limelight-cbotint", new Rotation3d(0.0869174,-0.523599,3.01941961), new Translation3d(0.0838454,0.2179066,0.770077));
 
 }
