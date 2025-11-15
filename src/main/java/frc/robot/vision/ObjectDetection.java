@@ -6,24 +6,26 @@ package frc.robot.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.subsystems.manipulators.ManipulatorConstants;
 import frc.robot.subsystems.swerve.SwerveConstants;
 
 public class ObjectDetection {
-  public static final String LIMELIGHT = "limelight-cbotint";
 
   public static void switchToCoralMode() {
-    LimelightHelpers.setPipelineIndex(LIMELIGHT, 0);
+    LimelightHelpers.setPipelineIndex(limelight.name(), 0);
   }
 
   public static void switchToAlgaeMode() {
-    LimelightHelpers.setPipelineIndex(LIMELIGHT, 1);
+    LimelightHelpers.setPipelineIndex(limelight.name(), 1);
   }
 
   public static double getCoralDistance() {
-    double targetOffsetAngle_Vertical = LimelightHelpers.getTY(LIMELIGHT);
+    double targetOffsetAngle_Vertical = LimelightHelpers.getTY(limelight.name());
     double limelightMountAngleDegrees = -30.0;
-    double limelightLenseHeightMeters = 0.770077;
     double goalHeightMeters = .05715;
 
     double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
@@ -31,7 +33,7 @@ public class ObjectDetection {
     double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
 
     double distanceToGoalMeters =
-        (goalHeightMeters - limelightLenseHeightMeters) / Math.tan(angleToGoalRadians);
+        (goalHeightMeters - limelight.position().getY()) / Math.tan(angleToGoalRadians);
 
     return distanceToGoalMeters * ManipulatorConstants.DRIVE_THRU_MULTIPLIER;
   }
@@ -39,19 +41,21 @@ public class ObjectDetection {
   public static Pose2d getCoralPose(Pose2d robotPose) {
     switchToCoralMode();
     double innerAngle = robotPose.getRotation().getRadians() + Math.PI;
-    double dy = Math.sin(innerAngle) * getCoralDistance();
     double dx = Math.cos(innerAngle) * getCoralDistance();
+    double dy = Math.sin(innerAngle) * getCoralDistance();
 
-    return new Pose2d(robotPose.getX() + dx, robotPose.getY() + dy, robotPose.getRotation());
+    Transform2d coralTranslation = new Transform2d(dx, dy, robotPose.getRotation());
+
+    return robotPose.plus(coralTranslation);
   }
 
   public static boolean validTarget() {
-    return LimelightHelpers.getTV(LIMELIGHT);
+    return LimelightHelpers.getTV(limelight.name());
   }
 
   public static Pose2d squareUpPose(Pose2d robotPose) {
 
-    double tx = LimelightHelpers.getTX(LIMELIGHT);
+    double tx = LimelightHelpers.getTX(limelight.name());
 
     return new Pose2d(
         robotPose.getX(),
@@ -62,7 +66,7 @@ public class ObjectDetection {
   public static double aimAtCoral() {
     double kP = .035;
 
-    double targetingAngularVelocity = LimelightHelpers.getTX(LIMELIGHT) * kP;
+    double targetingAngularVelocity = LimelightHelpers.getTX(limelight.name()) * kP;
 
     targetingAngularVelocity *= SwerveConstants.MAX_TELEOP_ROT;
 
@@ -70,4 +74,9 @@ public class ObjectDetection {
 
     return targetingAngularVelocity;
   }
+
+  public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {};
+
+  private static final LimelightConfig limelight = new LimelightConfig("limelight-cbotint", new Rotation3d(4.98,-30,173), new Translation3d(0.0838454,0.2179066,0.770077));
+
 }
