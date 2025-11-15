@@ -5,9 +5,11 @@
 package frc.robot.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.subsystems.manipulators.ManipulatorConstants;
@@ -40,13 +42,11 @@ public class ObjectDetection {
 
   public static Pose2d getCoralPose(Pose2d robotPose) {
     switchToCoralMode();
-    double innerAngle = robotPose.getRotation().getRadians() + Math.PI;
-    double dx = Math.cos(innerAngle) * getCoralDistance();
-    double dy = Math.sin(innerAngle) * getCoralDistance();
 
-    Transform2d coralTranslation = new Transform2d(dx, dy, robotPose.getRotation());
+    Translation2d coralFieldLocation = getCoralTranslation(robotPose, LimelightHelpers.getTX(limelight.name()), LimelightHelpers.getTY(limelight.name()), 0.5715);
 
-    return robotPose.plus(coralTranslation);
+    return new Pose2d(coralFieldLocation, robotPose.getRotation());
+
   }
 
   public static boolean validTarget() {
@@ -73,6 +73,37 @@ public class ObjectDetection {
     targetingAngularVelocity *= -1.0;
 
     return targetingAngularVelocity;
+  }
+
+  public static Translation2d getCoralTranslation(Pose2d robotPose, double tx, double ty, double groundPlaneZ){
+    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0, new Rotation3d(0,0, robotPose.getRotation().getRadians()));
+
+    Transform3d cameraToRobotTransform =  new Transform3d(limelight.position(), limelight.rotation());
+
+    Pose3d cameraFieldPose = robotPose3d.transformBy(cameraToRobotTransform);
+
+    Translation3d cameraTranslationField = cameraFieldPose.getTranslation();
+
+    double txRad = Math.toRadians(tx);
+    double tyRad = Math.toRadians(ty);
+
+    Translation3d rayVectorCam = new Translation3d(1.0, -Math.tan(txRad), Math.tan(tyRad));
+    Translation3d rayVectorField = rayVectorCam.rotateBy(cameraFieldPose.getRotation());
+
+    if(Math.abs(rayVectorField.getZ()) < 1e-9){
+      return null;
+    }
+
+    double t = (groundPlaneZ - cameraTranslationField.getZ()) / rayVectorField.getZ();
+
+    if(t < 0){
+      return null;
+    }
+
+    double intersectionX = cameraTranslationField.getX() + t * rayVectorField.getX();
+    double intersectionY = cameraTranslationField.getY() + t * rayVectorField.getY();
+
+    return new Translation2d(intersectionX, intersectionY);
   }
 
   public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {};
