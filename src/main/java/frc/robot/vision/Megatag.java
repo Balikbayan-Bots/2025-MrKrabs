@@ -1,4 +1,4 @@
-package frc.robot.subsystems.climb.vision;
+package frc.robot.vision;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;

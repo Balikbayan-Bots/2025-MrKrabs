@@ -25,7 +25,7 @@ import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.ctre.phoenix6.signals.UpdateModeValue;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.climb.vision.ObjectDetection;
+import frc.robot.vision.ObjectDetection;
 
 public class IntakeSubsytem extends SubsystemBase {
   public static IntakeSubsytem m_instance;

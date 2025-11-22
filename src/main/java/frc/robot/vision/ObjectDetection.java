@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.climb.vision;
+package frc.robot.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -143,11 +143,14 @@ public class ObjectDetection {
 
     return new Pose2d(cameraTranslationField.getX(), cameraTranslationField.getY(), Rotation2d.fromRadians(cameraFieldPose.getRotation().getZ()));
 
+  }
 
+  public static double findDistance(Pose2d a, Pose2d b) {
+    return Math.hypot(a.getX() - b.getX(), a.getY() - b.getY());
   }
 
   public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {};
 
-  private static final LimelightConfig limelight = new LimelightConfig("limelight-cbotint", new Rotation3d(0.0869174,-0.523599,3.01941961), new Translation3d(0.0838454,-0.2179066,0.770077));
+  private static final LimelightConfig limelight = new LimelightConfig("limelight-cbotint", new Rotation3d(-0.0869174,0.523599,3.01941961), new Translation3d(0.0838454,-0.2179066,0.770077));
 
 }
