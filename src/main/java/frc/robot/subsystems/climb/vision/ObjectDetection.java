@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.vision;
+package frc.robot.subsystems.climb.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -98,9 +98,9 @@ public class ObjectDetection {
   public static Translation2d getCoralTranslation(Pose2d robotPose, double tx, double ty, double groundPlaneZ){
     Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0, new Rotation3d(0,0, robotPose.getRotation().getRadians()));
 
-    Transform3d cameraToRobotTransform =  new Transform3d(limelight.position(), limelight.rotation());
+    Transform3d robotToCameraTransform = new Transform3d(limelight.position(), limelight.rotation());
 
-    Pose3d cameraFieldPose = robotPose3d.transformBy(cameraToRobotTransform.inverse());
+    Pose3d cameraFieldPose = robotPose3d.transformBy(robotToCameraTransform);
 
     Translation3d cameraTranslationField = cameraFieldPose.getTranslation();
 
@@ -111,12 +111,18 @@ public class ObjectDetection {
     Translation3d rayVectorField = rayVectorCam.rotateBy(cameraFieldPose.getRotation());
 
     if(Math.abs(rayVectorField.getZ()) < 1e-9){
+
+      System.out.println("Ray vector is parallel to the ground plane, no intersection found.");
+
       return null;
     }
 
     double t = (groundPlaneZ - cameraTranslationField.getZ()) / rayVectorField.getZ();
 
     if(t < 0){
+      System.out.println("Intersection is behind the camera, no valid intersection.");
+      System.out.println(t);
+
       return null;
     }
 
@@ -126,8 +132,22 @@ public class ObjectDetection {
     return new Translation2d(intersectionX, intersectionY);
   }
 
+  public static Pose2d getCameraFieldPosition(Pose2d robotPose) {
+    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0, new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
+
+    Transform3d robotToCameraTransform = new Transform3d(limelight.position(), limelight.rotation());
+
+    Pose3d cameraFieldPose = robotPose3d.transformBy(robotToCameraTransform);
+
+    Translation3d cameraTranslationField = cameraFieldPose.getTranslation();
+
+    return new Pose2d(cameraTranslationField.getX(), cameraTranslationField.getY(), Rotation2d.fromRadians(cameraFieldPose.getRotation().getZ()));
+
+
+  }
+
   public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {};
 
-  private static final LimelightConfig limelight = new LimelightConfig("limelight-cbotint", new Rotation3d(0.0869174,-0.523599,3.01941961), new Translation3d(0.0838454,0.2179066,0.770077));
+  private static final LimelightConfig limelight = new LimelightConfig("limelight-cbotint", new Rotation3d(0.0869174,-0.523599,3.01941961), new Translation3d(0.0838454,-0.2179066,0.770077));
 
 }

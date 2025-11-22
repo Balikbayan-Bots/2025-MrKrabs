@@ -1,6 +1,6 @@
 // LimelightHelpers v1.12 (REQUIRES LLOS 2025.0 OR LATER)
 
-package frc.robot.vision;
+package frc.robot.subsystems.climb.vision;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;

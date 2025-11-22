@@ -27,12 +27,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.subsystems.climb.vision.LimelightConfigs;
+import frc.robot.subsystems.climb.vision.LimelightHelpers;
+import frc.robot.subsystems.climb.vision.ObjectDetection;
+import frc.robot.subsystems.climb.vision.Megatag.LimelightConfig;
 import frc.robot.subsystems.manipulators.SwerveConfig;
 import frc.robot.subsystems.manipulators.SwerveConfig.TunerSwerveDrivetrain;
-import frc.robot.vision.ObjectDetection;
-import frc.robot.vision.LimelightConfigs;
-import frc.robot.vision.LimelightHelpers;
-import frc.robot.vision.Megatag.LimelightConfig;
+
 import java.util.function.Supplier;
 
 /**
@@ -46,6 +47,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
   private final Field2d m_field = new Field2d();
 
   private FieldObject2d coral = m_field.getObject("Coral");
+  private FieldObject2d camera = m_field.getObject("Camera");
 
   public static SwerveSubsystem getInstance() {
     if (instance == null) {
@@ -306,6 +308,9 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
     m_field.setRobotPose(getState().Pose);
 
     coral.setPose(coralPose);
+
+    camera.setPose(ObjectDetection.getCameraFieldPosition(getState().Pose));
+
   }
 
   private void startSimThread() {
