@@ -4,16 +4,15 @@
 
 package frc.robot.vision;
 
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.RobotCentric;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import frc.robot.subsystems.manipulators.ManipulatorConstants;
-import frc.robot.subsystems.swerve.SwerveConstants;
 
 public class ObjectDetection {
 
@@ -25,19 +24,10 @@ public class ObjectDetection {
     LimelightHelpers.setPipelineIndex(limelight.name(), 1);
   }
 
-  public static double getCoralDistance() {
-    double targetOffsetAngle_Vertical = LimelightHelpers.getTY(limelight.name());
-    double limelightMountAngleDegrees = -30.0;
-    double goalHeightMeters = .05715;
-
-    double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
-
-    double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
-
-    double distanceToGoalMeters =
-        (goalHeightMeters - limelight.position().getZ()) / Math.tan(angleToGoalRadians);
-
-    return distanceToGoalMeters * ManipulatorConstants.DRIVE_THRU_MULTIPLIER;
+  public static double robotCentricTX() {
+    double tx = LimelightHelpers.getTX(limelight.name());
+    double cameraYaw = limelight.rotation().getZ();
+    return Math.toDegrees(cameraYaw) - tx - 180;
   }
 
   // 3D Wizardry
@@ -48,51 +38,15 @@ public class ObjectDetection {
 
 
     if(coralFieldLocation != null){
-    return new Pose2d(coralFieldLocation, robotPose.getRotation());
+    return new Pose2d(coralFieldLocation, Rotation2d.fromDegrees(robotPose.getRotation().getDegrees() + robotCentricTX()));
     } else {
       return new Pose2d(0,0,new Rotation2d());
     }
 
   }
 
-  // Pure Math
-  // public static Pose2d getCoralPose(Pose2d robotPose) {
-  //   switchToCoralMode();
-
-  //   double coralDistance = getCoralDistance();
-  //   double trueCoralDistance = coralDistance/Math.cos((LimelightHelpers.getTY(limelight.name())) * (Math.PI / 180.0));
-  //   double coralOffDistance = Math.sqrt(Math.pow(trueCoralDistance, 2) - Math.pow(coralDistance, 2));
-  //   double innerAngle = robotPose.getRotation().getRadians() + Math.PI;
-  //   double dx = (Math.cos(innerAngle) * coralDistance) - (Math.sin(innerAngle) * coralOffDistance);
-  //   double dy = (Math.sin(innerAngle) * coralDistance) + (Math.cos(innerAngle) * coralOffDistance);
-
-  //   return new Pose2d(robotPose.getX() + dx, robotPose.getY() + dy, Rotation2d.fromDegrees(robotPose.getRotation().getDegrees() + LimelightHelpers.getTY(limelight.name())));
-  // }
-
   public static boolean validTarget() {
     return LimelightHelpers.getTV(limelight.name());
-  }
-
-  public static Pose2d squareUpPose(Pose2d robotPose) {
-
-    double tx = LimelightHelpers.getTX(limelight.name());
-
-    return new Pose2d(
-        robotPose.getX(),
-        robotPose.getY(),
-        robotPose.getRotation().plus(Rotation2d.fromDegrees(tx)));
-  }
-
-  public static double aimAtCoral() {
-    double kP = .035;
-
-    double targetingAngularVelocity = LimelightHelpers.getTX(limelight.name()) * kP;
-
-    targetingAngularVelocity *= SwerveConstants.MAX_TELEOP_ROT;
-
-    targetingAngularVelocity *= -1.0;
-
-    return targetingAngularVelocity;
   }
 
   public static Translation2d getCoralTranslation(Pose2d robotPose, double tx, double ty, double groundPlaneZ){
@@ -147,6 +101,22 @@ public class ObjectDetection {
 
   public static double findDistance(Pose2d a, Pose2d b) {
     return Math.hypot(a.getX() - b.getX(), a.getY() - b.getY());
+  }
+
+  public static double getCoralHeading() {
+    
+    double[] array = LimelightHelpers.getT2DArray(limelight.name());
+
+    double longSidePixels = array[12];
+    double shortSidePixels = array[13];
+
+    System.out.println("Long side: " + longSidePixels);
+    System.out.println("Short side " + shortSidePixels);
+    System.out.println("Ratio: " + (shortSidePixels/longSidePixels));
+
+    return shortSidePixels/longSidePixels;
+    
+    
   }
 
   public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {};

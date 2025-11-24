@@ -306,6 +306,8 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
 
     SmartDashboard.putNumber("NEW Distance From Coral!", ObjectDetection.findDistance(coralPose, getState().Pose) *  39.37);
 
+    SmartDashboard.putNumber("MAYBE bounding box height", ObjectDetection.getCoralHeading());
+
     m_field.setRobotPose(getState().Pose);
 
     FieldObject2d coral = m_field.getObject("Coral");
