@@ -218,11 +218,9 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
     builder.addStringProperty("Intake State", this::getStateName, null);
-    builder.addDoubleProperty("Distance From Coral", () -> ObjectDetection.getCoralDistance(), null);
     builder.addBooleanProperty(("Valid Target Detected"), () -> ObjectDetection.validTarget(), null);
     builder.addBooleanProperty("Has Coral", () -> hasCoral(), null);
     builder.addDoubleProperty("Signal Strength", () -> canRange.getSignalStrength().getValueAsDouble(), null);
-    builder.addDoubleProperty("Aim At Coral", () -> ObjectDetection.aimAtCoral(), null);
     builder.addDoubleProperty("CAN Range Distance", this::rangeDistance, null);
   }
 }

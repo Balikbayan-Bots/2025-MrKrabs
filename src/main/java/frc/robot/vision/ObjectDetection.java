@@ -5,69 +5,130 @@
 package frc.robot.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.subsystems.manipulators.ManipulatorConstants;
-import frc.robot.subsystems.swerve.SwerveConstants;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 public class ObjectDetection {
-  public static final String LIMELIGHT = "limelight-cbotint";
+
+  public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {
+  };
+
+  private static final LimelightConfig limelightIntake = new LimelightConfig("limelight-cbotint",
+      new Rotation3d(-0.0869174, 0.523599, 3.01941961), new Translation3d(0.0838454, -0.2179066, 0.770077));
+
+  final static double CORAL_CENTER_HEIGHT = 0.05715;
 
   public static void switchToCoralMode() {
-    LimelightHelpers.setPipelineIndex(LIMELIGHT, 0);
+    LimelightHelpers.setPipelineIndex(limelightIntake.name(), 0);
   }
 
   public static void switchToAlgaeMode() {
-    LimelightHelpers.setPipelineIndex(LIMELIGHT, 1);
+    LimelightHelpers.setPipelineIndex(limelightIntake.name(), 1);
   }
 
-  public static double getCoralDistance() {
-    double targetOffsetAngle_Vertical = LimelightHelpers.getTY(LIMELIGHT);
-    double limelightMountAngleDegrees = -30.0;
-    double limelightLenseHeightMeters = 0.770077;
-    double goalHeightMeters = .05715;
-
-    double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
-
-    double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
-
-    double distanceToGoalMeters =
-        (goalHeightMeters - limelightLenseHeightMeters) / Math.tan(angleToGoalRadians);
-
-    return distanceToGoalMeters * ManipulatorConstants.DRIVE_THRU_MULTIPLIER;
+  public static double robotCentricTX() {
+    double tx = LimelightHelpers.getTX(limelightIntake.name());
+    double cameraYaw = limelightIntake.rotation().getZ();
+    return Math.toDegrees(cameraYaw) - tx - 180;
   }
 
+  // 3D Wizardry
   public static Pose2d getCoralPose(Pose2d robotPose) {
-    switchToCoralMode();
-    double innerAngle = robotPose.getRotation().getRadians() + Math.PI;
-    double dy = Math.sin(innerAngle) * getCoralDistance();
-    double dx = Math.cos(innerAngle) * getCoralDistance();
 
-    return new Pose2d(robotPose.getX() + dx, robotPose.getY() + dy, robotPose.getRotation());
+    switchToCoralMode();
+
+    Translation2d coralFieldLocation = castRayAndFindPlaneIntersection(robotPose, limelightIntake, CORAL_CENTER_HEIGHT);
+
+    if (coralFieldLocation != null) {
+      return getCameraFieldPose(robotPose, limelightIntake);
+    } else {
+      return new Pose2d(0, 0, new Rotation2d());
+    }
+
   }
 
   public static boolean validTarget() {
-    return LimelightHelpers.getTV(LIMELIGHT);
+    return LimelightHelpers.getTV(limelightIntake.name());
   }
 
-  public static Pose2d squareUpPose(Pose2d robotPose) {
+  public static Translation2d castRayAndFindPlaneIntersection(Pose3d cameraFieldPose, LimelightConfig config,
+      double planeHeightZ) {
 
-    double tx = LimelightHelpers.getTX(LIMELIGHT);
+    double tx = LimelightHelpers.getTX(limelightIntake.name());
+    double ty = LimelightHelpers.getTY(limelightIntake.name());
 
-    return new Pose2d(
-        robotPose.getX(),
-        robotPose.getY(),
-        robotPose.getRotation().plus(Rotation2d.fromDegrees(tx)));
+    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
+        new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
+
+    Transform3d robotToCameraTransform = new Transform3d(limelightIntake.position(), limelightIntake.rotation());
+
+    cameraFieldPose = robotPose3d.transformBy(robotToCameraTransform);
+
+    Translation3d cameraTranslationField = cameraFieldPose.getTranslation();
+
+    double txRad = Math.toRadians(tx);
+    double tyRad = Math.toRadians(ty);
+
+    Translation3d rayVectorCam = new Translation3d(1.0, -Math.tan(txRad), Math.tan(tyRad));
+    Translation3d rayVectorField = rayVectorCam.rotateBy(cameraFieldPose.getRotation());
+
+    if (Math.abs(rayVectorField.getZ()) < 1e-9) {
+      return null;
+    }
+
+    double t = (groundPlaneZ - cameraTranslationField.getZ()) / rayVectorField.getZ();
+
+    if (t < 0) {
+      return null;
+    }
+
+    double intersectionX = cameraTranslationField.getX() + t * rayVectorField.getX();
+    double intersectionY = cameraTranslationField.getY() + t * rayVectorField.getY();
+
+    return new Translation2d(intersectionX, intersectionY);
   }
 
-  public static double aimAtCoral() {
-    double kP = .035;
+  public static Pose3d getCameraFieldPose(Pose2d robotPose, LimelightConfig config) {
+    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
+        new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
 
-    double targetingAngularVelocity = LimelightHelpers.getTX(LIMELIGHT) * kP;
+    Transform3d robotToCameraTransform = new Transform3d(config.position(), config.rotation());
 
-    targetingAngularVelocity *= SwerveConstants.MAX_TELEOP_ROT;
+    Pose3d cameraFieldPose = robotPose3d.transformBy(robotToCameraTransform);
 
-    targetingAngularVelocity *= -1.0;
-
-    return targetingAngularVelocity;
+    return cameraFieldPose;
   }
+
+  public static Pose2d getCameraFieldPosition(Pose2d robotPose) {
+    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
+        new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
+
+    Pose3d cameraFieldPose = getCameraFieldPose(robotPose, limelightIntake);
+
+    Translation3d cameraTranslationField = cameraFieldPose.getTranslation();
+
+    return new Pose2d(cameraTranslationField.getX(), cameraTranslationField.getY(),
+        Rotation2d.fromRadians(cameraFieldPose.getRotation().getZ()));
+
+  }
+
+  public static double findDistance(Pose2d a, Pose2d b) {
+    return Math.hypot(a.getX() - b.getX(), a.getY() - b.getY());
+  }
+
+  public static double getCoralHeading() {
+
+    double[] array = LimelightHelpers.getT2DArray(limelightIntake.name());
+
+    double longSidePixels = array[12];
+    double shortSidePixels = array[13];
+
+    return shortSidePixels / longSidePixels;
+
+  }
+
 }
