@@ -14,10 +14,13 @@ import edu.wpi.first.math.geometry.Translation3d;
 
 public class ObjectDetection {
 
-  public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {};
+  public record LimelightConfig(String name, Rotation3d rotation, Translation3d position) {
+  };
 
-  private static final LimelightConfig limelightIntake = new LimelightConfig("limelight-cbotint", new Rotation3d(-0.0869174,0.523599,3.01941961), new Translation3d(0.0838454,-0.2179066,0.770077));
+  private static final LimelightConfig limelightIntake = new LimelightConfig("limelight-cbotint",
+      new Rotation3d(-0.0869174, 0.523599, 3.01941961), new Translation3d(0.0838454, -0.2179066, 0.770077));
 
+  final static double CORAL_CENTER_HEIGHT = 0.05715;
 
   public static void switchToCoralMode() {
     LimelightHelpers.setPipelineIndex(limelightIntake.name(), 0);
@@ -35,31 +38,35 @@ public class ObjectDetection {
 
   // 3D Wizardry
   public static Pose2d getCoralPose(Pose2d robotPose) {
+
     switchToCoralMode();
 
-    Translation2d coralFieldLocation = castRayAndFindPlaneIntersection(robotPose, LimelightHelpers.getTX(limelightIntake.name()), LimelightHelpers.getTY(limelightIntake.name()), 0.05715);
+    Translation2d coralFieldLocation = castRayAndFindPlaneIntersection(robotPose, limelightIntake, CORAL_CENTER_HEIGHT);
 
-
-    if(coralFieldLocation != null){
-    return new Pose2d(coralFieldLocation, Rotation2d.fromDegrees(robotPose.getRotation().getDegrees() + robotCentricTX()));
+    if (coralFieldLocation != null) {
+      return getCameraFieldPose(robotPose, limelightIntake);
     } else {
-      return new Pose2d(0,0,new Rotation2d());
+      return new Pose2d(0, 0, new Rotation2d());
     }
 
   }
-
-  final double CORAL_CENTER_HEIGHT  = 0.05715;
 
   public static boolean validTarget() {
     return LimelightHelpers.getTV(limelightIntake.name());
   }
 
-  public static Translation2d castRayAndFindPlaneIntersection(Pose2d robotPose, double tx, double ty, double groundPlaneZ){
-    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0, new Rotation3d(0,0, robotPose.getRotation().getRadians()));
+  public static Translation2d castRayAndFindPlaneIntersection(Pose3d cameraFieldPose, LimelightConfig config,
+      double planeHeightZ) {
+
+    double tx = LimelightHelpers.getTX(limelightIntake.name());
+    double ty = LimelightHelpers.getTY(limelightIntake.name());
+
+    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
+        new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
 
     Transform3d robotToCameraTransform = new Transform3d(limelightIntake.position(), limelightIntake.rotation());
 
-    Pose3d cameraFieldPose = robotPose3d.transformBy(robotToCameraTransform);
+    cameraFieldPose = robotPose3d.transformBy(robotToCameraTransform);
 
     Translation3d cameraTranslationField = cameraFieldPose.getTranslation();
 
@@ -69,19 +76,13 @@ public class ObjectDetection {
     Translation3d rayVectorCam = new Translation3d(1.0, -Math.tan(txRad), Math.tan(tyRad));
     Translation3d rayVectorField = rayVectorCam.rotateBy(cameraFieldPose.getRotation());
 
-    if(Math.abs(rayVectorField.getZ()) < 1e-9){
-
-      System.out.println("Ray vector is parallel to the ground plane, no intersection found.");
-
+    if (Math.abs(rayVectorField.getZ()) < 1e-9) {
       return null;
     }
 
     double t = (groundPlaneZ - cameraTranslationField.getZ()) / rayVectorField.getZ();
 
-    if(t < 0){
-      System.out.println("Intersection is behind the camera, no valid intersection.");
-      System.out.println(t);
-
+    if (t < 0) {
       return null;
     }
 
@@ -92,25 +93,26 @@ public class ObjectDetection {
   }
 
   public static Pose3d getCameraFieldPose(Pose2d robotPose, LimelightConfig config) {
-    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0, new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
+    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
+        new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
 
     Transform3d robotToCameraTransform = new Transform3d(config.position(), config.rotation());
 
     Pose3d cameraFieldPose = robotPose3d.transformBy(robotToCameraTransform);
-    
+
     return cameraFieldPose;
   }
 
   public static Pose2d getCameraFieldPosition(Pose2d robotPose) {
-    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0, new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
+    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
+        new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
 
-    Transform3d robotToCameraTransform = new Transform3d(limelightIntake.position(), limelightIntake.rotation());
-
-    Pose3d cameraFieldPose = robotPose3d.transformBy(robotToCameraTransform);
+    Pose3d cameraFieldPose = getCameraFieldPose(robotPose, limelightIntake);
 
     Translation3d cameraTranslationField = cameraFieldPose.getTranslation();
 
-    return new Pose2d(cameraTranslationField.getX(), cameraTranslationField.getY(), Rotation2d.fromRadians(cameraFieldPose.getRotation().getZ()));
+    return new Pose2d(cameraTranslationField.getX(), cameraTranslationField.getY(),
+        Rotation2d.fromRadians(cameraFieldPose.getRotation().getZ()));
 
   }
 
@@ -119,19 +121,14 @@ public class ObjectDetection {
   }
 
   public static double getCoralHeading() {
-    
+
     double[] array = LimelightHelpers.getT2DArray(limelightIntake.name());
 
     double longSidePixels = array[12];
     double shortSidePixels = array[13];
 
-    System.out.println("Long side: " + longSidePixels);
-    System.out.println("Short side " + shortSidePixels);
-    System.out.println("Ratio: " + (shortSidePixels/longSidePixels));
+    return shortSidePixels / longSidePixels;
 
-    return shortSidePixels/longSidePixels;
-    
-    
   }
 
 }
