@@ -31,9 +31,8 @@ import frc.robot.subsystems.manipulators.SwerveConfig;
 import frc.robot.subsystems.manipulators.SwerveConfig.TunerSwerveDrivetrain;
 import frc.robot.vision.LimelightConfigs;
 import frc.robot.vision.LimelightHelpers;
-import frc.robot.vision.ObjectDetection;
 import frc.robot.vision.Megatag.LimelightConfig;
-
+import frc.robot.vision.ObjectDetection;
 import java.util.function.Supplier;
 
 /**
@@ -304,7 +303,9 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
 
     SmartDashboard.putNumber("Coral Y Pose", coralPose.getY());
 
-    SmartDashboard.putNumber("NEW Distance From Coral!", ObjectDetection.findDistance(coralPose, getState().Pose) *  39.37);
+    SmartDashboard.putNumber(
+        "NEW Distance From Coral!",
+        ObjectDetection.findDistance(coralPose, getState().Pose) * 39.37);
 
     SmartDashboard.putNumber("MAYBE bounding box height", ObjectDetection.getCoralHeading());
 
@@ -312,7 +313,7 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
 
     FieldObject2d coral = m_field.getObject("Coral");
 
-    if(!ObjectDetection.validTarget()){
+    if (!ObjectDetection.validTarget()) {
 
       coral.setPose(new Pose2d(-10, -10, new Rotation2d()));
 
@@ -321,7 +322,6 @@ public class SwerveSubsystem extends TunerSwerveDrivetrain implements Subsystem 
     }
 
     camera.setPose(ObjectDetection.getCameraFieldPosition(getState().Pose));
-
   }
 
   private void startSimThread() {

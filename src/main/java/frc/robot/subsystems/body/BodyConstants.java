@@ -67,5 +67,6 @@ public class BodyConstants {
       new Limits(70.0, 45.0, ElevatorSubsystem.inchesToMotorRotations(27), -0.05);
 
   public record Limits(
-      double statorLimit, double supplyLimit, double forwardLimit, double reverseLimit) {};
+      double statorLimit, double supplyLimit, double forwardLimit, double reverseLimit) {}
+  ;
 }
