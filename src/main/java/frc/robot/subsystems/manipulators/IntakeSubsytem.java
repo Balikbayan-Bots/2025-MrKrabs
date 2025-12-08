@@ -15,8 +15,6 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -119,7 +117,6 @@ public class IntakeSubsytem extends SubsystemBase {
     motionMagic.MotionMagicCruiseVelocity = INTAKE_MOTION_MAGIC_CONFIGS[1];
     motionMagic.MotionMagicJerk = INTAKE_MOTION_MAGIC_CONFIGS[2];
     return newConfig;
-
   }
 
   private TalonFXConfiguration getRollerMotorConfig() {
@@ -158,7 +155,7 @@ public class IntakeSubsytem extends SubsystemBase {
   }
 
   private double calculateFeedForward() {
-    return Math.sin(Math.toRadians(getDegrees() + 18)) * -(INTAKE_FEED_FWD);
+    return Math.sin(Math.toRadians(getDegrees() - 18)) * -(INTAKE_FEED_FWD);
   }
 
   private double getDegrees() {
@@ -198,7 +195,7 @@ public class IntakeSubsytem extends SubsystemBase {
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(getError()) < 15.0;
+    return Math.abs(getError()) < 1.0;
   }
 
   public boolean hasCoral() {
@@ -218,10 +215,13 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
     builder.addStringProperty("Intake State", this::getStateName, null);
-    builder.addDoubleProperty("Distance From Coral", () -> ObjectDetection.getCoralDistance(), null);
-    builder.addBooleanProperty(("Valid Target Detected"), () -> ObjectDetection.validTarget(), null);
+    builder.addDoubleProperty(
+        "Distance From Coral", () -> ObjectDetection.getCoralDistance(), null);
+    builder.addBooleanProperty(
+        ("Valid Target Detected"), () -> ObjectDetection.validTarget(), null);
     builder.addBooleanProperty("Has Coral", () -> hasCoral(), null);
-    builder.addDoubleProperty("Signal Strength", () -> canRange.getSignalStrength().getValueAsDouble(), null);
+    builder.addDoubleProperty(
+        "Signal Strength", () -> canRange.getSignalStrength().getValueAsDouble(), null);
     builder.addDoubleProperty("Aim At Coral", () -> ObjectDetection.aimAtCoral(), null);
     builder.addDoubleProperty("CAN Range Distance", this::rangeDistance, null);
   }

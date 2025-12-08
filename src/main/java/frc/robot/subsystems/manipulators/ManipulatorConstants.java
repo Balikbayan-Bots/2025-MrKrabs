@@ -31,16 +31,16 @@ public class ManipulatorConstants {
   public static final double INTAKE_MAX_VOLTAGE_REVERSE = -7;
 
   public static final double[] INTAKE_SLOT_ZERO = {
-    0.075, // kP
+    1.0, // kP
     0.0, // kI
-    0.0, // kD
+    0.02, // kD
     0.0, // kS
     0.0, // kG
-    0.125, // kV
+    0.01, // kV
     0.0 // kA
   };
 
-  public static final double INTAKE_FEED_FWD = 0.5;
+  public static final double INTAKE_FEED_FWD = 0.4;
 
   public static final double[] INTAKE_MOTION_MAGIC_CONFIGS = {
     200.0, // Acceleration

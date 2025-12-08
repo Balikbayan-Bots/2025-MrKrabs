@@ -29,10 +29,10 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.manipulators.SwerveConfig;
 import frc.robot.subsystems.manipulators.SwerveConfig.TunerSwerveDrivetrain;
-import frc.robot.vision.ObjectDetection;
 import frc.robot.vision.LimelightConfigs;
 import frc.robot.vision.LimelightHelpers;
 import frc.robot.vision.Megatag.LimelightConfig;
+import frc.robot.vision.ObjectDetection;
 import java.util.function.Supplier;
 
 /**

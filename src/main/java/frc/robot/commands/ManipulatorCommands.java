@@ -139,8 +139,7 @@ public class ManipulatorCommands {
   public static Command groundIntake() {
     return new SequentialCommandGroup(
         Commands.runOnce(() -> intake.setState(IntakeState.INTAKE), intake),
-        intakeSetpointRun(IntakeSetpoint.DEPLOYED)
-            .until(() -> intake.hasCoral()),
+        intakeSetpointRun(IntakeSetpoint.DEPLOYED).until(() -> intake.hasCoral()),
         new ParallelCommandGroup(
             intakeSetpointRun(IntakeSetpoint.STOWED_HANDOFF),
             new RunCommand(() -> intake.setState(IntakeState.HOLD))));
