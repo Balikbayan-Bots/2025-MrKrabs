@@ -15,8 +15,6 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -119,7 +117,6 @@ public class IntakeSubsytem extends SubsystemBase {
     motionMagic.MotionMagicCruiseVelocity = INTAKE_MOTION_MAGIC_CONFIGS[1];
     motionMagic.MotionMagicJerk = INTAKE_MOTION_MAGIC_CONFIGS[2];
     return newConfig;
-
   }
 
   private TalonFXConfiguration getRollerMotorConfig() {
@@ -218,9 +215,11 @@ public class IntakeSubsytem extends SubsystemBase {
     builder.addDoubleProperty("Intake Feed Forward", this::calculateFeedForward, null);
     builder.addBooleanProperty("Is At Setpoint", this::isAtSetpoint, null);
     builder.addStringProperty("Intake State", this::getStateName, null);
-    builder.addBooleanProperty(("Valid Target Detected"), () -> ObjectDetection.validTarget(), null);
+    builder.addBooleanProperty(
+        ("Valid Target Detected"), () -> ObjectDetection.validTarget(), null);
     builder.addBooleanProperty("Has Coral", () -> hasCoral(), null);
-    builder.addDoubleProperty("Signal Strength", () -> canRange.getSignalStrength().getValueAsDouble(), null);
+    builder.addDoubleProperty(
+        "Signal Strength", () -> canRange.getSignalStrength().getValueAsDouble(), null);
     builder.addDoubleProperty("CAN Range Distance", this::rangeDistance, null);
   }
 }

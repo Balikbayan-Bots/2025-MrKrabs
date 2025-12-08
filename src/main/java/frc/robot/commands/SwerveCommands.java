@@ -16,17 +16,12 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.body.BodySetpoint;
 import frc.robot.subsystems.body.ElevatorSubsystem;
-import frc.robot.subsystems.manipulators.IntakeSetpoint;
-import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwervePositions;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
-import frc.robot.vision.LimelightHelpers;
 import frc.robot.vision.ObjectDetection;
-
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -89,8 +84,8 @@ public class SwerveCommands {
 
     return Commands.sequence(
         Commands.parallel(
-                ManipulatorCommands.groundIntake(),
-                    Commands.defer(() -> driveToCoral(), Set.of(swerve))));
+            ManipulatorCommands.groundIntake(),
+            Commands.defer(() -> driveToCoral(), Set.of(swerve))));
   }
 
   public static Command driveToPegProxy(SwervePositions.alignMent align) {
